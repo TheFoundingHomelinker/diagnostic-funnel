@@ -8,17 +8,22 @@
   var API_BASE = '/api';
 
   // ── Question schema ─────────────────────────────────────────────
+  // Each yes/sometimes/no question has 3 options. The middle option's value
+  // is always 'sometimes' on the wire (so server-side scoring is unchanged),
+  // but the display label varies per-question via `middleLabel`. Defaults to
+  // "Sometimes" if omitted. This makes "I'm not sure" / "Some of them" /
+  // "Once or twice" fit binary fact questions without breaking scoring.
   var QUESTIONS = [
     { id: 1,  type: 'yns', text: 'Do you use a personal device when working abroad, rather than a company-issued one?', correct: 'yes' },
-    { id: 2,  type: 'yns', text: 'Does your company use Microsoft 365 or Google Workspace for work accounts?', correct: 'no' },
+    { id: 2,  type: 'yns', text: 'Does your company use Microsoft 365 or Google Workspace for work accounts?', correct: 'no',  middleLabel: "I'm not sure" },
     { id: 3,  type: 'yns', text: 'Have you ever received a security verification prompt when logging in from a new location?', correct: 'no' },
-    { id: 4,  type: 'yns', text: 'Do you know what IP address your work accounts see when you log in?', correct: 'yes' },
+    { id: 4,  type: 'yns', text: 'Do you know what IP address your work accounts see when you log in?', correct: 'yes', middleLabel: "I'm not sure" },
     { id: 5,  type: 'yns', text: 'Does your company require you to connect to a corporate VPN?', correct: 'no' },
     { id: 6,  type: 'yns', text: 'Have you ever manually changed your device timezone when traveling abroad?', correct: 'yes' },
-    { id: 7,  type: 'yns', text: 'Do you use Slack, Jira, Notion, or similar tools for work communication?', correct: 'no' },
-    { id: 8,  type: 'yns', text: 'Does your company have any software installed on your work device to manage it remotely?', correct: 'no' },
-    { id: 9,  type: 'yns', text: 'Have you ever been questioned by IT or HR about your location while working remotely?', correct: 'no' },
-    { id: 10, type: 'yns', text: 'Do you currently use any tool to route your internet traffic through your home IP?', correct: 'yes' },
+    { id: 7,  type: 'yns', text: 'Do you use Slack, Jira, Notion, or similar tools for work communication?', correct: 'no',  middleLabel: 'Some of them' },
+    { id: 8,  type: 'yns', text: 'Does your company have any software installed on your work device to manage it remotely?', correct: 'no',  middleLabel: "I'm not sure" },
+    { id: 9,  type: 'yns', text: 'Have you ever been questioned by IT or HR about your location while working remotely?', correct: 'no',  middleLabel: 'Once or twice' },
+    { id: 10, type: 'yns', text: 'Do you currently use any tool to route your internet traffic through your home IP?', correct: 'yes', middleLabel: "I'm not sure" },
     { id: 11, type: 'single', text: 'Which best describes your current situation?', options: [
         'I want to work abroad but haven’t tried yet',
         'I’m working abroad now and hoping nobody notices',
@@ -175,8 +180,16 @@
     wrap.appendChild(heading);
 
     if (q.type === 'yns' || q.type === 'single' || q.type === 'multi') {
-      var opts = q.type === 'yns' ? YNS_OPTS.map(function (o) { return { value: o.value, label: o.label }; })
-                                  : q.options.map(function (label) { return { value: label, label: label }; });
+      var opts;
+      if (q.type === 'yns') {
+        opts = YNS_OPTS.map(function (o) {
+          var label = o.label;
+          if (o.value === 'sometimes' && q.middleLabel) label = q.middleLabel;
+          return { value: o.value, label: label };
+        });
+      } else {
+        opts = q.options.map(function (label) { return { value: label, label: label }; });
+      }
       var grid = document.createElement('div');
       grid.className = 'hl-options';
       if (q.type === 'multi') grid.dataset.multi = 'true';
