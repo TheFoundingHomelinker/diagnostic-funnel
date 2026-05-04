@@ -276,6 +276,9 @@ button { font-family: inherit; }
 
 /* ─── Section-level CTA (repeated after each content section) ─── */
 .hl-section-cta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
   margin-top: 36px;
 }
