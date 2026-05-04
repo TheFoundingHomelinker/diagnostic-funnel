@@ -274,6 +274,13 @@ button { font-family: inherit; }
 .hl-testimonial__attr strong { color: var(--navy); font-size: 0.95rem; }
 .hl-testimonial__attr span { color: var(--muted); font-size: 0.84rem; }
 
+/* ─── Section-level CTA (repeated after each content section) ─── */
+.hl-section-cta {
+  text-align: center;
+  margin-top: 36px;
+}
+.hl-section-cta .hl-btn { min-width: 280px; }
+
 /* ─── Bottom CTA ─── */
 .hl-bottom-cta { background: var(--navy); color: #fff; padding: 64px 24px; text-align: center; }
 .hl-bottom-cta h2 { color: #fff; margin-bottom: 14px; }
