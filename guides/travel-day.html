@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Travel Day Playbook — HomeLink</title>
+  <meta name="description" content="Hour-by-hour what to do from T-7 days through day 3 at the destination, so your IT sees nothing unusual.">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/diagnostic.css">
+  <style>
+    .brief { max-width: 760px; margin: 0 auto; padding: 56px 24px 48px; }
+    .brief__eyebrow { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--blue); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+    .brief__h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 700; color: var(--navy); line-height: 1.18; letter-spacing: -0.02em; margin-bottom: 14px; }
+    .brief__lede { font-size: 1.05rem; color: var(--muted); line-height: 1.55; margin-bottom: 32px; max-width: 600px; }
+    .brief__quickfacts { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px 26px; margin-bottom: 36px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 28px; }
+    @media (max-width: 600px) { .brief__quickfacts { grid-template-columns: 1fr; } }
+    .qf__row { display: flex; flex-direction: column; }
+    .qf__label { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .qf__value { font-size: 0.96rem; color: #1a1a18; font-weight: 500; }
+    .brief h2 { font-size: 1.35rem; color: var(--navy); margin: 32px 0 14px; font-weight: 700; }
+    .brief h3 { font-size: 1.05rem; color: var(--navy); margin: 22px 0 10px; font-weight: 700; font-family: 'DM Mono', monospace; letter-spacing: 0.02em; }
+    .brief p { font-size: 1rem; color: #1a1a18; line-height: 1.65; margin-bottom: 14px; }
+    .brief ul { padding-left: 22px; margin-bottom: 18px; }
+    .brief ul li { margin-bottom: 8px; line-height: 1.6; }
+    .brief strong { color: var(--navy); }
+    .brief .callout { background: var(--card); border-left: 3px solid var(--blue); border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 18px 0; font-size: 0.95rem; line-height: 1.6; }
+    .brief__cta { background: var(--navy); color: #fff; border-radius: 14px; padding: 32px 30px; margin-top: 40px; text-align: center; }
+    .brief__cta h2 { color: #fff; margin: 0 0 10px; font-size: 1.3rem; }
+    .brief__cta p { color: rgba(255,255,255,0.78); max-width: 520px; margin: 0 auto 20px; }
+    .brief__cta a { display: inline-block; background: #fff; color: var(--navy); padding: 14px 28px; border-radius: 10px; font-weight: 700; text-decoration: none; font-size: 1rem; }
+    .brief__cta a:hover { background: var(--bg); }
+    .brief__footer { margin-top: 36px; text-align: center; font-size: 0.85rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+  <article class="brief">
+    <div class="brief__eyebrow">Companion guide</div>
+    <h1 class="brief__h1">The Travel Day Playbook</h1>
+    <p class="brief__lede">A timeline for the seven days before you fly through your first three days abroad. Do these in order. Each step is short. None of them are theoretical — every one closes a real signal your IT can see.</p>
+
+    <div class="brief__quickfacts">
+      <div class="qf__row"><div class="qf__label">Timeline</div><div class="qf__value">T-7 days → Day 3 abroad</div></div>
+      <div class="qf__row"><div class="qf__label">Total time required</div><div class="qf__value">~60 mins, spread across the window</div></div>
+      <div class="qf__row"><div class="qf__label">Pairs with</div><div class="qf__value">Your risk-fix PDF + destination brief</div></div>
+      <div class="qf__row"><div class="qf__label">Applies to</div><div class="qf__value">Any destination, any trip length</div></div>
+    </div>
+
+    <h2>The principle</h2>
+    <p>Almost every "got flagged" story comes from one of two failure modes: a signal you didn't know existed, or a clean signal followed by a sudden change. This playbook handles both — first by closing the unknowns before you go, then by spreading the transition across days instead of hours.</p>
+
+    <h3>T-7 days</h3>
+    <ul>
+      <li><strong>Pull a baseline IdP audit log.</strong> Open your identity provider's recent-activity page (Okta dashboard, Google account.activity, Microsoft 365 account.live.com). Screenshot the last 30 days of logins. This is your "looks normal from home" reference. You'll compare against it later.</li>
+      <li><strong>Lock device timezones to home.</strong> Laptop and phone. System Settings → Date &amp; Time → uncheck "Set automatically" → manually pin to your home zone. Single highest-leverage fix in this entire document.</li>
+      <li><strong>Test your IP layer.</strong> If you're using a travel router, plug it in at home, connect through it, and verify <code>whatismyip.com</code> resolves to your home ISP. Better to find a misconfiguration now than at a hotel.</li>
+      <li><strong>Notify your personal banks.</strong> Travel notice covering your dates and destination. Don't notify any employer-paid card.</li>
+    </ul>
+
+    <h3>T-2 days</h3>
+    <ul>
+      <li><strong>Run a full work day on your travel setup.</strong> From home, route through whatever you'll route through abroad. Slack, calendar, your IdP, any VPNs your company uses. If anything is flaky, you have 48 hours to fix instead of being stuck on hotel WiFi at midnight.</li>
+      <li><strong>Disable location-aware browser extensions.</strong> Honey, RetailMeNot, anything that auto-detects geography to localize prices. They cache location independent of your IP.</li>
+      <li><strong>Sign out of personal Apple ID / Google accounts on work devices</strong> — or move them to a non-syncing profile. iCloud Drive uploads geotagged photos. Google Photos auto-tags location. These can leak via shared albums and chat attachments.</li>
+      <li><strong>Audit timezone defaults in work apps.</strong> Slack profile, Google Calendar default, Jira preferences, Outlook. None should be set to your destination.</li>
+    </ul>
+
+    <h3>Morning of flight</h3>
+    <ul>
+      <li><strong>Final clean baseline.</strong> Pull the IdP recent-activity page one more time on your home WiFi. Screenshot. This is your "last login from home" timestamp.</li>
+      <li><strong>Carry the travel router in carry-on.</strong> Checked luggage delays are common. Day 1 with no IP layer is exactly the day you don't want to be unprotected.</li>
+      <li><strong>Don't post about flying.</strong> No "wheels up" Slack status. No public Instagram with the airport tag. No LinkedIn check-in. The fact that you flew is the highest-friction signal — once it's posted, you can't take it back.</li>
+    </ul>
+
+    <h3>In transit</h3>
+    <ul>
+      <li><strong>Don't connect work apps to airline WiFi.</strong> Airline captive portals reveal route metadata in HTTP headers and your egress IP belongs to a satellite block that geo-IPs to "moving aircraft" — which is a stranger artifact than a normal foreign IP.</li>
+      <li><strong>Phone in airplane mode + selective WiFi for personal stuff is fine.</strong> Just keep work mail, Slack, and calendar set to "do not sync on metered networks" until you're on your travel router at the destination.</li>
+    </ul>
+
+    <h3>First hour at destination</h3>
+    <ul>
+      <li><strong>Travel router first. Work apps second.</strong> Plug in, connect, verify <code>whatismyip.com</code> shows your home country. <em>Then</em> open work.</li>
+      <li><strong>Phone on the travel router too, before approving any MFA.</strong> If a push goes to a phone on the local cell network, the approval geolocates to the destination — and now you've got two foreign signals instead of zero.</li>
+      <li><strong>Open Slack first.</strong> Send a normal message. Read the thread. If anything renders strangely or your status flipped, you find out in 30 seconds, not 8 hours later.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>If your IP doesn't show home:</strong> close every work app immediately. Don't troubleshoot with Slack open. Every minute connected from a foreign IP is another row in your IdP's login history. Fix the IP first, then re-open.
+    </div>
+
+    <h3>Day 1</h3>
+    <ul>
+      <li><strong>Second IdP audit.</strong> Open the same recent-activity page you screenshot'd at T-7. The destination should not appear in the IP column. If it does, you have an active leak — disconnect, fix, and don't reconnect work apps until the next login is clean.</li>
+      <li><strong>Mirror your home routine, not the local one.</strong> 9am at home is your work-start, regardless of what time it is locally. Your laptop is locked to home time, your IdP knows you as a 9-5 home user, and your behavior should match.</li>
+      <li><strong>No Slack status changes. No "out today" notes. No new calendar declines.</strong> You are at your desk. Behave that way.</li>
+    </ul>
+
+    <h3>Day 3</h3>
+    <ul>
+      <li><strong>Third IdP audit.</strong> By now you have three days of activity to evaluate. If everything looks like home, you're stable — your routine is producing clean logs. The risk profile flattens out from here.</li>
+      <li><strong>For trips longer than two weeks:</strong> set a calendar reminder for the midpoint and another for 48h before return. Both are the same audit. Same screenshot. Same comparison.</li>
+    </ul>
+
+    <h2>What to do if you slip</h2>
+    <p>If at any point you notice a destination IP in your audit log, a timezone artifact in a calendar invite, or any other signal that should not be there: stop, close the affected app, fix the underlying issue, and don't keep working until the next login is clean. The worst outcome is a string of bad logins instead of one. Treat the first as a single anomaly; treat the next twenty as a pattern.</p>
+
+    <p>If you're flagged in real time, switch to the <strong>"If IT pings you" emergency playbook</strong> in the same email bundle as this guide.</p>
+
+    <div class="brief__cta">
+      <h2>The IP layer is the only step that's not optional.</h2>
+      <p>Every other item on this list closes a smaller leak. The IP layer is the one that decides whether your trip is invisible or not. HomeLink is a paired router kit that tunnels every device through your home internet — laptop, phone, tablet, all showing your home IP from anywhere.</p>
+      <a href="https://homelinkrouters.us">Start your 30-day free trial →</a>
+    </div>
+
+    <p class="brief__footer">Questions about your specific setup? Reply to your results email — Chris (the founder) reads every one and responds within 24h.</p>
+  </article>
+
+</body>
+</html>

@@ -15,6 +15,9 @@ Static frontend for the Remote Work Abroad Readiness Assessment at
 ├── diagnostic.js             Quiz state machine + drop-off event tracking
 ├── results.js                Results renderer + score-ring animation
 ├── briefs/                   15 destination-specific HTML briefs
+├── guides/                   Static companion playbooks shipped in the
+│                             email bundle (travel-day, return-trip-cleanup,
+│                             if-it-pings-you)
 └── scripts/
     └── gen-briefs.py         Templating helper that emits briefs/*.html
 ```
@@ -28,6 +31,7 @@ via the diagnostic vhost (`/etc/nginx/sites-available/diagnostic`). To push:
 scp index.html quiz.html results.html diagnostic.css diagnostic.js results.js \
     api:/var/www/diagnostic/
 scp briefs/*.html api:/var/www/diagnostic/briefs/
+scp guides/*.html api:/var/www/diagnostic/guides/
 ```
 
 No build step — pure static HTML/CSS/JS.
@@ -86,3 +90,21 @@ scp briefs/*.html api:/var/www/diagnostic/briefs/
 
 The first 5 briefs (portugal, spain, mexico, japan, thailand) were
 hand-written before the templater existed and don't go through it.
+
+## Email-bundle companion guides
+
+Three static playbooks in `guides/`, linked from the results email
+alongside the destination brief:
+
+- `travel-day.html` — T-7 days through day 3 abroad, hour-by-hour
+- `return-trip-cleanup.html` — six things to do around your return so
+  the trailing 30 days of audit logs look ordinary
+- `if-it-pings-you.html` — emergency playbook for the first 24 hours
+  after IT asks about your location, including a "step zero" check on
+  whether the alarm is even real (stale VPN, mis-routed travel router,
+  ISP geo-IP error, etc.)
+
+Same brand styling as briefs, `noindex` so they don't surface in search.
+The personalized risk-fix PDF (item 1 of the email-bundle promise on the
+landing page) is generated server-side per assessment — see
+`homelink-api/internal/handlers/diagnostic.go`.

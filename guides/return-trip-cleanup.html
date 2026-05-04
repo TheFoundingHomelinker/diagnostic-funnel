@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Return-Trip Cleanup Checklist — HomeLink</title>
+  <meta name="description" content="Six things to do before you fly home so nothing in your audit log looks out of place.">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/diagnostic.css">
+  <style>
+    .brief { max-width: 760px; margin: 0 auto; padding: 56px 24px 48px; }
+    .brief__eyebrow { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--blue); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+    .brief__h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 700; color: var(--navy); line-height: 1.18; letter-spacing: -0.02em; margin-bottom: 14px; }
+    .brief__lede { font-size: 1.05rem; color: var(--muted); line-height: 1.55; margin-bottom: 32px; max-width: 600px; }
+    .brief__quickfacts { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px 26px; margin-bottom: 36px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 28px; }
+    @media (max-width: 600px) { .brief__quickfacts { grid-template-columns: 1fr; } }
+    .qf__row { display: flex; flex-direction: column; }
+    .qf__label { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .qf__value { font-size: 0.96rem; color: #1a1a18; font-weight: 500; }
+    .brief h2 { font-size: 1.35rem; color: var(--navy); margin: 32px 0 14px; font-weight: 700; }
+    .brief h3 { font-size: 1.05rem; color: var(--navy); margin: 22px 0 10px; font-weight: 700; font-family: 'DM Mono', monospace; letter-spacing: 0.02em; }
+    .brief p { font-size: 1rem; color: #1a1a18; line-height: 1.65; margin-bottom: 14px; }
+    .brief ul { padding-left: 22px; margin-bottom: 18px; }
+    .brief ul li { margin-bottom: 8px; line-height: 1.6; }
+    .brief strong { color: var(--navy); }
+    .brief .callout { background: var(--card); border-left: 3px solid var(--blue); border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 18px 0; font-size: 0.95rem; line-height: 1.6; }
+    .brief__step { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px 26px; margin-bottom: 14px; }
+    .brief__step__num { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--blue); font-weight: 700; letter-spacing: 0.08em; margin-bottom: 6px; }
+    .brief__step h3 { margin: 0 0 8px; font-family: 'DM Sans', sans-serif; font-size: 1.1rem; }
+    .brief__step p { margin-bottom: 0; }
+    .brief__cta { background: var(--navy); color: #fff; border-radius: 14px; padding: 32px 30px; margin-top: 40px; text-align: center; }
+    .brief__cta h2 { color: #fff; margin: 0 0 10px; font-size: 1.3rem; }
+    .brief__cta p { color: rgba(255,255,255,0.78); max-width: 520px; margin: 0 auto 20px; }
+    .brief__cta a { display: inline-block; background: #fff; color: var(--navy); padding: 14px 28px; border-radius: 10px; font-weight: 700; text-decoration: none; font-size: 1rem; }
+    .brief__cta a:hover { background: var(--bg); }
+    .brief__footer { margin-top: 36px; text-align: center; font-size: 0.85rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+  <article class="brief">
+    <div class="brief__eyebrow">Companion guide</div>
+    <h1 class="brief__h1">The Return-Trip Cleanup Checklist</h1>
+    <p class="brief__lede">Coming home is the moment most remote workers stop paying attention — and it's exactly when the cleanest trip can leak. Six things to do in the 48 hours around your return so the trailing 30 days of audit logs look ordinary.</p>
+
+    <div class="brief__quickfacts">
+      <div class="qf__row"><div class="qf__label">Window</div><div class="qf__value">48h before flight → 48h after landing</div></div>
+      <div class="qf__row"><div class="qf__label">Total time required</div><div class="qf__value">~30 mins</div></div>
+      <div class="qf__row"><div class="qf__label">Hardest item</div><div class="qf__value">Item #5 — patience</div></div>
+      <div class="qf__row"><div class="qf__label">Skipping these</div><div class="qf__value">Where most slips actually happen</div></div>
+    </div>
+
+    <h2>Why the return matters</h2>
+    <p>The way most "got caught" stories actually unfold isn't real-time detection during the trip — it's a forensic look back, weeks or months later, triggered by something unrelated (HR review, a layoff, a benefits audit). Whoever pulls those logs is reading them with fresh eyes. A clean three weeks followed by sudden anomalies right around your return date is precisely the pattern they're trained to spot.</p>
+
+    <p>The fix isn't to scrub anything. The fix is to not <em>create</em> anything new that draws attention.</p>
+
+    <div class="brief__step">
+      <div class="brief__step__num">01</div>
+      <h3>Bleed back gradually — don't flip your IP overnight</h3>
+      <p>Keep your travel router routing through home for at least 24 hours after you're physically home. A sudden change in egress pattern (foreign IP all month → home IP at the exact hour your flight lands) is a more recognizable signal than steady foreign-IP traffic. Steady-state always looks more innocent than a sudden transition.</p>
+    </div>
+
+    <div class="brief__step">
+      <div class="brief__step__num">02</div>
+      <h3>Pull and save your full trip's IdP audit log</h3>
+      <p>Okta, Google Workspace, Microsoft 365 — all show 30 days of login history by default. Some scroll older entries off the visible window. Export or screenshot before the trip's first day rolls off. This is your evidence, for yourself, if anything ever surfaces months from now. Your only ledger.</p>
+    </div>
+
+    <div class="brief__step">
+      <div class="brief__step__num">03</div>
+      <h3>Don't immediately update location-aware app settings</h3>
+      <p>Don't change "home" in Apple Maps. Don't update Google Maps Timeline opt-in. Don't reactivate any location toggles you turned off. Don't update your phone carrier's billing address. Each of these creates an artifact dated to the day you returned. Wait at least two weeks before any settings touch.</p>
+    </div>
+
+    <div class="brief__step">
+      <div class="brief__step__num">04</div>
+      <h3>Don't post abroad photos to socials linked to your work email</h3>
+      <p>LinkedIn especially — recruiters and HR sometimes review profiles, and a sunset photo geotagged to Lisbon dated mid-week is the kind of thing that gets noticed retroactively. Wait two-to-four weeks at minimum, or post nothing publicly. Private group chats are fine; anything that's findable by name search is not.</p>
+    </div>
+
+    <div class="brief__step">
+      <div class="brief__step__num">05</div>
+      <h3>Resume work normally — not enthusiastically</h3>
+      <p>Don't suddenly send forty Slack messages on day one back as if you were "catching up." Don't schedule a flurry of meetings. Don't make a "I'm back!" announcement. Don't send a CEO-tier output day after a quiet stretch. The cleanest re-entry is the one nobody notices. Match your activity to the average of the past two weeks, not above it.</p>
+    </div>
+
+    <div class="brief__step">
+      <div class="brief__step__num">06</div>
+      <h3>One final IdP audit, 48 hours after you land</h3>
+      <p>Confirm the trailing 30 days look normal end-to-end. If something's off, address it now — not six months from now when an HR review surfaces it. Document for yourself what your employer can see. You're the only one keeping that ledger; this is the moment you do it while everything is still fresh.</p>
+    </div>
+
+    <div class="callout">
+      <strong>The one mistake people make most:</strong> the moment they're home, they un-do everything they did to prepare — turn the travel router off, switch timezones back to "automatic," resume location services, post the trip on socials. All of those at once is a louder signal than the trip itself was. Sequence them, days apart, over two weeks.
+    </div>
+
+    <h2>If something looks wrong in the audit</h2>
+    <p>Two cases. <strong>If it's a single foreign IP from a single day</strong>, that's almost always recoverable as ambiguous noise — you don't need to do anything about it unless asked. <strong>If it's a clear pattern</strong> (multiple foreign IPs across multiple days, MFA approvals geolocating abroad, calendar invites with destination timezones), now you have a story to think about — not a story to volunteer.</p>
+
+    <p>The "If IT pings you" emergency playbook in this same bundle covers exactly that scenario. Read it once now while it's not urgent.</p>
+
+    <div class="brief__cta">
+      <h2>Plan the next trip the day you get back.</h2>
+      <p>The thing about doing this once is that it gets easier. The IP layer is reusable across every trip you take after this one — set up once, plug in anywhere. HomeLink is built for that.</p>
+      <a href="https://homelinkrouters.us">See how HomeLink works →</a>
+    </div>
+
+    <p class="brief__footer">Questions about your specific setup? Reply to your results email — Chris (the founder) reads every one and responds within 24h.</p>
+  </article>
+
+</body>
+</html>

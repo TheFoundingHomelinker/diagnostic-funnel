@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>If IT Pings You: The Next 24 Hours — HomeLink</title>
+  <meta name="description" content="What to do (and not do) if your employer's IT asks where you are. Calm, practical, and starts with whether the alarm is even real.">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/diagnostic.css">
+  <style>
+    .brief { max-width: 760px; margin: 0 auto; padding: 56px 24px 48px; }
+    .brief__eyebrow { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--blue); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+    .brief__h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 700; color: var(--navy); line-height: 1.18; letter-spacing: -0.02em; margin-bottom: 14px; }
+    .brief__lede { font-size: 1.05rem; color: var(--muted); line-height: 1.55; margin-bottom: 32px; max-width: 600px; }
+    .brief__quickfacts { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px 26px; margin-bottom: 36px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 28px; }
+    @media (max-width: 600px) { .brief__quickfacts { grid-template-columns: 1fr; } }
+    .qf__row { display: flex; flex-direction: column; }
+    .qf__label { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .qf__value { font-size: 0.96rem; color: #1a1a18; font-weight: 500; }
+    .brief h2 { font-size: 1.35rem; color: var(--navy); margin: 32px 0 14px; font-weight: 700; }
+    .brief h3 { font-size: 1.05rem; color: var(--navy); margin: 22px 0 10px; font-weight: 700; }
+    .brief p { font-size: 1rem; color: #1a1a18; line-height: 1.65; margin-bottom: 14px; }
+    .brief ul { padding-left: 22px; margin-bottom: 18px; }
+    .brief ul li { margin-bottom: 8px; line-height: 1.6; }
+    .brief strong { color: var(--navy); }
+    .brief .callout { background: var(--card); border-left: 3px solid var(--blue); border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 18px 0; font-size: 0.95rem; line-height: 1.6; }
+    .brief .callout--rule { background: #fef9e7; border-left-color: #d97706; }
+    .brief table.signals { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 0.95rem; }
+    .brief table.signals th, .brief table.signals td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .brief table.signals th { background: var(--card); color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; }
+    .brief__cta { background: var(--navy); color: #fff; border-radius: 14px; padding: 32px 30px; margin-top: 40px; text-align: center; }
+    .brief__cta h2 { color: #fff; margin: 0 0 10px; font-size: 1.3rem; }
+    .brief__cta p { color: rgba(255,255,255,0.78); max-width: 520px; margin: 0 auto 20px; }
+    .brief__cta a { display: inline-block; background: #fff; color: var(--navy); padding: 14px 28px; border-radius: 10px; font-weight: 700; text-decoration: none; font-size: 1rem; }
+    .brief__cta a:hover { background: var(--bg); }
+    .brief__footer { margin-top: 36px; text-align: center; font-size: 0.85rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+  <article class="brief">
+    <div class="brief__eyebrow">Emergency playbook</div>
+    <h1 class="brief__h1">If IT pings you: the next 24 hours</h1>
+    <p class="brief__lede">You don't have hours to think. Read this once now, before you go. If it ever happens, come back and follow it line by line.</p>
+
+    <div class="brief__quickfacts">
+      <div class="qf__row"><div class="qf__label">When to read</div><div class="qf__value">Now, while it's not urgent</div></div>
+      <div class="qf__row"><div class="qf__label">When to use</div><div class="qf__value">First message from IT about your location</div></div>
+      <div class="qf__row"><div class="qf__label">First step</div><div class="qf__value">Check whether the alarm is even real</div></div>
+      <div class="qf__row"><div class="qf__label">If it escalates</div><div class="qf__value">Stop responding alone — see end</div></div>
+    </div>
+
+    <div class="callout callout--rule">
+      <strong>The single rule:</strong> do not lie in writing. Verbal answers fade. Slack messages, emails, and ticket comments get screenshotted, exported, and sit in legal hold forever. If something escalates later, a written false statement is what turns "policy violation" into "termination for cause." If you must respond in writing in the first hour, keep it to one of these:
+      <ul style="margin-top:10px;margin-bottom:0;">
+        <li>"Got your message — give me a bit, I'm in the middle of something. I'll come find you."</li>
+        <li>"Can we hop on a call instead of typing this out?"</li>
+      </ul>
+    </div>
+
+    <h2>Step zero: is the alarm even real?</h2>
+    <p>Before you do anything else, make sure this is what you think it is. Corporate geo-IP flags fire on people who are physically at home all the time. If any of these is you, the right answer to IT is the boring truth — not damage control:</p>
+    <ul>
+      <li><strong>You left a VPN on.</strong> Tailscale, Mullvad, NordVPN, ProtonVPN, a work-from-coffee-shop tunnel you never closed. If your traffic is still egressing through an exit node in another country, your laptop logs in from "Frankfurt" while you're sitting in your kitchen.</li>
+      <li><strong>Your travel router is still tunneling somewhere else.</strong> If you used it on a recent trip and it's still pointed at the old endpoint, every device in your house looks foreign until you re-point it. <em>HomeLink users:</em> open the app and check the active region — if it's not where you are, that's your answer.</li>
+      <li><strong>Your ISP rotated your IP into a weirdly-geolocated block.</strong> This happens constantly with cable and fiber providers. The MaxMind database is wrong about a non-trivial slice of US residential IPs on any given day.</li>
+      <li><strong>You're on a phone hotspot.</strong> Carrier NAT can put your traffic anywhere. T-Mobile in particular routes a lot of mobile data through egress points that geo-IP to the wrong state or country.</li>
+      <li><strong>Someone else on your home network is running a VPN.</strong> A roommate, a partner, a kid's gaming setup. If it's the household IP that flagged, it might not even be your traffic.</li>
+    </ul>
+    <p>If any of these is the real story: say so plainly. <em>"I had Mullvad on from yesterday, let me check"</em> is a one-line resolved ticket. You don't need this playbook for that.</p>
+    <p>The rest of this document is for the case where the alarm is real — you are, in fact, somewhere you haven't disclosed.</p>
+
+    <h2>The first 60 minutes</h2>
+    <ul>
+      <li><strong>Stop the bleeding.</strong> Close the laptop lid or disconnect from corporate VPN/SSO. Every minute it stays connected from the wrong egress is another log line. If you're mid-meeting, "my connection is dropping, let me dial back in" is a normal sentence everyone has said.</li>
+      <li><strong>Don't touch your router config.</strong> If something is already wrong, changing IPs <em>now</em> makes a clean log look like tampering. Leave it.</li>
+      <li><strong>Don't delete anything.</strong> Not browser history, not Slack messages, not files. Deletion in the window between "asked about it" and "responded to it" is the single worst signal you can send. Most companies log this.</li>
+      <li><strong>Write down what they actually asked.</strong> Word for word. The difference between <em>"are you in the office today"</em> and <em>"our logs show a foreign IP — can you explain"</em> is the entire conversation. You will respond very differently to each.</li>
+    </ul>
+
+    <h2>What they probably saw (and what they probably didn't)</h2>
+    <p>Most "are you abroad?" pings come from one of three signals, in order of how common they are:</p>
+    <table class="signals">
+      <thead>
+        <tr><th>What tipped them</th><th>What they actually know</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Geo-IP on a login</td><td>One IP, one timestamp. Not your full week.</td></tr>
+        <tr><td>Conditional access / MDM check-in</td><td>Device location at one moment. They don't have a continuous track.</td></tr>
+        <tr><td>Someone saw your timezone in a calendar invite or a Slack status</td><td>Anecdotal. No log behind it.</td></tr>
+      </tbody>
+    </table>
+    <p>What they almost never have on day one: a continuous location history, your personal phone's location, or proof of duration. They have a snapshot. Your response should match the size of what they actually have, not the size of what you're afraid they have.</p>
+
+    <h2>The conversation, when you have it</h2>
+    <p>Move it to voice. On the call:</p>
+    <ul>
+      <li><strong>Listen first.</strong> Let them say what they saw before you say anything. The shape of the question tells you whether this is a routine ping or an investigation.</li>
+      <li><strong>Don't volunteer.</strong> If they ask "were you in Lisbon yesterday," the answer is not a six-sentence travel itinerary. It's a short answer to the actual question.</li>
+      <li><strong>Don't improvise an explanation.</strong> "VPN was acting weird," "my partner was using my laptop," "I think my router rebooted to a different ISP" — these unravel fast under follow-up. If you need to say something and don't have a true clean answer, "let me look at it and come back to you" is always available.</li>
+      <li><strong>Ask what they need from you.</strong> Frame yourself as cooperative, not defensive. "What would you like me to do?" forces them to state the actual ask.</li>
+    </ul>
+
+    <h2>After the call</h2>
+    <p>Within an hour, write down (for yourself, not for them):</p>
+    <ul>
+      <li>Exact time and channel of the ping</li>
+      <li>Who asked</li>
+      <li>What they said they saw</li>
+      <li>What you said back</li>
+      <li>Any commitments you made ("I'll send X by Y")</li>
+    </ul>
+    <p>Keep this somewhere personal — not on a corporate device, not in corporate Drive. If this turns into anything later, your timeline is your single most useful asset.</p>
+
+    <h2>What not to do, ever</h2>
+    <ul>
+      <li>Don't post about it. Not in a private Slack to a coworker, not on Reddit, not to a friend on a corporate device.</li>
+      <li>Don't ask other remote-from-abroad coworkers for advice on corporate channels. You'll pull them into it.</li>
+      <li>Don't book a sudden flight home in a way that's visible (calendar, expense tool, OOO change). If you decide to come back, do it quietly over a normal weekend.</li>
+      <li>Don't fix everything at once. If they didn't mention your router, your MFA, or your timezone, fixing all three this week tells them you have something to fix.</li>
+    </ul>
+
+    <h2>If it escalates</h2>
+    <p>If a second message comes from HR, legal, or a manager's manager — stop responding alone. The cost of a 30-minute consult with an employment lawyer in your home jurisdiction is small relative to a termination-for-cause on your record. Most lawyers will do the first call free.</p>
+
+    <div class="callout">
+      <strong>One page. Bookmark it now.</strong> Save this page somewhere you can find without your work laptop — a personal email, a phone note, a printed copy in your travel wallet. The whole point is that when you actually need it, you don't want to be searching for it.
+    </div>
+
+    <div class="brief__cta">
+      <h2>The best version of this playbook is the one you never need.</h2>
+      <p>Most "got pinged" stories start with one preventable signal — usually the IP layer. HomeLink closes that one cleanly: every device routes through your home internet, every login looks like home.</p>
+      <a href="https://homelinkrouters.us">See how HomeLink works →</a>
+    </div>
+
+    <p class="brief__footer">Questions about your specific setup? Reply to your results email — Chris (the founder) reads every one and responds within 24h.</p>
+  </article>
+
+</body>
+</html>
