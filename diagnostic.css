@@ -250,6 +250,30 @@ button { font-family: inherit; }
   font-style: normal; color: var(--muted); font-size: 0.82rem;
 }
 
+/* ─── Testimonials (case studies from quiz-takers) ─── */
+.hl-testimonials {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;
+  margin-top: 28px;
+}
+@media (max-width: 760px) { .hl-testimonials { grid-template-columns: 1fr; } }
+.hl-testimonial {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 26px 28px;
+  display: flex; flex-direction: column;
+}
+.hl-testimonial__quote {
+  font-size: 0.98rem; line-height: 1.6; color: #1a1a18;
+  font-style: italic; margin: 0 0 18px;
+  flex: 1;
+}
+.hl-testimonial__attr {
+  font-style: normal; padding-top: 16px;
+  border-top: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 3px;
+}
+.hl-testimonial__attr strong { color: var(--navy); font-size: 0.95rem; }
+.hl-testimonial__attr span { color: var(--muted); font-size: 0.84rem; }
+
 /* ─── Bottom CTA ─── */
 .hl-bottom-cta { background: var(--navy); color: #fff; padding: 64px 24px; text-align: center; }
 .hl-bottom-cta h2 { color: #fff; margin-bottom: 14px; }

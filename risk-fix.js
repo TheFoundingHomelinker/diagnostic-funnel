@@ -273,8 +273,8 @@
 
     var html =
       '<header class="rf__header">' +
-        '<div class="rf__eyebrow">Personalized fix plan · HomeLink</div>' +
-        '<h1>Hey ' + escapeHtml(name) + ', here\'s your fix plan.</h1>' +
+        '<div class="rf__eyebrow">Your work-from-abroad blueprint · HomeLink</div>' +
+        '<h1>Hey ' + escapeHtml(name) + ', here\'s your blueprint.</h1>' +
         '<p class="rf__lede">' + escapeHtml(paragraphFor(band, exposures.length)) + '</p>' +
         locationLine +
       '</header>' +
@@ -318,7 +318,7 @@
   function renderError() {
     document.getElementById('rf-root').innerHTML =
       '<div class="rf__error">' +
-        '<h1>We couldn\'t load your fix plan.</h1>' +
+        '<h1>We couldn\'t load your blueprint.</h1>' +
         '<p>The link may have expired or is missing the token. Check your email for the latest results link, or <a href="/quiz">retake the assessment</a>.</p>' +
       '</div>';
   }
