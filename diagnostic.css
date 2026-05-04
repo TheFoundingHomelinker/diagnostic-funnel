@@ -1,0 +1,538 @@
+/* HomeLink — Remote Work Abroad Readiness Assessment
+   Brand tokens per marketing brief. Sentence case, DM Sans, navy primary. */
+
+:root {
+  --navy:   #0f2557;
+  --blue:   #1a6bff;
+  --hover:  #0050e6;
+  --green:  #10b981;
+  --amber:  #f59e0b;
+  --red:    #ef4444;
+  --bg:     #f7f7f5;
+  --card:   #ffffff;
+  --border: #e5e5e0;
+  --muted:  #6b6b66;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: #1a1a18;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.mono { font-family: 'DM Mono', ui-monospace, Menlo, monospace; }
+
+a { color: var(--blue); text-decoration: none; }
+a:hover { color: var(--hover); }
+
+button { font-family: inherit; }
+
+/* ─── Nav ─── */
+.hl-nav {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--navy);
+  padding: 0 24px;
+}
+.hl-nav-inner {
+  max-width: 1100px; margin: 0 auto; height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.hl-nav img { height: 32px; display: block; }
+.hl-nav .hl-cta {
+  background: #fff; color: var(--navy);
+  padding: 9px 20px; border-radius: 8px;
+  font-size: 0.9rem; font-weight: 600; text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+.hl-nav .hl-cta:hover { background: var(--bg); }
+
+/* ─── Containers ─── */
+.hl-container { max-width: 920px; margin: 0 auto; padding: 0 24px; }
+.hl-container--narrow { max-width: 720px; }
+
+/* ─── Buttons ─── */
+.hl-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  background: var(--blue); color: #fff;
+  padding: 16px 32px; border: none; border-radius: 10px;
+  font-size: 1.05rem; font-weight: 600; cursor: pointer;
+  text-decoration: none; transition: background 0.15s, transform 0.15s;
+  min-height: 48px;
+}
+.hl-btn:hover { background: var(--hover); color: #fff; }
+.hl-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.hl-btn--ghost {
+  background: transparent; color: var(--navy);
+  border: 1.5px solid var(--navy);
+}
+.hl-btn--ghost:hover { background: var(--navy); color: #fff; }
+
+/* ─── Risk reducers (the ✓ chips under primary CTAs) ─── */
+.hl-fud {
+  display: flex; gap: 18px; flex-wrap: wrap;
+  justify-content: center; margin-top: 14px;
+}
+.hl-fud span { font-size: 0.88rem; color: var(--muted); }
+
+/* ─── Hero ─── */
+.hl-hero { padding: 80px 24px 48px; text-align: center; }
+.hl-hero h1 {
+  font-size: clamp(1.9rem, 4.5vw, 2.6rem);
+  font-weight: 700; line-height: 1.18; color: var(--navy);
+  letter-spacing: -0.02em; margin-bottom: 18px;
+  max-width: 720px; margin-left: auto; margin-right: auto;
+}
+.hl-hero p.sub {
+  font-size: 1.1rem; color: var(--muted); line-height: 1.6;
+  max-width: 580px; margin: 0 auto 28px;
+}
+
+/* ─── Hero (video background variant) ─── */
+.hl-hero--video {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 96px 24px;
+  overflow: hidden;
+  color: #fff;
+  background: var(--navy); /* fallback while video loads */
+}
+.hl-hero__video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+  background: var(--navy);
+}
+.hl-hero__overlay {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(180deg,
+    rgba(15, 37, 87, 0.55) 0%,
+    rgba(15, 37, 87, 0.78) 100%);
+}
+.hl-hero__content {
+  position: relative; z-index: 2;
+  text-align: center; max-width: 760px; margin: 0 auto;
+}
+.hl-hero--video h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+.hl-hero--video p.sub {
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 8px rgba(0,0,0,0.3);
+}
+.hl-hero--video .hl-btn {
+  background: #fff;
+  color: var(--navy);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+}
+.hl-hero--video .hl-btn:hover {
+  background: var(--bg);
+  color: var(--navy);
+}
+.hl-hero--video .hl-fud span {
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+
+/* Respect reduced-motion: hide video, poster shows via the video element's poster
+   attribute (browsers render it as the still background). */
+@media (prefers-reduced-motion: reduce) {
+  .hl-hero__video { display: none; }
+  .hl-hero--video {
+    background-image: url('https://homelink-static.nyc3.cdn.digitaloceanspaces.com/assets/hero-poster.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+}
+
+/* On small screens, drop the autoplay video to save battery + bandwidth.
+   Poster image stays as the background via the same fallback. */
+@media (max-width: 600px) {
+  .hl-hero__video { display: none; }
+  .hl-hero--video {
+    background-image: url('https://homelink-static.nyc3.cdn.digitaloceanspaces.com/assets/hero-poster.jpg');
+    background-size: cover;
+    background-position: center;
+    min-height: 88vh;
+    min-height: 88svh;
+  }
+}
+
+/* ─── Sections ─── */
+.hl-section { padding: 56px 24px; }
+.hl-section--alt { background: var(--card); border-block: 1px solid var(--border); }
+
+.hl-section h2 {
+  font-size: clamp(1.4rem, 3vw, 1.75rem); font-weight: 700;
+  color: var(--navy); margin-bottom: 16px;
+  letter-spacing: -0.02em; text-align: center;
+}
+
+/* ─── Value prop grid (3 items) ─── */
+.hl-vp-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+  margin-top: 28px;
+}
+@media (max-width: 760px) { .hl-vp-grid { grid-template-columns: 1fr; } }
+.hl-vp {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 24px;
+}
+.hl-vp__num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.85rem; color: var(--blue); font-weight: 700;
+  margin-bottom: 8px;
+}
+.hl-vp p { color: #1a1a18; line-height: 1.55; }
+
+/* ─── Cred block ─── */
+.hl-cred {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+  align-items: start;
+}
+@media (max-width: 760px) { .hl-cred { grid-template-columns: 1fr; } }
+.hl-cred__bio { font-size: 0.98rem; line-height: 1.6; color: #1a1a18; }
+.hl-cred__bio strong { color: var(--navy); }
+.hl-cred__photo {
+  width: 110px; height: 110px; border-radius: 50%;
+  object-fit: cover; display: block; margin: 0 0 16px;
+  border: 3px solid var(--bg);
+  box-shadow: 0 2px 12px rgba(15,37,87,0.12);
+}
+.hl-cred__stat {
+  background: var(--bg); border-left: 3px solid var(--blue);
+  border-radius: 0 10px 10px 0; padding: 18px 22px;
+  font-size: 0.96rem; line-height: 1.55; color: #1a1a18;
+}
+.hl-cred__quote {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 22px; margin-top: 18px;
+  font-style: italic; color: #1a1a18; font-size: 0.96rem; line-height: 1.55;
+}
+.hl-cred__attr {
+  display: block; margin-top: 10px;
+  font-style: normal; color: var(--muted); font-size: 0.82rem;
+}
+
+/* ─── Bottom CTA ─── */
+.hl-bottom-cta { background: var(--navy); color: #fff; padding: 64px 24px; text-align: center; }
+.hl-bottom-cta h2 { color: #fff; margin-bottom: 14px; }
+.hl-bottom-cta p { color: rgba(255,255,255,0.78); max-width: 540px; margin: 0 auto 24px; }
+.hl-bottom-cta .hl-btn { background: #fff; color: var(--navy); }
+.hl-bottom-cta .hl-btn:hover { background: var(--bg); color: var(--navy); }
+.hl-bottom-cta .hl-fud span { color: rgba(255,255,255,0.55); }
+
+/* ─── Footer ─── */
+.hl-footer { padding: 32px 24px; text-align: center; border-top: 1px solid var(--border); }
+.hl-footer p { color: var(--muted); font-size: 0.82rem; }
+
+/* ─── Quiz: NELP form + question screens ─── */
+.hl-quiz { padding: 48px 24px 80px; }
+.hl-quiz__progress {
+  max-width: 720px; margin: 0 auto 28px;
+  display: flex; gap: 4px;
+}
+.hl-quiz__progress .bar {
+  flex: 1; height: 4px; border-radius: 4px;
+  background: var(--border); transition: background 0.25s;
+}
+.hl-quiz__progress .bar.filled { background: var(--blue); }
+.hl-quiz__progress .bar.current { background: var(--navy); }
+
+.hl-quiz__step { max-width: 640px; margin: 0 auto; display: none; }
+.hl-quiz__step.active { display: block; }
+.hl-quiz__step h2 {
+  font-size: 1.4rem; color: var(--navy); margin-bottom: 18px;
+  font-weight: 700; line-height: 1.35; text-align: left;
+}
+.hl-quiz__step .qmeta {
+  font-size: 0.78rem; font-weight: 700; color: var(--blue);
+  text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px;
+}
+
+/* Blurred score preview at the top of the gate — shows there IS a real
+   result behind the email ask. Score number is visually blurred; band
+   label is shown in clear text colored by the band, anchoring users on
+   the worst-case interpretation if they're high-risk. */
+.hl-gate-preview {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px 26px 18px;
+  margin-bottom: 22px;
+  text-align: center;
+  position: relative;
+}
+.hl-gate-preview__inner {
+  display: inline-flex; align-items: baseline; gap: 8px;
+  margin-bottom: 10px;
+}
+.hl-gate-preview__label {
+  display: block; width: 100%;
+  font-size: 0.85rem; font-weight: 700; letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--muted);
+  margin-bottom: 6px;
+}
+.hl-gate-preview__score {
+  font-family: 'DM Mono', ui-monospace, monospace;
+  font-size: 3.4rem; font-weight: 700; line-height: 1;
+  color: var(--navy);
+  filter: blur(11px);
+  user-select: none;
+  letter-spacing: -0.02em;
+}
+.hl-gate-preview__suffix {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem; color: var(--muted); font-weight: 500;
+}
+.hl-gate-preview__band {
+  display: inline-block; margin-top: 4px;
+  font-size: 0.92rem; font-weight: 700;
+  padding: 5px 14px; border-radius: 999px;
+  background: rgba(0,0,0,0.04);
+  color: var(--muted);
+}
+.hl-gate-preview--high  .hl-gate-preview__band { background: #fef2f2; color: var(--red); }
+.hl-gate-preview--moderate .hl-gate-preview__band { background: #fffbeb; color: #92400e; }
+.hl-gate-preview--low   .hl-gate-preview__band { background: #ecfdf5; color: #047857; }
+.hl-gate-preview__note {
+  margin: 10px 0 0;
+  font-size: 0.85rem; color: var(--muted); line-height: 1.45;
+}
+
+/* Final-gate intro + promise block */
+.hl-gate-intro {
+  font-size: 1rem; color: var(--muted); line-height: 1.6;
+  margin: 0 0 22px;
+}
+.hl-gate-promise {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--blue);
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin-bottom: 26px;
+}
+.hl-gate-promise__title {
+  font-size: 0.9rem; font-weight: 700; color: var(--navy);
+  margin: 0 0 10px;
+}
+.hl-gate-promise ul {
+  list-style: none; padding: 0; margin: 0;
+}
+.hl-gate-promise li {
+  position: relative;
+  padding: 4px 0 4px 22px;
+  font-size: 0.94rem; color: #1a1a18; line-height: 1.55;
+}
+.hl-gate-promise li::before {
+  content: '✓';
+  position: absolute; left: 0; top: 4px;
+  color: var(--green); font-weight: 700;
+}
+
+/* NELP form fields */
+.hl-form-row { margin-bottom: 14px; }
+.hl-form-row label {
+  display: block; font-size: 0.86rem; font-weight: 600;
+  color: var(--navy); margin-bottom: 6px;
+}
+.hl-form-row .req { color: var(--red); margin-left: 4px; }
+.hl-form-row input,
+.hl-form-row textarea {
+  width: 100%; padding: 12px 14px;
+  background: var(--card); border: 1.5px solid var(--border); border-radius: 8px;
+  font-family: inherit; font-size: 1rem; color: #1a1a18;
+  transition: border-color 0.15s;
+  min-height: 44px;
+}
+.hl-form-row input:focus,
+.hl-form-row textarea:focus { outline: none; border-color: var(--blue); }
+.hl-form-row .hint { font-size: 0.82rem; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+
+/* Question option buttons */
+.hl-options { display: flex; flex-direction: column; gap: 10px; }
+.hl-option {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: 12px; padding: 14px 18px;
+  font-family: inherit; font-size: 0.98rem; color: #1a1a18;
+  text-align: left; cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  min-height: 56px;
+}
+.hl-option:hover { border-color: var(--blue); background: rgba(26,107,255,0.04); }
+.hl-option.selected { border-color: var(--blue); background: rgba(26,107,255,0.08); box-shadow: 0 0 0 1px var(--blue); }
+.hl-option__check {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 1.5px solid var(--border); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: #fff;
+}
+.hl-option.selected .hl-option__check {
+  border-color: var(--blue); background: var(--blue);
+}
+.hl-option.selected .hl-option__check::after {
+  content: ''; width: 8px; height: 8px; border-radius: 50%; background: #fff;
+}
+/* Multi-select uses square checkbox */
+.hl-options[data-multi="true"] .hl-option__check { border-radius: 4px; }
+.hl-options[data-multi="true"] .hl-option.selected .hl-option__check::after { border-radius: 0; }
+
+.hl-quiz__nav {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 26px;
+}
+.hl-quiz__back {
+  background: none; border: none; color: var(--muted);
+  font-size: 0.92rem; font-weight: 600; cursor: pointer; padding: 10px 0;
+}
+.hl-quiz__back:hover { color: var(--navy); }
+.hl-quiz__next { padding: 12px 28px; min-height: 44px; font-size: 0.98rem; }
+
+/* Submit-state spinner */
+.hl-spinner {
+  display: inline-block; width: 16px; height: 16px;
+  border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff;
+  border-radius: 50%; animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─── Results ─── */
+.hl-results { padding: 56px 24px; }
+.hl-results__big { text-align: center; max-width: 720px; margin: 0 auto 56px; }
+
+/* Score ring — circular SVG progress with score number centered inside.
+   pathLength="100" on the circle lets us treat dasharray/dashoffset as
+   percentage-friendly numbers regardless of radius. */
+.hl-ring-wrap {
+  position: relative;
+  width: 280px;
+  max-width: 80vw;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto 8px;
+}
+.hl-ring {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.hl-ring__inner {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  pointer-events: none;
+}
+.hl-ring__num {
+  font-family: 'DM Mono', ui-monospace, monospace;
+  font-size: clamp(3rem, 12vw, 4.5rem);
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.hl-ring__denom {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* Band-driven ring color */
+.hl-ring--high  #score-ring { stroke: var(--red); }
+.hl-ring--mod   #score-ring { stroke: var(--amber); }
+.hl-ring--low   #score-ring { stroke: var(--green); }
+
+.hl-results__label {
+  margin-top: 14px; font-size: 1.1rem; color: #1a1a18; line-height: 1.5;
+  max-width: 520px; margin-left: auto; margin-right: auto;
+}
+
+/* Insight cards */
+.hl-insights {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+  max-width: 1000px; margin: 0 auto 56px;
+}
+@media (max-width: 860px) { .hl-insights { grid-template-columns: 1fr; } }
+.hl-insight {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 22px;
+}
+.hl-insight__icon { font-size: 1.4rem; margin-bottom: 8px; }
+.hl-insight h3 {
+  font-size: 1rem; font-weight: 700; color: var(--navy);
+  line-height: 1.35; margin-bottom: 8px;
+}
+.hl-insight p { font-size: 0.92rem; color: #1a1a18; line-height: 1.55; }
+
+/* Risk breakdown table */
+.hl-risk-table {
+  max-width: 1000px; margin: 0 auto 56px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; overflow: hidden;
+}
+.hl-risk-table table { width: 100%; border-collapse: collapse; }
+.hl-risk-table thead th {
+  text-align: left; padding: 14px 18px;
+  background: var(--bg); border-bottom: 1px solid var(--border);
+  font-size: 0.86rem; font-weight: 700; color: var(--navy);
+}
+.hl-risk-table tbody td {
+  padding: 14px 18px; border-bottom: 1px solid var(--border);
+  vertical-align: top; font-size: 0.92rem; line-height: 1.5;
+}
+.hl-risk-table tbody tr:last-child td { border-bottom: none; }
+.hl-risk-table .risk-pill {
+  display: inline-block; font-size: 0.78rem; font-weight: 700;
+  padding: 4px 10px; border-radius: 999px;
+}
+.hl-risk-table .risk-pill.high   { background: #fef2f2; color: var(--red); }
+.hl-risk-table .risk-pill.medium { background: #fffbeb; color: var(--amber); }
+.hl-risk-table .risk-pill.low    { background: #ecfdf5; color: var(--green); }
+
+@media (max-width: 720px) {
+  .hl-risk-table thead { display: none; }
+  .hl-risk-table tbody tr { display: block; padding: 14px 18px; border-bottom: 1px solid var(--border); }
+  .hl-risk-table tbody td { display: block; padding: 6px 0; border: none; }
+  .hl-risk-table tbody td::before {
+    content: attr(data-label) ":"; font-weight: 700; color: var(--muted);
+    font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em;
+    display: block; margin-bottom: 2px;
+  }
+}
+
+/* Next steps */
+.hl-next {
+  max-width: 720px; margin: 0 auto 56px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 28px 32px;
+}
+.hl-next h2 {
+  font-size: 1.3rem; color: var(--navy); margin-bottom: 18px;
+  text-align: left; font-weight: 700;
+}
+.hl-next ol { padding-left: 24px; margin-bottom: 24px; }
+.hl-next ol li { margin-bottom: 10px; line-height: 1.55; color: #1a1a18; font-size: 0.96rem; }
+.hl-next .hl-btn { width: 100%; max-width: 360px; }
+.hl-next .hl-fud { justify-content: flex-start; }
+
+/* Contact block */
+.hl-contact {
+  max-width: 720px; margin: 0 auto;
+  background: var(--navy); color: #fff;
+  border-radius: 14px; padding: 28px 32px; text-align: center;
+}
+.hl-contact p { font-size: 1rem; line-height: 1.55; margin-bottom: 8px; }
+.hl-contact a { color: #fff; font-weight: 600; text-decoration: underline; }

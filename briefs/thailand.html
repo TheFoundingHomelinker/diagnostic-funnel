@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Working remotely from Thailand — HomeLink destination brief</title>
+  <meta name="description" content="A 2-page risk brief for remote workers heading to Thailand. What your IT actually sees, common gotchas, and what to handle before you go.">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/diagnostic.css">
+  <style>
+    .brief { max-width: 760px; margin: 0 auto; padding: 56px 24px 48px; }
+    .brief__eyebrow { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--blue); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+    .brief__h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 700; color: var(--navy); line-height: 1.18; letter-spacing: -0.02em; margin-bottom: 14px; }
+    .brief__lede { font-size: 1.05rem; color: var(--muted); line-height: 1.55; margin-bottom: 32px; max-width: 600px; }
+    .brief__quickfacts { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px 26px; margin-bottom: 36px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 28px; }
+    @media (max-width: 600px) { .brief__quickfacts { grid-template-columns: 1fr; } }
+    .qf__row { display: flex; flex-direction: column; }
+    .qf__label { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .qf__value { font-size: 0.96rem; color: #1a1a18; font-weight: 500; }
+    .brief h2 { font-size: 1.35rem; color: var(--navy); margin: 32px 0 14px; font-weight: 700; }
+    .brief p { font-size: 1rem; color: #1a1a18; line-height: 1.65; margin-bottom: 14px; }
+    .brief ul { padding-left: 22px; margin-bottom: 18px; }
+    .brief ul li { margin-bottom: 8px; line-height: 1.6; }
+    .brief strong { color: var(--navy); }
+    .brief .callout { background: var(--card); border-left: 3px solid var(--blue); border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 18px 0; font-size: 0.95rem; line-height: 1.6; }
+    .brief .actions { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; margin-top: 32px; }
+    .brief .actions h2 { margin-top: 0; }
+    .brief .actions ol { padding-left: 22px; margin: 0; }
+    .brief .actions ol li { margin-bottom: 12px; line-height: 1.55; }
+    .brief__cta { background: var(--navy); color: #fff; border-radius: 14px; padding: 32px 30px; margin-top: 40px; text-align: center; }
+    .brief__cta h2 { color: #fff; margin: 0 0 10px; font-size: 1.3rem; }
+    .brief__cta p { color: rgba(255,255,255,0.78); max-width: 520px; margin: 0 auto 20px; }
+    .brief__cta a { display: inline-block; background: #fff; color: var(--navy); padding: 14px 28px; border-radius: 10px; font-weight: 700; text-decoration: none; font-size: 1rem; }
+    .brief__cta a:hover { background: var(--bg); }
+    .brief__footer { margin-top: 36px; text-align: center; font-size: 0.85rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+  <article class="brief">
+    <div class="brief__eyebrow">Destination brief</div>
+    <h1 class="brief__h1">Working remotely from Thailand</h1>
+    <p class="brief__lede">Thailand is the iconic digital nomad destination — cheap living, strong fiber in the major cities, and a scene of long-term remote workers. The IT-side story is the usual one, with a few Thailand-specific wrinkles.</p>
+
+    <div class="brief__quickfacts">
+      <div class="qf__row"><div class="qf__label">Timezone</div><div class="qf__value">ICT (UTC+7) — no DST</div></div>
+      <div class="qf__row"><div class="qf__label">US business-hour overlap</div><div class="qf__value">Hard — flip schedule</div></div>
+      <div class="qf__row"><div class="qf__label">Common ISPs</div><div class="qf__value">AIS Fibre, True, 3BB, NT</div></div>
+      <div class="qf__row"><div class="qf__label">Banking risk</div><div class="qf__value">Moderate — fraud teams flag SE Asia</div></div>
+      <div class="qf__row"><div class="qf__label">Network restrictions</div><div class="qf__value">Light — some sites blocked, no DPI on consumer</div></div>
+      <div class="qf__row"><div class="qf__label">HomeLink-friendly</div><div class="qf__value">Yes — fast fiber in Bangkok / Chiang Mai / islands</div></div>
+    </div>
+
+    <h2>What your IT actually sees from Thailand</h2>
+    <ul>
+      <li><strong>IP geolocation.</strong> Thai consumer IPs (especially AIS Fibre and True) resolve to "Thailand" in MaxMind / IP2Location. M365 and Google Workspace flag the country on first login. Some corporate security tools flag Thailand as a "high-fraud" or "watched" country and trigger STRONGER alerts than for European logins — even an automatic block.</li>
+      <li><strong>MFA push from Thai SIM.</strong> AIS, True, dtac SIMs all geolocate the push approval to Thailand. Two foreign-Thailand signals = obvious story.</li>
+      <li><strong>Working-hour mismatch.</strong> Thailand is 11–14 hours ahead of the US. Activity timestamps will cluster at unusual US times. Pattern is observable in any reporting dashboard your manager pulls.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Thailand-specific gotcha:</strong> some US corporate security tools flag Thailand more aggressively than Europe — possibly auto-locking accounts on first login. Test from a mobile hotspot the moment you land, before doing anything else, so you spot a lock before it cascades.
+    </div>
+
+    <h2>Working hours overlap</h2>
+    <p>Thailand is 11 hours ahead of US Eastern, 14 ahead of US Pacific. There's no business-hour overlap unless someone shifts:</p>
+    <ul>
+      <li><strong>East Coast (typical 9-5 ET):</strong> 9am ET = 8pm Bangkok. Most US-business meetings happen during your evening (6pm-1am Bangkok).</li>
+      <li><strong>West Coast:</strong> 9am PT = 11pm Bangkok. Brutal — late-night Zooms.</li>
+      <li><strong>The nomad rhythm:</strong> most Thailand-based remote workers do real-time meetings 8pm-midnight, then async work in the day. Mornings are free for the beach / temple / gym, evenings for work. Lots of cafés in Chiang Mai and Bangkok stay open late and have great wifi.</li>
+    </ul>
+
+    <h2>Banking & streaming gotchas</h2>
+    <p><strong>Banking:</strong> Thailand is in the moderate-fraud-risk band for most US banks. Travel notices are MANDATORY — without one, expect at least one card freeze in the first 2 weeks. Capital One, Schwab, and Charles Schwab debit are the most reliable for ATM withdrawals (no foreign transaction fees, reimburses ATM fees). Avoid Wise's debit in Thailand — works but spotty acceptance.</p>
+    <p><strong>Streaming:</strong> Netflix swaps to TH library (English UI, mostly Asian content). Hulu blocks. ESPN+ blocked. HBO Max works. Apple TV+ works. If your IP shows home, US libraries stay intact.</p>
+    <p><strong>WhatsApp / Line:</strong> Line is the dominant messaging app in Thailand — install it for any local logistics (delivery, taxis, Airbnb hosts). WhatsApp is secondary.</p>
+
+    <h2>The "Thailand-specific" things most people miss</h2>
+    <ul>
+      <li><strong>Some US sites are unreachable.</strong> Thailand blocks specific gambling and adult sites at the ISP level. This rarely affects work but you might notice. Not DPI — just DNS/IP blocks.</li>
+      <li><strong>The "tourist visa runs."</strong> If you're on a tourist visa and crossing borders to renew, your IP location will briefly flip to Laos / Cambodia / Malaysia. Worth scheduling around important meetings.</li>
+      <li><strong>Internet quality is excellent in cities, sketchy on islands.</strong> Bangkok, Chiang Mai, Phuket town: 1Gbps fiber for $15/mo. Koh Phangan, Koh Tao, smaller islands: highly variable. Always test at the rental.</li>
+      <li><strong>Power.</strong> Thailand has reliable city power but rural / island areas have brownouts. A small UPS for your home router is worth the bag space if you're somewhere off the main grid.</li>
+      <li><strong>Tax concerns.</strong> Thailand introduced new tax rules for foreigners in 2024 around foreign-sourced income. If you stay 180+ days, you become a tax resident. This is a YOU concern, not an employer concern.</li>
+    </ul>
+
+    <div class="actions">
+      <h2>Action plan before you fly</h2>
+      <ol>
+        <li><strong>Lock your device timezone</strong> to your home time zone. ICT is unmistakable in metadata.</li>
+        <li><strong>Travel-notice your banks</strong> well in advance — Thailand is in the higher-friction tier for US fraud detection.</li>
+        <li><strong>Pull your IdP login history NOW</strong> so you have a clean baseline to compare against.</li>
+        <li><strong>Test the IP layer</strong> — some corporate tools auto-lock on first Thailand login. If you don't have your IP showing home, you might land and find yourself locked out before you can do anything about it.</li>
+        <li><strong>Buy a Thai SIM at the airport</strong> for backup connectivity — AIS, True, and dtac all sell tourist SIMs cheaply. Useful when fiber drops or for tethering when you travel between cities.</li>
+      </ol>
+    </div>
+
+    <div class="brief__cta">
+      <h2>Make sure your IP shows home before you go.</h2>
+      <p>HomeLink is a paired router kit that tunnels every device through your home internet — your laptop, phone, and tablet all show your home IP from anywhere. No apps to forget. Plug in and go.</p>
+      <a href="https://homelinkrouters.us">Start your 30-day free trial →</a>
+    </div>
+
+    <p class="brief__footer">Questions about your specific setup? Reply to your results email — Chris (the founder) reads every one and responds within 24h.</p>
+  </article>
+
+</body>
+</html>

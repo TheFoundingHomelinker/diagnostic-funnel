@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Working remotely from Japan — HomeLink destination brief</title>
+  <meta name="description" content="A 2-page risk brief for remote workers heading to Japan. What your IT actually sees, common gotchas, and what to handle before you go.">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/diagnostic.css">
+  <style>
+    .brief { max-width: 760px; margin: 0 auto; padding: 56px 24px 48px; }
+    .brief__eyebrow { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--blue); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+    .brief__h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 700; color: var(--navy); line-height: 1.18; letter-spacing: -0.02em; margin-bottom: 14px; }
+    .brief__lede { font-size: 1.05rem; color: var(--muted); line-height: 1.55; margin-bottom: 32px; max-width: 600px; }
+    .brief__quickfacts { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px 26px; margin-bottom: 36px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 28px; }
+    @media (max-width: 600px) { .brief__quickfacts { grid-template-columns: 1fr; } }
+    .qf__row { display: flex; flex-direction: column; }
+    .qf__label { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .qf__value { font-size: 0.96rem; color: #1a1a18; font-weight: 500; }
+    .brief h2 { font-size: 1.35rem; color: var(--navy); margin: 32px 0 14px; font-weight: 700; }
+    .brief p { font-size: 1rem; color: #1a1a18; line-height: 1.65; margin-bottom: 14px; }
+    .brief ul { padding-left: 22px; margin-bottom: 18px; }
+    .brief ul li { margin-bottom: 8px; line-height: 1.6; }
+    .brief strong { color: var(--navy); }
+    .brief .callout { background: var(--card); border-left: 3px solid var(--blue); border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 18px 0; font-size: 0.95rem; line-height: 1.6; }
+    .brief .actions { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; margin-top: 32px; }
+    .brief .actions h2 { margin-top: 0; }
+    .brief .actions ol { padding-left: 22px; margin: 0; }
+    .brief .actions ol li { margin-bottom: 12px; line-height: 1.55; }
+    .brief__cta { background: var(--navy); color: #fff; border-radius: 14px; padding: 32px 30px; margin-top: 40px; text-align: center; }
+    .brief__cta h2 { color: #fff; margin: 0 0 10px; font-size: 1.3rem; }
+    .brief__cta p { color: rgba(255,255,255,0.78); max-width: 520px; margin: 0 auto 20px; }
+    .brief__cta a { display: inline-block; background: #fff; color: var(--navy); padding: 14px 28px; border-radius: 10px; font-weight: 700; text-decoration: none; font-size: 1rem; }
+    .brief__cta a:hover { background: var(--bg); }
+    .brief__footer { margin-top: 36px; text-align: center; font-size: 0.85rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+  <article class="brief">
+    <div class="brief__eyebrow">Destination brief</div>
+    <h1 class="brief__h1">Working remotely from Japan</h1>
+    <p class="brief__lede">Japan has world-class infrastructure and zero internet restrictions. The challenge is the time zone — 13–17 hours ahead of the US. Your IT will see the IP and the timezone metadata; what they don't see is up to you.</p>
+
+    <div class="brief__quickfacts">
+      <div class="qf__row"><div class="qf__label">Timezone</div><div class="qf__value">JST (UTC+9) — no DST</div></div>
+      <div class="qf__row"><div class="qf__label">US business-hour overlap</div><div class="qf__value">Hard — flip schedule or work nights</div></div>
+      <div class="qf__row"><div class="qf__label">Common ISPs</div><div class="qf__value">NTT, KDDI au, SoftBank, J:COM</div></div>
+      <div class="qf__row"><div class="qf__label">Banking risk</div><div class="qf__value">Low — banks recognize Japan as low-fraud</div></div>
+      <div class="qf__row"><div class="qf__label">Network restrictions</div><div class="qf__value">None — open internet</div></div>
+      <div class="qf__row"><div class="qf__label">HomeLink-friendly</div><div class="qf__value">Yes — fiber is everywhere, fast and stable</div></div>
+    </div>
+
+    <h2>What your IT actually sees from Japan</h2>
+    <ul>
+      <li><strong>IP geolocation.</strong> Japanese consumer IPs (especially NTT FLET'S fiber) resolve to "Japan" with extremely high confidence. M365 + Google Workspace flag it on first login. Okta, Duo, and any conditional-access policy with country rules will trigger on the very first authentication attempt.</li>
+      <li><strong>MFA push location.</strong> A Japanese SIM (Docomo, au, SoftBank) or local WiFi gives the push approval the same Japan stamp. Two foreign signals, both Japan, on the same login event = obvious story.</li>
+      <li><strong>Working-hour mismatch.</strong> This is the biggest Japan-specific tell. Even if you handle the IP and timezone metadata, your activity timestamps in Slack/Jira/email will cluster at unusual US times. A pattern of "always responds at 11pm ET" over weeks is observable in any analytics dashboard your manager pulls. The cleanest cover: have a story for why you're working evening hours.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Japan-specific gotcha:</strong> Japan does not observe daylight saving time, but the US does. Your apparent timezone offset relative to colleagues will SHIFT TWICE A YEAR even though you didn't move. Anyone watching the offset closely will notice the changeover dates.
+    </div>
+
+    <h2>Working hours overlap</h2>
+    <p>Japan is 13–17 hours ahead of the US. There's no clean overlap during normal business hours either way:</p>
+    <ul>
+      <li><strong>Best case (Eastern):</strong> 9pm Japan = 8am ET. Your "morning standup" is your evening. Doable if you're a night-owl or live solo.</li>
+      <li><strong>West Coast:</strong> midnight Japan = 9am PT. Genuinely brutal — you're up until sunrise to make a meeting.</li>
+      <li><strong>Strategy:</strong> Most people who do Japan well front-load: do all real-time meetings in the evening Japan time (8pm-midnight), then async heads-down work the rest of the day.</li>
+    </ul>
+
+    <h2>Banking & streaming gotchas</h2>
+    <p><strong>Banking:</strong> Japanese ATMs only accept cards with international PIN routing — not all US debit cards work. Use 7-Eleven ATMs (Japan Post Bank network) — they're the most reliable. Cash culture is strong; carry more yen than you would dollars in most US cities.</p>
+    <p><strong>Cards:</strong> US bank fraud algorithms generally treat Japan as "low-fraud" and won't auto-block. Set a travel notice anyway. Capital One, Schwab, and Charles are friction-free.</p>
+    <p><strong>Streaming:</strong> Netflix swaps to JP library (a treasure trove of anime if you're into it; English UI stays). Hulu blocks. ESPN+ blocked. Apple TV+ works. Most others block. If your IP shows home, your US libraries stay intact.</p>
+    <p><strong>Phone:</strong> US phones work on Japanese SIMs but are often locked. Mobal, Sakura Mobile, and IIJmio are good prepaid options — passport scan required.</p>
+
+    <h2>The "Japan-specific" things most people miss</h2>
+    <ul>
+      <li><strong>Japanese fiber is the fastest in the world.</strong> 1 Gbps symmetric is standard. Latency to US East = ~150ms (mostly fixed by physics, not by ISP); to US West = ~80ms. Video calls work fine but feel slightly delayed.</li>
+      <li><strong>Co-working spaces require ID + introduction.</strong> Most spaces in Tokyo expect an introduction or membership. Drop-in spaces exist but are pricier than European equivalents. Most apartments have great fiber — work from there.</li>
+      <li><strong>Earthquake auto-alerts.</strong> Your phone will receive Japanese government emergency alerts — they're loud and unmissable. Not relevant for IT but worth knowing if you're on a Zoom call.</li>
+      <li><strong>Tatemae and IT.</strong> Japanese culture has strong norms around appearing professional. If your camera shows a tatami room or sliding doors during a call, plan to address it (virtual background, neutral wall) — these are obvious "you're in Japan" tells.</li>
+    </ul>
+
+    <div class="actions">
+      <h2>Action plan before you fly</h2>
+      <ol>
+        <li><strong>Lock your device timezone</strong> to your home time zone before you go. JST will be obvious in any timestamp metadata.</li>
+        <li><strong>Plan your meeting calendar</strong> ahead — have a one-pager you share with managers covering "I'll be available these hours, async otherwise." This addresses the timezone story preemptively.</li>
+        <li><strong>Travel-notice your banks</strong> and have a backup card. Japanese ATM acceptance is narrower than you'd think.</li>
+        <li><strong>Test your IP layer</strong> — Japan IP geolocation is unmistakable. The IP fix is the only thing that prevents instant detection on first login.</li>
+        <li><strong>Camera background.</strong> Pick a virtual background or a neutral wall before your first Zoom from Japan. The room behind you is the most obvious tell after the IP.</li>
+      </ol>
+    </div>
+
+    <div class="brief__cta">
+      <h2>Make sure your IP shows home before you go.</h2>
+      <p>HomeLink is a paired router kit that tunnels every device through your home internet — your laptop, phone, and tablet all show your home IP from anywhere. No apps to forget. Plug in and go.</p>
+      <a href="https://homelinkrouters.us">Start your 30-day free trial →</a>
+    </div>
+
+    <p class="brief__footer">Questions about your specific setup? Reply to your results email — Chris (the founder) reads every one and responds within 24h.</p>
+  </article>
+
+</body>
+</html>

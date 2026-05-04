@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Working remotely from Costa Rica — HomeLink destination brief</title>
+  <meta name="description" content="A 2-page risk brief for remote workers heading to Costa Rica. What your IT actually sees, common gotchas, and what to handle before you go.">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/diagnostic.css">
+  <style>
+    .brief { max-width: 760px; margin: 0 auto; padding: 56px 24px 48px; }
+    .brief__eyebrow { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--blue); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+    .brief__h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 700; color: var(--navy); line-height: 1.18; letter-spacing: -0.02em; margin-bottom: 14px; }
+    .brief__lede { font-size: 1.05rem; color: var(--muted); line-height: 1.55; margin-bottom: 32px; max-width: 600px; }
+    .brief__quickfacts { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px 26px; margin-bottom: 36px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 28px; }
+    @media (max-width: 600px) { .brief__quickfacts { grid-template-columns: 1fr; } }
+    .qf__row { display: flex; flex-direction: column; }
+    .qf__label { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .qf__value { font-size: 0.96rem; color: #1a1a18; font-weight: 500; }
+    .brief h2 { font-size: 1.35rem; color: var(--navy); margin: 32px 0 14px; font-weight: 700; }
+    .brief p { font-size: 1rem; color: #1a1a18; line-height: 1.65; margin-bottom: 14px; }
+    .brief ul { padding-left: 22px; margin-bottom: 18px; }
+    .brief ul li { margin-bottom: 8px; line-height: 1.6; }
+    .brief strong { color: var(--navy); }
+    .brief .callout { background: var(--card); border-left: 3px solid var(--blue); border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 18px 0; font-size: 0.95rem; line-height: 1.6; }
+    .brief .actions { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; margin-top: 32px; }
+    .brief .actions h2 { margin-top: 0; }
+    .brief .actions ol { padding-left: 22px; margin: 0; }
+    .brief .actions ol li { margin-bottom: 12px; line-height: 1.55; }
+    .brief__cta { background: var(--navy); color: #fff; border-radius: 14px; padding: 32px 30px; margin-top: 40px; text-align: center; }
+    .brief__cta h2 { color: #fff; margin: 0 0 10px; font-size: 1.3rem; }
+    .brief__cta p { color: rgba(255,255,255,0.78); max-width: 520px; margin: 0 auto 20px; }
+    .brief__cta a { display: inline-block; background: #fff; color: var(--navy); padding: 14px 28px; border-radius: 10px; font-weight: 700; text-decoration: none; font-size: 1rem; }
+    .brief__cta a:hover { background: var(--bg); }
+    .brief__footer { margin-top: 36px; text-align: center; font-size: 0.85rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+  <article class="brief">
+    <div class="brief__eyebrow">Destination brief</div>
+    <h1 class="brief__h1">Working remotely from Costa Rica</h1>
+    <p class="brief__lede">Costa Rica's been the LatAm nomad darling for a decade — Pura Vida visa, US-friendly time zones, beaches you can work from. Here's what your IT actually sees and what to handle before you go.</p>
+
+    <div class="brief__quickfacts">
+      <div class="qf__row"><div class="qf__label">Timezone</div><div class="qf__value">CST (UTC−6) — no DST</div></div>
+      <div class="qf__row"><div class="qf__label">US business-hour overlap</div><div class="qf__value">Excellent — same as US Central year-round</div></div>
+      <div class="qf__row"><div class="qf__label">Common ISPs</div><div class="qf__value">Kölbi (ICE), Tigo, Liberty (Cabletica)</div></div>
+      <div class="qf__row"><div class="qf__label">Banking risk</div><div class="qf__value">Low — US banks handle it cleanly</div></div>
+      <div class="qf__row"><div class="qf__label">Network restrictions</div><div class="qf__value">None — fully open</div></div>
+      <div class="qf__row"><div class="qf__label">HomeLink-friendly</div><div class="qf__value">Yes — fiber in main areas, no DPI</div></div>
+    </div>
+
+    <h2>What your IT actually sees from Costa Rica</h2>
+    <ul>
+      <li><strong>IP geolocation.</strong> Kölbi and Tigo IPs resolve to "Costa Rica" with high confidence in MaxMind / IP2Location. M365 and Google Workspace flag the country on first login. Okta logs city + ASN per session.</li>
+      <li><strong>MFA push location.</strong> A push approved from a phone on Kölbi or Liberty mobile = a second Costa Rica signal. Two foreign signals on the same login event are very hard to pass off.</li>
+      <li><strong>Calendar timezone.</strong> Costa Rica is on Central time (UTC−6) year-round — but doesn't observe DST. Half the year you match US Central exactly; the other half you're an hour off. Anyone watching offsets across the DST changeover dates can spot the shift.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Costa Rica-specific gotcha:</strong> the no-DST behavior means your apparent offset to US colleagues SHIFTS twice a year even though you didn't move. The November shift is the one most likely to be noticed in calendar systems.
+    </div>
+
+    <h2>Working hours overlap</h2>
+    <p>Costa Rica is on US Central (UTC−6) but skips daylight saving. So:</p>
+    <ul>
+      <li><strong>Central Time people:</strong> identical match Nov–Mar. Mar–Nov, you're an hour behind your US Central colleagues.</li>
+      <li><strong>East Coast people:</strong> 9am ET = 8am San José (Nov–Mar) or 7am (Mar–Nov). Easy either way.</li>
+      <li><strong>West Coast people:</strong> 9am PT = 11am San José (Nov–Mar) or 10am (Mar–Nov). Comfortable.</li>
+    </ul>
+
+    <h2>Banking & streaming gotchas</h2>
+    <p><strong>Banking:</strong> US banks treat Costa Rica as low-fraud — set a travel notice anyway. ATM fees vary; BAC San José and Banco Nacional ATMs are common. Most accept US Visa/MC; Discover less so.</p>
+    <p><strong>Streaming:</strong> Netflix swaps to CR library. Hulu blocks. ESPN+ blocked. Apple TV+ works. HBO Max works. If your IP shows home, US libraries stay intact.</p>
+    <p><strong>Phone:</strong> Most US plans include limited Costa Rica usage but charge per-MB after a few hours. Cheaper to grab a Kölbi prepaid SIM ($5-10).</p>
+
+    <h2>The "Costa Rica-specific" things most people miss</h2>
+    <ul>
+      <li><strong>Internet outside cities is unreliable.</strong> San José, Santa Teresa, Tamarindo, Manuel Antonio: solid fiber. Remote Pacific or Caribbean coast: mobile-only often. Always test before booking.</li>
+      <li><strong>Dry season vs rainy season power.</strong> The grid is reliable in dry season (Dec–Apr); rainier months bring brief outages especially in mountain/jungle areas. UPS for your home router is worth it.</li>
+      <li><strong>Tax residency triggers at 183 days.</strong> Short stays (under 6 months) are clean — no Costa Rican tax obligations from working remotely.</li>
+      <li><strong>The Pura Vida visa</strong> is for long-term stays. Visa status doesn't affect what your US employer's IT sees — those are independent systems.</li>
+    </ul>
+
+    <div class="actions">
+      <h2>Action plan before you fly</h2>
+      <ol>
+        <li><strong>Lock your device timezone</strong> to your home time zone. CST + no-DST means timestamps will mismatch your US calendar mid-year.</li>
+        <li><strong>Travel-notice your bank(s)</strong> covering arrival and departure.</li>
+        <li><strong>Test the rental's internet</strong> before committing — fiber speeds in CR can be misleading on listings.</li>
+        <li><strong>Handle the IP layer</strong> — Costa Rica IPs are unmistakable. The IP fix is what flips you from "clearly abroad" to "looks like home."</li>
+        <li><strong>Have a Kölbi SIM as backup.</strong> Mobile data is solid even where fiber isn't.</li>
+      </ol>
+    </div>
+
+    <div class="brief__cta">
+      <h2>Make sure your IP shows home before you go.</h2>
+      <p>HomeLink is a paired router kit that tunnels every device through your home internet — your laptop, phone, and tablet all show your home IP from anywhere. No apps to forget. Plug in and go.</p>
+      <a href="https://homelinkrouters.us">Start your 30-day free trial →</a>
+    </div>
+
+    <p class="brief__footer">Questions about your specific setup? Reply to your results email — Chris (the founder) reads every one and responds within 24h.</p>
+  </article>
+
+</body>
+</html>

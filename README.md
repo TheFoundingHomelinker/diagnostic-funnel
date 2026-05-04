@@ -1,0 +1,88 @@
+# diagnostic-funnel
+
+Static frontend for the Remote Work Abroad Readiness Assessment at
+**diagnostic.homelinkrouters.us**. Backend lives in `homelink-api`
+(`internal/handlers/diagnostic.go`).
+
+## Layout
+
+```
+.
+├── index.html                Landing page (hero video + value prop + CTAs)
+├── quiz.html                 Single-page 15-question quiz + email gate
+├── results.html              Score ring + dynamic insight cards + risk table
+├── diagnostic.css            Shared brand tokens + page-specific styles
+├── diagnostic.js             Quiz state machine + drop-off event tracking
+├── results.js                Results renderer + score-ring animation
+├── briefs/                   15 destination-specific HTML briefs
+└── scripts/
+    └── gen-briefs.py         Templating helper that emits briefs/*.html
+```
+
+## Deploy
+
+The site is served from `/var/www/diagnostic/` on the api server (138.197.110.14)
+via the diagnostic vhost (`/etc/nginx/sites-available/diagnostic`). To push:
+
+```bash
+scp index.html quiz.html results.html diagnostic.css diagnostic.js results.js \
+    api:/var/www/diagnostic/
+scp briefs/*.html api:/var/www/diagnostic/briefs/
+```
+
+No build step — pure static HTML/CSS/JS.
+
+## Funnel architecture
+
+1. **Landing page** (`/`) — hero video, value-prop block, founder cred,
+   bottom CTA. Click → `/quiz`.
+2. **Quiz** (`/quiz`) — 15 questions render in JS one screen at a time.
+   Auto-advance on single-select; manual Next on multi-select / textarea.
+   Final step is the email gate with blurred score preview.
+3. **Submit** — POSTs to `/api/diagnostic/submit`. Server computes score
+   authoritatively, persists, fires async results email, returns
+   `{token, score, band}`.
+4. **Results** (`/results?t=<token>`) — fetches the persisted assessment
+   from `/api/diagnostic/results`, renders the animated score ring, three
+   band-specific insight cards, a row-filtered risk-breakdown table, and
+   score-band-specific next-steps CTA.
+
+## Drop-off tracking
+
+The quiz fires events to `/api/diagnostic/event` to identify exact abandon
+points:
+
+| Event | Step | When |
+|---|---|---|
+| `question_view` | 1–15 | Each time a question screen renders |
+| `gate_view` | 16 | NELP gate appears after Q15 |
+| `submit_click` | 16 | User hits "See my results" |
+| `abandon` | last seen | `pagehide` / `visibilitychange:hidden` (sendBeacon) |
+
+Per-tab `session_id` ties events together. No PII captured. See
+`diagnostic_quiz_events` table.
+
+## Destination briefs
+
+15 country/region-specific 2-page risk briefs:
+
+```
+portugal · spain · mexico · japan · thailand
+costa-rica · colombia · argentina · vietnam · indonesia
+united-kingdom · italy · france · germany · greece
+```
+
+Conditional delivery — when a quiz-taker enters a recognized destination
+in the optional "Where are you headed?" field, the results email includes
+a link to the corresponding brief. Matching keywords + display-name map
+live in `homelink-api/internal/handlers/diagnostic.go`.
+
+To add or revise briefs, edit `scripts/gen-briefs.py` and rerun:
+
+```bash
+python3 scripts/gen-briefs.py
+scp briefs/*.html api:/var/www/diagnostic/briefs/
+```
+
+The first 5 briefs (portugal, spain, mexico, japan, thailand) were
+hand-written before the templater existed and don't go through it.

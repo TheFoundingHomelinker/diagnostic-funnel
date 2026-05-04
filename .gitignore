@@ -1,0 +1,11 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# Local hero video sources (we ship encoded copies via DO Spaces, not via this repo)
+hero.mp4
+hero-poster.jpg
+*.MOV
+*.mov

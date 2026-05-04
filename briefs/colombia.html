@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Working remotely from Colombia — HomeLink destination brief</title>
+  <meta name="description" content="A 2-page risk brief for remote workers heading to Colombia. What your IT actually sees, common gotchas, and what to handle before you go.">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/diagnostic.css">
+  <style>
+    .brief { max-width: 760px; margin: 0 auto; padding: 56px 24px 48px; }
+    .brief__eyebrow { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--blue); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+    .brief__h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 700; color: var(--navy); line-height: 1.18; letter-spacing: -0.02em; margin-bottom: 14px; }
+    .brief__lede { font-size: 1.05rem; color: var(--muted); line-height: 1.55; margin-bottom: 32px; max-width: 600px; }
+    .brief__quickfacts { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px 26px; margin-bottom: 36px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 28px; }
+    @media (max-width: 600px) { .brief__quickfacts { grid-template-columns: 1fr; } }
+    .qf__row { display: flex; flex-direction: column; }
+    .qf__label { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .qf__value { font-size: 0.96rem; color: #1a1a18; font-weight: 500; }
+    .brief h2 { font-size: 1.35rem; color: var(--navy); margin: 32px 0 14px; font-weight: 700; }
+    .brief p { font-size: 1rem; color: #1a1a18; line-height: 1.65; margin-bottom: 14px; }
+    .brief ul { padding-left: 22px; margin-bottom: 18px; }
+    .brief ul li { margin-bottom: 8px; line-height: 1.6; }
+    .brief strong { color: var(--navy); }
+    .brief .callout { background: var(--card); border-left: 3px solid var(--blue); border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 18px 0; font-size: 0.95rem; line-height: 1.6; }
+    .brief .actions { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; margin-top: 32px; }
+    .brief .actions h2 { margin-top: 0; }
+    .brief .actions ol { padding-left: 22px; margin: 0; }
+    .brief .actions ol li { margin-bottom: 12px; line-height: 1.55; }
+    .brief__cta { background: var(--navy); color: #fff; border-radius: 14px; padding: 32px 30px; margin-top: 40px; text-align: center; }
+    .brief__cta h2 { color: #fff; margin: 0 0 10px; font-size: 1.3rem; }
+    .brief__cta p { color: rgba(255,255,255,0.78); max-width: 520px; margin: 0 auto 20px; }
+    .brief__cta a { display: inline-block; background: #fff; color: var(--navy); padding: 14px 28px; border-radius: 10px; font-weight: 700; text-decoration: none; font-size: 1rem; }
+    .brief__cta a:hover { background: var(--bg); }
+    .brief__footer { margin-top: 36px; text-align: center; font-size: 0.85rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+  <article class="brief">
+    <div class="brief__eyebrow">Destination brief</div>
+    <h1 class="brief__h1">Working remotely from Colombia</h1>
+    <p class="brief__lede">Medellín is the Latin American nomad capital. Affordable, US-time-friendly, fast fiber in the city, and a massive expat scene. Here's what your IT sees from Colombia and what to handle.</p>
+
+    <div class="brief__quickfacts">
+      <div class="qf__row"><div class="qf__label">Timezone</div><div class="qf__value">COT (UTC−5) — no DST</div></div>
+      <div class="qf__row"><div class="qf__label">US business-hour overlap</div><div class="qf__value">Excellent — same as US Eastern most of year</div></div>
+      <div class="qf__row"><div class="qf__label">Common ISPs</div><div class="qf__value">Claro, Movistar, Tigo, ETB, EPM</div></div>
+      <div class="qf__row"><div class="qf__label">Banking risk</div><div class="qf__value">Moderate — fraud teams flag SA</div></div>
+      <div class="qf__row"><div class="qf__label">Network restrictions</div><div class="qf__value">None on consumer ISPs</div></div>
+      <div class="qf__row"><div class="qf__label">HomeLink-friendly</div><div class="qf__value">Yes — solid fiber in Medellín / Bogotá / Cartagena</div></div>
+    </div>
+
+    <h2>What your IT actually sees from Colombia</h2>
+    <ul>
+      <li><strong>IP geolocation.</strong> Claro and EPM (the dominant Medellín ISP) resolve to "Colombia" cleanly in MaxMind / IP2Location. M365 + Google Workspace flag city + country on first login.</li>
+      <li><strong>MFA push location.</strong> Push approved from a Claro / Movistar SIM also pings Colombia. Two foreign signals on the same login event are obvious.</li>
+      <li><strong>Working-hour mismatch is minimal here.</strong> Colombia is COT (UTC−5), same as US Eastern most of the year (Colombia doesn't observe DST). So if you're East Coast US, your timestamps look normal — leaving the IP as the main tell.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Colombia-specific gotcha:</strong> some US corporate security tools rate Colombian IPs as "high-fraud" by default and trigger stricter alerts than for European logins. Test from a mobile hotspot the day you arrive — spot a possible auto-lock before it cascades.
+    </div>
+
+    <h2>Working hours overlap</h2>
+    <p>Colombia = COT (UTC−5). No DST. So:</p>
+    <ul>
+      <li><strong>East Coast people (winter):</strong> identical to NYC. 9am ET = 9am Medellín. Perfect match.</li>
+      <li><strong>East Coast people (summer):</strong> Colombia is 1 hour BEHIND NYC (since US is on EDT, Colombia stays on COT). 9am EDT = 8am Medellín. Still very workable.</li>
+      <li><strong>West Coast people:</strong> 9am PT = 11am or 12pm Medellín depending on DST. Comfortable.</li>
+    </ul>
+
+    <h2>Banking & streaming gotchas</h2>
+    <p><strong>Banking:</strong> Colombia is in the higher-friction tier for US bank fraud detection. Travel notice MANDATORY. Capital One and Schwab handle it well. Davivienda and Bancolombia ATMs are reliable for cash.</p>
+    <p><strong>Streaming:</strong> Netflix swaps to CO library. Hulu blocks. ESPN+ blocked. HBO Max works. Apple TV+ works. With your IP showing home, US libraries persist.</p>
+    <p><strong>Cards:</strong> Cash is common but most Medellín establishments accept cards. Smaller pueblos = cash-only.</p>
+
+    <h2>The "Colombia-specific" things most people miss</h2>
+    <ul>
+      <li><strong>Medellín vs Bogotá vs Cartagena.</strong> Medellín has the strongest expat infrastructure (El Poblado, Laureles). Bogotá is corporate/business-trip friendly. Cartagena is touristy but slower internet.</li>
+      <li><strong>Internet quality is bimodal.</strong> El Poblado fiber is among the fastest in LatAm. Outside major neighborhoods = unreliable.</li>
+      <li><strong>Power.</strong> Reliable in cities, occasional brownouts in coastal regions.</li>
+      <li><strong>Tax residency triggers at 183 days</strong> in any 365-day window. Short stays = clean.</li>
+      <li><strong>The Colombia digital nomad visa</strong> exists but is a personal-government concern; doesn't affect what your US employer sees.</li>
+    </ul>
+
+    <div class="actions">
+      <h2>Action plan before you fly</h2>
+      <ol>
+        <li><strong>Lock your device timezone</strong> to your home time zone before you go.</li>
+        <li><strong>Travel-notice your bank(s)</strong> — Colombia is higher-friction than Europe for US fraud alerts.</li>
+        <li><strong>Pull your IdP login history NOW</strong> so you can spot the first Colombian login when it appears.</li>
+        <li><strong>Handle the IP layer</strong> — Colombian IPs look unmistakably South American to commercial geo databases.</li>
+        <li><strong>Get a Claro or Tigo SIM</strong> at a corner OXXO for backup — under $10 for a month.</li>
+      </ol>
+    </div>
+
+    <div class="brief__cta">
+      <h2>Make sure your IP shows home before you go.</h2>
+      <p>HomeLink is a paired router kit that tunnels every device through your home internet — your laptop, phone, and tablet all show your home IP from anywhere. No apps to forget. Plug in and go.</p>
+      <a href="https://homelinkrouters.us">Start your 30-day free trial →</a>
+    </div>
+
+    <p class="brief__footer">Questions about your specific setup? Reply to your results email — Chris (the founder) reads every one and responds within 24h.</p>
+  </article>
+
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Working remotely from Mexico — HomeLink destination brief</title>
+  <meta name="description" content="A 2-page risk brief for remote workers heading to Mexico. What your IT actually sees, common gotchas, and what to handle before you go.">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/diagnostic.css">
+  <style>
+    .brief { max-width: 760px; margin: 0 auto; padding: 56px 24px 48px; }
+    .brief__eyebrow { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--blue); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+    .brief__h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 700; color: var(--navy); line-height: 1.18; letter-spacing: -0.02em; margin-bottom: 14px; }
+    .brief__lede { font-size: 1.05rem; color: var(--muted); line-height: 1.55; margin-bottom: 32px; max-width: 600px; }
+    .brief__quickfacts { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px 26px; margin-bottom: 36px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 28px; }
+    @media (max-width: 600px) { .brief__quickfacts { grid-template-columns: 1fr; } }
+    .qf__row { display: flex; flex-direction: column; }
+    .qf__label { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .qf__value { font-size: 0.96rem; color: #1a1a18; font-weight: 500; }
+    .brief h2 { font-size: 1.35rem; color: var(--navy); margin: 32px 0 14px; font-weight: 700; }
+    .brief p { font-size: 1rem; color: #1a1a18; line-height: 1.65; margin-bottom: 14px; }
+    .brief ul { padding-left: 22px; margin-bottom: 18px; }
+    .brief ul li { margin-bottom: 8px; line-height: 1.6; }
+    .brief strong { color: var(--navy); }
+    .brief .callout { background: var(--card); border-left: 3px solid var(--blue); border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 18px 0; font-size: 0.95rem; line-height: 1.6; }
+    .brief .actions { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; margin-top: 32px; }
+    .brief .actions h2 { margin-top: 0; }
+    .brief .actions ol { padding-left: 22px; margin: 0; }
+    .brief .actions ol li { margin-bottom: 12px; line-height: 1.55; }
+    .brief__cta { background: var(--navy); color: #fff; border-radius: 14px; padding: 32px 30px; margin-top: 40px; text-align: center; }
+    .brief__cta h2 { color: #fff; margin: 0 0 10px; font-size: 1.3rem; }
+    .brief__cta p { color: rgba(255,255,255,0.78); max-width: 520px; margin: 0 auto 20px; }
+    .brief__cta a { display: inline-block; background: #fff; color: var(--navy); padding: 14px 28px; border-radius: 10px; font-weight: 700; text-decoration: none; font-size: 1rem; }
+    .brief__cta a:hover { background: var(--bg); }
+    .brief__footer { margin-top: 36px; text-align: center; font-size: 0.85rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+  <article class="brief">
+    <div class="brief__eyebrow">Destination brief</div>
+    <h1 class="brief__h1">Working remotely from Mexico</h1>
+    <p class="brief__lede">Mexico is the most "almost-home" remote-work destination — same time zones as half the US, modern fiber in the major cities, and culturally easy. Easy doesn't mean invisible. Here's what your IT can see and what to handle.</p>
+
+    <div class="brief__quickfacts">
+      <div class="qf__row"><div class="qf__label">Timezone</div><div class="qf__value">Most of country = Central (UTC−6) · Tijuana = Pacific · Cancún = Eastern</div></div>
+      <div class="qf__row"><div class="qf__label">US business-hour overlap</div><div class="qf__value">Excellent — same business hours</div></div>
+      <div class="qf__row"><div class="qf__label">Common ISPs</div><div class="qf__value">Telmex / Infinitum, Izzi, Totalplay, Megacable</div></div>
+      <div class="qf__row"><div class="qf__label">Banking risk</div><div class="qf__value">Low — US banks treat it as near-domestic</div></div>
+      <div class="qf__row"><div class="qf__label">Network restrictions</div><div class="qf__value">None — open internet</div></div>
+      <div class="qf__row"><div class="qf__label">HomeLink-friendly</div><div class="qf__value">Yes — fast fiber, no DPI</div></div>
+    </div>
+
+    <h2>What your IT actually sees from Mexico</h2>
+    <p>Mexico is unique because it has the SAME business hours as the US but a different IP geolocation. That's the whole problem — IT can't blame "she's working weird hours" because you're not. The mismatch is purely the IP location.</p>
+    <ul>
+      <li><strong>IP geolocation.</strong> Mexican consumer IPs (especially Telmex / Infinitum) resolve to "Mexico" with high confidence in MaxMind / IP2Location. M365 and Google Workspace flag it on first login. Okta logs city + ASN. Nothing about being a Spanish-speaking country makes the geolocation any less precise — it's tied to the IP block, not the language of the page.</li>
+      <li><strong>MFA push location.</strong> A push approved from a phone on Telcel or AT&T MX adds a second Mexico signal. Two foreign signals on the same login are very hard to wave off.</li>
+      <li><strong>Calendar / Slack timezone.</strong> Most of Mexico is on Central time (same as Chicago) — so if you're a Central-time employee, this is actually a non-issue. If you're East Coast or Pacific, the timezone gap shows up in metadata even if your working hours look normal.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>The Mexico-specific gotcha:</strong> because the country spans 3 US time zones, your timezone autoswitch might land on the wrong US-equivalent. Lock it to your home timezone explicitly. Don't let the OS guess.
+    </div>
+
+    <h2>Working hours overlap</h2>
+    <p>Best in class. Most of Mexico = US Central time. So:</p>
+    <ul>
+      <li><strong>East Coast people:</strong> Mexico Central = your -1. 9am ET = 8am Mexico City. Easy.</li>
+      <li><strong>Central Time people:</strong> identical. No adjustment needed.</li>
+      <li><strong>West Coast people:</strong> 9am PT = 11am Mexico City. Slight late start, totally manageable.</li>
+      <li><strong>Cancún and Quintana Roo</strong> are on Eastern time (UTC−5) — same as NYC year-round. Convenient if you're East Coast.</li>
+    </ul>
+
+    <h2>Banking & streaming gotchas</h2>
+    <p><strong>Banking:</strong> US banks generally treat Mexico as "domestic-adjacent" — fewer fraud blocks than for European travel. Set a travel notice anyway. Watch out for: dynamic currency conversion at point-of-sale (always pay in pesos, not USD); ATM fees from non-network banks ($3-5 per withdrawal). Capital One 360 is the cleanest option for fee-free Mexico ATM use.</p>
+    <p><strong>Streaming:</strong> Netflix swaps to MX library (different content but Spanish + English available). Hulu blocks. ESPN+ blocked. HBO Max works. Apple TV+ works. If your IP shows home, all of these keep their US libraries.</p>
+    <p><strong>Phone:</strong> Most US plans (T-Mobile, Verizon, AT&T) include Mexico in domestic coverage with no roaming charges — uncommon convenience.</p>
+
+    <h2>The "Mexico-specific" things most people miss</h2>
+    <ul>
+      <li><strong>Internet quality is bimodal.</strong> Fiber in Mexico City, Guadalajara, Monterrey, Playa del Carmen, Tulum, and tourist Yucatan = often faster than US suburban broadband. Outside major cities = unreliable. Check Airbnb/rental WiFi specs before booking — "WiFi" alone means nothing.</li>
+      <li><strong>Power outages</strong> ("apagones") are common in summer in Yucatan and southern coastal areas. A travel router with a small UPS is worth it for long trips.</li>
+      <li><strong>The "border buffer" myth.</strong> Some people assume IPs in Tijuana or Mexico City "look the same as US" — they don't. Mexican IP allocations are clearly geolocated to Mexico in every commercial geo database.</li>
+      <li><strong>RFC / SAT</strong> requirements only kick in if you're staying long enough to be a tax resident (180+ days). Short stays don't trigger anything Mexican-government-side that would feed back to your employer.</li>
+    </ul>
+
+    <div class="actions">
+      <h2>Action plan before you fly</h2>
+      <ol>
+        <li><strong>Lock your device timezone</strong> to your home time zone in System Settings. The auto-switch will pick up Mexican local time which may not match your US-business equivalent.</li>
+        <li><strong>Travel-notice your bank(s)</strong> — Mexico-friendly but still worth doing.</li>
+        <li><strong>Test your internet</strong> at the rental BEFORE you book if possible. "Fiber" in Mexico = great. "WiFi" with no specs = gamble.</li>
+        <li><strong>Handle the IP layer</strong> — this is the actual fix. Without your IP showing home, you're trusting that nobody on your IT team ever runs the "where did this user log in from" report.</li>
+        <li><strong>Set up a backup hotspot.</strong> Mexico's residential power is more variable than the US — a Telcel or AT&T MX SIM is cheap and saves you when fiber drops.</li>
+      </ol>
+    </div>
+
+    <div class="brief__cta">
+      <h2>Make sure your IP shows home before you go.</h2>
+      <p>HomeLink is a paired router kit that tunnels every device through your home internet — your laptop, phone, and tablet all show your home IP from anywhere. No apps to forget. Plug in and go.</p>
+      <a href="https://homelinkrouters.us">Start your 30-day free trial →</a>
+    </div>
+
+    <p class="brief__footer">Questions about your specific setup? Reply to your results email — Chris (the founder) reads every one and responds within 24h.</p>
+  </article>
+
+</body>
+</html>

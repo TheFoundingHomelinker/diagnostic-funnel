@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Working remotely from Greece — HomeLink destination brief</title>
+  <meta name="description" content="A 2-page risk brief for remote workers heading to Greece. What your IT actually sees, common gotchas, and what to handle before you go.">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/diagnostic.css">
+  <style>
+    .brief { max-width: 760px; margin: 0 auto; padding: 56px 24px 48px; }
+    .brief__eyebrow { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--blue); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+    .brief__h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 700; color: var(--navy); line-height: 1.18; letter-spacing: -0.02em; margin-bottom: 14px; }
+    .brief__lede { font-size: 1.05rem; color: var(--muted); line-height: 1.55; margin-bottom: 32px; max-width: 600px; }
+    .brief__quickfacts { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px 26px; margin-bottom: 36px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 28px; }
+    @media (max-width: 600px) { .brief__quickfacts { grid-template-columns: 1fr; } }
+    .qf__row { display: flex; flex-direction: column; }
+    .qf__label { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .qf__value { font-size: 0.96rem; color: #1a1a18; font-weight: 500; }
+    .brief h2 { font-size: 1.35rem; color: var(--navy); margin: 32px 0 14px; font-weight: 700; }
+    .brief p { font-size: 1rem; color: #1a1a18; line-height: 1.65; margin-bottom: 14px; }
+    .brief ul { padding-left: 22px; margin-bottom: 18px; }
+    .brief ul li { margin-bottom: 8px; line-height: 1.6; }
+    .brief strong { color: var(--navy); }
+    .brief .callout { background: var(--card); border-left: 3px solid var(--blue); border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 18px 0; font-size: 0.95rem; line-height: 1.6; }
+    .brief .actions { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; margin-top: 32px; }
+    .brief .actions h2 { margin-top: 0; }
+    .brief .actions ol { padding-left: 22px; margin: 0; }
+    .brief .actions ol li { margin-bottom: 12px; line-height: 1.55; }
+    .brief__cta { background: var(--navy); color: #fff; border-radius: 14px; padding: 32px 30px; margin-top: 40px; text-align: center; }
+    .brief__cta h2 { color: #fff; margin: 0 0 10px; font-size: 1.3rem; }
+    .brief__cta p { color: rgba(255,255,255,0.78); max-width: 520px; margin: 0 auto 20px; }
+    .brief__cta a { display: inline-block; background: #fff; color: var(--navy); padding: 14px 28px; border-radius: 10px; font-weight: 700; text-decoration: none; font-size: 1rem; }
+    .brief__cta a:hover { background: var(--bg); }
+    .brief__footer { margin-top: 36px; text-align: center; font-size: 0.85rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+  <article class="brief">
+    <div class="brief__eyebrow">Destination brief</div>
+    <h1 class="brief__h1">Working remotely from Greece</h1>
+    <p class="brief__lede">Greece's digital nomad visa and Mediterranean lifestyle make it an increasingly popular destination. Athens for city work, the islands for summer escapes. Here's the IT-side reality.</p>
+
+    <div class="brief__quickfacts">
+      <div class="qf__row"><div class="qf__label">Timezone</div><div class="qf__value">EET (UTC+2) / EEST (UTC+3, Mar–Oct)</div></div>
+      <div class="qf__row"><div class="qf__label">US business-hour overlap</div><div class="qf__value">Hard — 7-10h ahead of US</div></div>
+      <div class="qf__row"><div class="qf__label">Common ISPs</div><div class="qf__value">OTE Cosmote, Vodafone GR, Wind</div></div>
+      <div class="qf__row"><div class="qf__label">Banking risk</div><div class="qf__value">Low–moderate</div></div>
+      <div class="qf__row"><div class="qf__label">Network restrictions</div><div class="qf__value">None on consumer ISPs</div></div>
+      <div class="qf__row"><div class="qf__label">HomeLink-friendly</div><div class="qf__value">Yes — fiber in Athens / Thessaloniki, mobile elsewhere</div></div>
+    </div>
+
+    <h2>What your IT actually sees from Greece</h2>
+    <ul>
+      <li><strong>IP geolocation.</strong> OTE / Cosmote and Vodafone GR IPs resolve to "Greece" in MaxMind / IP2Location. M365 + Google Workspace flag country on first login.</li>
+      <li><strong>MFA push location.</strong> Push approved from a Greek SIM (Cosmote, Vodafone GR, Wind) adds Greece to the auth event.</li>
+      <li><strong>Calendar timezone.</strong> EET/EEST stamps your metadata. Greek business hours (9-5 + long lunch break) don't fully align with US 9-5; activity timestamps will look unusual.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Greece-specific gotcha:</strong> island internet quality varies wildly. A villa on Mykonos or Santorini sounds great but the fiber may be 20Mbps shared with the entire building. Athens has proper gigabit fiber.
+    </div>
+
+    <h2>Working hours overlap</h2>
+    <p>Greece = EET (winter) / EEST (summer). So:</p>
+    <ul>
+      <li><strong>East Coast people:</strong> 9am ET = 4pm Athens. Workable through Greek evening.</li>
+      <li><strong>Central Time people:</strong> 9am CT = 5pm Athens. Late-afternoon start.</li>
+      <li><strong>West Coast people:</strong> 9am PT = 7pm Athens. Working through dinner.</li>
+    </ul>
+
+    <h2>Banking & streaming gotchas</h2>
+    <p><strong>Banking:</strong> Greece is low-friction. Travel notice anyway. Greek ATMs charge €2-3 fees on top of US bank fees; Schwab Investor Checking reimburses these. Cash is common in smaller establishments.</p>
+    <p><strong>Streaming:</strong> Netflix swaps to GR library. Hulu blocks. ESPN+ blocked. HBO Max blocked. Apple TV+ works. ERT (Greek public TV) free on Greek IP. With IP at home, US libraries persist.</p>
+    <p><strong>Cards:</strong> Greek mainland cities (Athens, Thessaloniki) are card-friendly. Islands lean cash-heavier — carry euros for small islands.</p>
+
+    <h2>The "Greece-specific" things most people miss</h2>
+    <ul>
+      <li><strong>Athens is the only city with reliable urban fiber.</strong> Thessaloniki has it too but smaller coverage. Islands = mobile-data is often more reliable than the local fiber.</li>
+      <li><strong>The digital nomad visa</strong> exists since 2021 — great for long stays. Doesn't change what your US employer sees.</li>
+      <li><strong>August is when Greeks themselves vacation.</strong> Athens empties; islands fill. Service slows everywhere.</li>
+      <li><strong>EU GDPR</strong> creates the same audit footprint as Italy/France/Germany.</li>
+      <li><strong>Tax residency at 183 days.</strong> Short stays clean.</li>
+    </ul>
+
+    <div class="actions">
+      <h2>Action plan before you fly</h2>
+      <ol>
+        <li><strong>Lock your device timezone</strong> to your home time zone.</li>
+        <li><strong>Travel-notice your bank(s).</strong></li>
+        <li><strong>Test island internet</strong> before booking — "WiFi" on small islands often means very slow shared connection.</li>
+        <li><strong>Handle the IP layer</strong> — Greek IPs are unmistakable.</li>
+        <li><strong>Greek SIM card</strong> for backup connectivity, especially if you'll be on islands. Cosmote has the best island coverage.</li>
+      </ol>
+    </div>
+
+    <div class="brief__cta">
+      <h2>Make sure your IP shows home before you go.</h2>
+      <p>HomeLink is a paired router kit that tunnels every device through your home internet — your laptop, phone, and tablet all show your home IP from anywhere. No apps to forget. Plug in and go.</p>
+      <a href="https://homelinkrouters.us">Start your 30-day free trial →</a>
+    </div>
+
+    <p class="brief__footer">Questions about your specific setup? Reply to your results email — Chris (the founder) reads every one and responds within 24h.</p>
+  </article>
+
+</body>
+</html>

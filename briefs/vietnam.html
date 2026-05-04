@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Working remotely from Vietnam — HomeLink destination brief</title>
+  <meta name="description" content="A 2-page risk brief for remote workers heading to Vietnam. What your IT actually sees, common gotchas, and what to handle before you go.">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/diagnostic.css">
+  <style>
+    .brief { max-width: 760px; margin: 0 auto; padding: 56px 24px 48px; }
+    .brief__eyebrow { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--blue); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+    .brief__h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 700; color: var(--navy); line-height: 1.18; letter-spacing: -0.02em; margin-bottom: 14px; }
+    .brief__lede { font-size: 1.05rem; color: var(--muted); line-height: 1.55; margin-bottom: 32px; max-width: 600px; }
+    .brief__quickfacts { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px 26px; margin-bottom: 36px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 28px; }
+    @media (max-width: 600px) { .brief__quickfacts { grid-template-columns: 1fr; } }
+    .qf__row { display: flex; flex-direction: column; }
+    .qf__label { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .qf__value { font-size: 0.96rem; color: #1a1a18; font-weight: 500; }
+    .brief h2 { font-size: 1.35rem; color: var(--navy); margin: 32px 0 14px; font-weight: 700; }
+    .brief p { font-size: 1rem; color: #1a1a18; line-height: 1.65; margin-bottom: 14px; }
+    .brief ul { padding-left: 22px; margin-bottom: 18px; }
+    .brief ul li { margin-bottom: 8px; line-height: 1.6; }
+    .brief strong { color: var(--navy); }
+    .brief .callout { background: var(--card); border-left: 3px solid var(--blue); border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 18px 0; font-size: 0.95rem; line-height: 1.6; }
+    .brief .actions { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; margin-top: 32px; }
+    .brief .actions h2 { margin-top: 0; }
+    .brief .actions ol { padding-left: 22px; margin: 0; }
+    .brief .actions ol li { margin-bottom: 12px; line-height: 1.55; }
+    .brief__cta { background: var(--navy); color: #fff; border-radius: 14px; padding: 32px 30px; margin-top: 40px; text-align: center; }
+    .brief__cta h2 { color: #fff; margin: 0 0 10px; font-size: 1.3rem; }
+    .brief__cta p { color: rgba(255,255,255,0.78); max-width: 520px; margin: 0 auto 20px; }
+    .brief__cta a { display: inline-block; background: #fff; color: var(--navy); padding: 14px 28px; border-radius: 10px; font-weight: 700; text-decoration: none; font-size: 1rem; }
+    .brief__cta a:hover { background: var(--bg); }
+    .brief__footer { margin-top: 36px; text-align: center; font-size: 0.85rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+  <article class="brief">
+    <div class="brief__eyebrow">Destination brief</div>
+    <h1 class="brief__h1">Working remotely from Vietnam</h1>
+    <p class="brief__lede">Vietnam (especially Da Nang and Ho Chi Minh City) has surged as a nomad destination — cheap, fast fiber, and a growing expat infrastructure. Here's the IT-side reality.</p>
+
+    <div class="brief__quickfacts">
+      <div class="qf__row"><div class="qf__label">Timezone</div><div class="qf__value">ICT (UTC+7) — no DST</div></div>
+      <div class="qf__row"><div class="qf__label">US business-hour overlap</div><div class="qf__value">Hard — flip schedule</div></div>
+      <div class="qf__row"><div class="qf__label">Common ISPs</div><div class="qf__value">VNPT, Viettel, FPT Telecom</div></div>
+      <div class="qf__row"><div class="qf__label">Banking risk</div><div class="qf__value">Moderate — SE Asia fraud-flagged</div></div>
+      <div class="qf__row"><div class="qf__label">Network restrictions</div><div class="qf__value">Light — some sites blocked, no DPI on consumer</div></div>
+      <div class="qf__row"><div class="qf__label">HomeLink-friendly</div><div class="qf__value">Yes — excellent fiber, low cost</div></div>
+    </div>
+
+    <h2>What your IT actually sees from Vietnam</h2>
+    <ul>
+      <li><strong>IP geolocation.</strong> VNPT, Viettel, and FPT IPs resolve to "Vietnam" in commercial geo databases. M365 + Google Workspace flag country + city on first login. Some corporate security tools rate Vietnam as elevated risk and may auto-alert your IT team.</li>
+      <li><strong>MFA push location.</strong> Push approved from a Viettel / Mobifone / Vinaphone SIM adds Vietnam to the auth event. Two foreign signals = obvious story.</li>
+      <li><strong>Working-hour mismatch.</strong> Vietnam is 11–14 hours ahead of the US. Activity timestamps cluster at unusual US times — observable in any reporting dashboard.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Vietnam-specific gotcha:</strong> some US corporate security tools auto-block first-time Vietnamese logins — even before your IT team sees the alert. Test from a mobile hotspot the moment you land, before you do any real work.
+    </div>
+
+    <h2>Working hours overlap</h2>
+    <p>Vietnam = ICT (UTC+7), no DST. So:</p>
+    <ul>
+      <li><strong>East Coast people:</strong> 9pm Vietnam = 9am ET (winter) or 10am ET (summer). Best window for US-business meetings = your evening.</li>
+      <li><strong>West Coast people:</strong> midnight Vietnam = 9am PT (winter) or 10am PT (summer). Brutal — late-night calls.</li>
+      <li><strong>Pattern most nomads adopt:</strong> 8pm-midnight = real-time meetings, day = async work. Da Nang has lots of late-open cafés with great wifi.</li>
+    </ul>
+
+    <h2>Banking & streaming gotchas</h2>
+    <p><strong>Banking:</strong> Vietnam is in the moderate-fraud-risk tier. Travel notice MANDATORY — expect at least one card freeze without it. Capital One and Schwab work cleanly. Vietnamese ATMs charge fees per withdrawal; Citibank Vietnam (limited locations) has the best rates.</p>
+    <p><strong>Streaming:</strong> Netflix swaps to VN library. Hulu blocks. ESPN+ blocked. HBO Max blocked. Apple TV+ works. With IP at home, US libraries stay intact.</p>
+    <p><strong>Phone:</strong> US plans don't include Vietnam. Buy a Viettel or Mobifone tourist SIM at the airport — under $10 for a month.</p>
+
+    <h2>The "Vietnam-specific" things most people miss</h2>
+    <ul>
+      <li><strong>Internet quality is excellent.</strong> Da Nang and HCMC have widespread 1Gbps fiber for ~$15/mo. Hanoi too. Latency to US East ~200ms; West Coast ~150ms. Video calls work but feel slightly lagged.</li>
+      <li><strong>Some sites blocked.</strong> Vietnam blocks Facebook intermittently (tolerated but disrupted around political events) and a few news outlets. Doesn't usually affect work tools.</li>
+      <li><strong>Power outages</strong> are common in Hanoi summer (hot-weather grid stress). Less so in Da Nang and HCMC. UPS recommended for long stays.</li>
+      <li><strong>Tax residency triggers at 183 days.</strong> Short stays clean.</li>
+      <li><strong>Coworking is cheap and abundant.</strong> Da Nang has dozens of dedicated nomad spots — Hub Hoi An, Toong, Dreamplex.</li>
+    </ul>
+
+    <div class="actions">
+      <h2>Action plan before you fly</h2>
+      <ol>
+        <li><strong>Lock your device timezone</strong> to your home time zone before you fly. ICT will be obvious in metadata.</li>
+        <li><strong>Travel-notice your bank(s)</strong> — SE Asia is in higher-friction fraud-detection tier.</li>
+        <li><strong>Pull your IdP login history NOW</strong> for clean baseline.</li>
+        <li><strong>Handle the IP layer first.</strong> Some corporate tools auto-lock on first Vietnamese login. Better to never trigger that than to recover from it.</li>
+        <li><strong>Get a Viettel or Mobifone SIM</strong> at the airport — backup connectivity for when fiber drops.</li>
+      </ol>
+    </div>
+
+    <div class="brief__cta">
+      <h2>Make sure your IP shows home before you go.</h2>
+      <p>HomeLink is a paired router kit that tunnels every device through your home internet — your laptop, phone, and tablet all show your home IP from anywhere. No apps to forget. Plug in and go.</p>
+      <a href="https://homelinkrouters.us">Start your 30-day free trial →</a>
+    </div>
+
+    <p class="brief__footer">Questions about your specific setup? Reply to your results email — Chris (the founder) reads every one and responds within 24h.</p>
+  </article>
+
+</body>
+</html>

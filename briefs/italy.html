@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Working remotely from Italy — HomeLink destination brief</title>
+  <meta name="description" content="A 2-page risk brief for remote workers heading to Italy. What your IT actually sees, common gotchas, and what to handle before you go.">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/diagnostic.css">
+  <style>
+    .brief { max-width: 760px; margin: 0 auto; padding: 56px 24px 48px; }
+    .brief__eyebrow { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--blue); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+    .brief__h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 700; color: var(--navy); line-height: 1.18; letter-spacing: -0.02em; margin-bottom: 14px; }
+    .brief__lede { font-size: 1.05rem; color: var(--muted); line-height: 1.55; margin-bottom: 32px; max-width: 600px; }
+    .brief__quickfacts { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px 26px; margin-bottom: 36px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 28px; }
+    @media (max-width: 600px) { .brief__quickfacts { grid-template-columns: 1fr; } }
+    .qf__row { display: flex; flex-direction: column; }
+    .qf__label { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .qf__value { font-size: 0.96rem; color: #1a1a18; font-weight: 500; }
+    .brief h2 { font-size: 1.35rem; color: var(--navy); margin: 32px 0 14px; font-weight: 700; }
+    .brief p { font-size: 1rem; color: #1a1a18; line-height: 1.65; margin-bottom: 14px; }
+    .brief ul { padding-left: 22px; margin-bottom: 18px; }
+    .brief ul li { margin-bottom: 8px; line-height: 1.6; }
+    .brief strong { color: var(--navy); }
+    .brief .callout { background: var(--card); border-left: 3px solid var(--blue); border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 18px 0; font-size: 0.95rem; line-height: 1.6; }
+    .brief .actions { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; margin-top: 32px; }
+    .brief .actions h2 { margin-top: 0; }
+    .brief .actions ol { padding-left: 22px; margin: 0; }
+    .brief .actions ol li { margin-bottom: 12px; line-height: 1.55; }
+    .brief__cta { background: var(--navy); color: #fff; border-radius: 14px; padding: 32px 30px; margin-top: 40px; text-align: center; }
+    .brief__cta h2 { color: #fff; margin: 0 0 10px; font-size: 1.3rem; }
+    .brief__cta p { color: rgba(255,255,255,0.78); max-width: 520px; margin: 0 auto 20px; }
+    .brief__cta a { display: inline-block; background: #fff; color: var(--navy); padding: 14px 28px; border-radius: 10px; font-weight: 700; text-decoration: none; font-size: 1rem; }
+    .brief__cta a:hover { background: var(--bg); }
+    .brief__footer { margin-top: 36px; text-align: center; font-size: 0.85rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+  <article class="brief">
+    <div class="brief__eyebrow">Destination brief</div>
+    <h1 class="brief__h1">Working remotely from Italy</h1>
+    <p class="brief__lede">Italy combines the European nomad infrastructure with culture that pulls people back year after year. Your IT, however, sees a clear Italian IP from the moment you connect. Here's the rundown.</p>
+
+    <div class="brief__quickfacts">
+      <div class="qf__row"><div class="qf__label">Timezone</div><div class="qf__value">CET (UTC+1) / CEST (UTC+2, Mar–Oct)</div></div>
+      <div class="qf__row"><div class="qf__label">US business-hour overlap</div><div class="qf__value">Workable — 6-9h ahead of US</div></div>
+      <div class="qf__row"><div class="qf__label">Common ISPs</div><div class="qf__value">TIM, Vodafone IT, Fastweb, WindTre</div></div>
+      <div class="qf__row"><div class="qf__label">Banking risk</div><div class="qf__value">Low — EU treaty, low-fraud</div></div>
+      <div class="qf__row"><div class="qf__label">Network restrictions</div><div class="qf__value">None on consumer ISPs</div></div>
+      <div class="qf__row"><div class="qf__label">HomeLink-friendly</div><div class="qf__value">Yes — fiber in major cities, no DPI</div></div>
+    </div>
+
+    <h2>What your IT actually sees from Italy</h2>
+    <ul>
+      <li><strong>IP geolocation.</strong> Italian residential IPs (TIM Fibra especially) resolve to "Italy" cleanly. M365 + Google Workspace flag the country on first login. Okta logs city + ASN per session.</li>
+      <li><strong>MFA push location.</strong> Push approved from TIM, Vodafone IT, or WindTre SIMs adds Italy to the auth event.</li>
+      <li><strong>Calendar timezone.</strong> CET/CEST stamps everything. Italian working hours (9-7 with long lunch) ARE different from US 9-5, so unusual times in your activity logs may compound the IP signal.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Italy-specific gotcha:</strong> Italian internet has historically been slower than the rest of Western Europe. Fiber rollout has accelerated, but if you're booking outside major cities, verify the actual line speed (not the marketing claim).
+    </div>
+
+    <h2>Working hours overlap</h2>
+    <p>Italy = CET / CEST. So:</p>
+    <ul>
+      <li><strong>East Coast people:</strong> 9am ET = 3pm Rome. Comfortable workday into Italian dinner hour.</li>
+      <li><strong>Central Time people:</strong> 9am CT = 4pm Rome. Late afternoon start.</li>
+      <li><strong>West Coast people:</strong> 9am PT = 6pm Rome. You're working through Italian evening — late dinners.</li>
+    </ul>
+
+    <h2>Banking & streaming gotchas</h2>
+    <p><strong>Banking:</strong> Major US banks handle Italy fine. Set a travel notice. Italian ATM acceptance varies by bank — Intesa Sanpaolo and UniCredit ATMs are reliable. Cash is more common in smaller cities than in the US.</p>
+    <p><strong>Streaming:</strong> Netflix swaps to IT library (English subtitles available). Hulu blocks. ESPN+ blocked. HBO Max blocked. Apple TV+ works. RAI Play (Italian public TV) is free and works on Italian IP.</p>
+    <p><strong>Apple ID / iMessage:</strong> Tied to your account region, not IP. Both stay working.</p>
+
+    <h2>The "Italy-specific" things most people miss</h2>
+    <ul>
+      <li><strong>Internet quality varies massively by city.</strong> Milan, Rome, Bologna, Turin: fast fiber widely available. Smaller towns: ADSL still common, slow upload. Always verify the rental's actual speed.</li>
+      <li><strong>Italian summer (August)</strong> empties cities and slows everything — including ISP customer service. Plan around it.</li>
+      <li><strong>Coworking</strong> exists in Milan and Rome but isn't as dense as Berlin / Amsterdam.</li>
+      <li><strong>EU GDPR</strong> means some US SaaS tools treat Italian IPs as "EU subject" with consent banners. Doesn't break anything but creates traceable artifacts in audit logs.</li>
+      <li><strong>Tax residency triggers at 183 days</strong> in any 12-month window. Short stays clean.</li>
+    </ul>
+
+    <div class="actions">
+      <h2>Action plan before you fly</h2>
+      <ol>
+        <li><strong>Lock your device timezone</strong> to your home time zone before you fly.</li>
+        <li><strong>Travel-notice your bank(s).</strong></li>
+        <li><strong>Verify rental fiber speeds</strong> before committing — Italy is hit-or-miss outside major cities.</li>
+        <li><strong>Handle the IP layer</strong> — Italian IPs are unmistakable in geo databases.</li>
+        <li><strong>Plan around August.</strong> If you'll be in Italy in August, expect slower everything (ISPs, banks, services).</li>
+      </ol>
+    </div>
+
+    <div class="brief__cta">
+      <h2>Make sure your IP shows home before you go.</h2>
+      <p>HomeLink is a paired router kit that tunnels every device through your home internet — your laptop, phone, and tablet all show your home IP from anywhere. No apps to forget. Plug in and go.</p>
+      <a href="https://homelinkrouters.us">Start your 30-day free trial →</a>
+    </div>
+
+    <p class="brief__footer">Questions about your specific setup? Reply to your results email — Chris (the founder) reads every one and responds within 24h.</p>
+  </article>
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Working remotely from United Kingdom — HomeLink destination brief</title>
+  <meta name="description" content="A 2-page risk brief for remote workers heading to United Kingdom. What your IT actually sees, common gotchas, and what to handle before you go.">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/diagnostic.css">
+  <style>
+    .brief { max-width: 760px; margin: 0 auto; padding: 56px 24px 48px; }
+    .brief__eyebrow { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--blue); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+    .brief__h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 700; color: var(--navy); line-height: 1.18; letter-spacing: -0.02em; margin-bottom: 14px; }
+    .brief__lede { font-size: 1.05rem; color: var(--muted); line-height: 1.55; margin-bottom: 32px; max-width: 600px; }
+    .brief__quickfacts { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px 26px; margin-bottom: 36px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 28px; }
+    @media (max-width: 600px) { .brief__quickfacts { grid-template-columns: 1fr; } }
+    .qf__row { display: flex; flex-direction: column; }
+    .qf__label { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .qf__value { font-size: 0.96rem; color: #1a1a18; font-weight: 500; }
+    .brief h2 { font-size: 1.35rem; color: var(--navy); margin: 32px 0 14px; font-weight: 700; }
+    .brief p { font-size: 1rem; color: #1a1a18; line-height: 1.65; margin-bottom: 14px; }
+    .brief ul { padding-left: 22px; margin-bottom: 18px; }
+    .brief ul li { margin-bottom: 8px; line-height: 1.6; }
+    .brief strong { color: var(--navy); }
+    .brief .callout { background: var(--card); border-left: 3px solid var(--blue); border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 18px 0; font-size: 0.95rem; line-height: 1.6; }
+    .brief .actions { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; margin-top: 32px; }
+    .brief .actions h2 { margin-top: 0; }
+    .brief .actions ol { padding-left: 22px; margin: 0; }
+    .brief .actions ol li { margin-bottom: 12px; line-height: 1.55; }
+    .brief__cta { background: var(--navy); color: #fff; border-radius: 14px; padding: 32px 30px; margin-top: 40px; text-align: center; }
+    .brief__cta h2 { color: #fff; margin: 0 0 10px; font-size: 1.3rem; }
+    .brief__cta p { color: rgba(255,255,255,0.78); max-width: 520px; margin: 0 auto 20px; }
+    .brief__cta a { display: inline-block; background: #fff; color: var(--navy); padding: 14px 28px; border-radius: 10px; font-weight: 700; text-decoration: none; font-size: 1rem; }
+    .brief__cta a:hover { background: var(--bg); }
+    .brief__footer { margin-top: 36px; text-align: center; font-size: 0.85rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+  <article class="brief">
+    <div class="brief__eyebrow">Destination brief</div>
+    <h1 class="brief__h1">Working remotely from United Kingdom</h1>
+    <p class="brief__lede">The UK is the safest cultural fit for US remote workers — same language, similar work culture, broadly familiar systems. The IT-side challenge is unchanged: your IP is unmistakably UK.</p>
+
+    <div class="brief__quickfacts">
+      <div class="qf__row"><div class="qf__label">Timezone</div><div class="qf__value">GMT (UTC+0) / BST (UTC+1, Mar–Oct)</div></div>
+      <div class="qf__row"><div class="qf__label">US business-hour overlap</div><div class="qf__value">Workable — 5h ahead of ET</div></div>
+      <div class="qf__row"><div class="qf__label">Common ISPs</div><div class="qf__value">BT, Sky, Virgin Media, Vodafone UK, TalkTalk</div></div>
+      <div class="qf__row"><div class="qf__label">Banking risk</div><div class="qf__value">Low — US banks treat as low-fraud</div></div>
+      <div class="qf__row"><div class="qf__label">Network restrictions</div><div class="qf__value">Light — some adult/gambling DNS blocks</div></div>
+      <div class="qf__row"><div class="qf__label">HomeLink-friendly</div><div class="qf__value">Yes — fast widespread fiber, no DPI</div></div>
+    </div>
+
+    <h2>What your IT actually sees from United Kingdom</h2>
+    <ul>
+      <li><strong>IP geolocation.</strong> UK residential IPs (BT, Virgin, Sky) resolve to "United Kingdom" with high confidence. M365 + Google Workspace flag the country on first login. Okta logs city + ASN.</li>
+      <li><strong>MFA push location.</strong> A push approved from a UK SIM (EE, O2, Vodafone) adds UK geolocation. Two foreign signals on one login = obvious story.</li>
+      <li><strong>Calendar timezone.</strong> GMT/BST stamps every meeting invite, Slack message, Jira comment. Your colleagues will see UK timezone in metadata even if your activity hours look normal.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>UK-specific gotcha:</strong> the BST↔GMT switch (last Sunday of October / March) doesn't align with US DST changeovers. There are 2 weeks per year when your offset to US colleagues is OFF by 1 hour from normal. Common source of "wait, when's our standup?" confusion.
+    </div>
+
+    <h2>Working hours overlap</h2>
+    <p>UK = GMT (winter) or BST (summer). 5–8 hours ahead of US:</p>
+    <ul>
+      <li><strong>East Coast people:</strong> 9am ET = 2pm London. Comfortable workday.</li>
+      <li><strong>Central Time people:</strong> 9am CT = 3pm London. Comfortable.</li>
+      <li><strong>West Coast people:</strong> 9am PT = 5pm London. You're starting at the end of the UK day. Tougher.</li>
+    </ul>
+
+    <h2>Banking & streaming gotchas</h2>
+    <p><strong>Banking:</strong> US banks treat UK as low-fraud — minimal friction. Set a travel notice anyway. Most US debit cards work at UK ATMs without issue. Capital One 360 and Schwab Investor Checking have no foreign-transaction fees.</p>
+    <p><strong>Streaming:</strong> Netflix swaps to UK library. Hulu blocks. ESPN+ blocked. HBO Max (now "Max") works in UK with separate account; otherwise blocked. Apple TV+ works. With your IP at home, all US libraries stay intact.</p>
+    <p><strong>BBC iPlayer</strong> is freely accessible from UK IPs (no payment needed) — a perk if you want to actually consume British TV while there.</p>
+
+    <h2>The "United Kingdom-specific" things most people miss</h2>
+    <ul>
+      <li><strong>The IR35 / employment regulations</strong> only matter if your UK stay overlaps employment-status questions — short stays don't trigger this. Don't let employer-side IT confuse residency vs presence.</li>
+      <li><strong>Adult / gambling sites are DNS-filtered</strong> by most UK ISPs by default (you can opt out). Doesn't affect work tools.</li>
+      <li><strong>Coworking</strong> is dense in London (WeWork, Second Home, etc.) but pricier than mainland Europe.</li>
+      <li><strong>UK power is 230V/50Hz</strong> with type G plugs. US chargers work but need adapters; some appliances won't.</li>
+      <li><strong>UK fiber speeds vary widely.</strong> London inner-city = 1 Gbps available. Smaller towns = ADSL still common (15-50 Mbps).</li>
+    </ul>
+
+    <div class="actions">
+      <h2>Action plan before you fly</h2>
+      <ol>
+        <li><strong>Lock your device timezone</strong> to your home time zone — BST/GMT will be obvious in metadata.</li>
+        <li><strong>Travel-notice your bank(s)</strong> — low priority but cheap insurance.</li>
+        <li><strong>Plan around the BST↔GMT switch</strong> if your stay crosses late October or late March. Your apparent offset will shift.</li>
+        <li><strong>Handle the IP layer</strong> — UK IPs are unmistakable.</li>
+        <li><strong>Note your camera background.</strong> Visible UK power outlets, light switches, and street signs are subtle but real tells if a colleague spots them on a call.</li>
+      </ol>
+    </div>
+
+    <div class="brief__cta">
+      <h2>Make sure your IP shows home before you go.</h2>
+      <p>HomeLink is a paired router kit that tunnels every device through your home internet — your laptop, phone, and tablet all show your home IP from anywhere. No apps to forget. Plug in and go.</p>
+      <a href="https://homelinkrouters.us">Start your 30-day free trial →</a>
+    </div>
+
+    <p class="brief__footer">Questions about your specific setup? Reply to your results email — Chris (the founder) reads every one and responds within 24h.</p>
+  </article>
+
+</body>
+</html>

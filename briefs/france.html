@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Working remotely from France — HomeLink destination brief</title>
+  <meta name="description" content="A 2-page risk brief for remote workers heading to France. What your IT actually sees, common gotchas, and what to handle before you go.">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/diagnostic.css">
+  <style>
+    .brief { max-width: 760px; margin: 0 auto; padding: 56px 24px 48px; }
+    .brief__eyebrow { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--blue); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+    .brief__h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 700; color: var(--navy); line-height: 1.18; letter-spacing: -0.02em; margin-bottom: 14px; }
+    .brief__lede { font-size: 1.05rem; color: var(--muted); line-height: 1.55; margin-bottom: 32px; max-width: 600px; }
+    .brief__quickfacts { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px 26px; margin-bottom: 36px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 28px; }
+    @media (max-width: 600px) { .brief__quickfacts { grid-template-columns: 1fr; } }
+    .qf__row { display: flex; flex-direction: column; }
+    .qf__label { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .qf__value { font-size: 0.96rem; color: #1a1a18; font-weight: 500; }
+    .brief h2 { font-size: 1.35rem; color: var(--navy); margin: 32px 0 14px; font-weight: 700; }
+    .brief p { font-size: 1rem; color: #1a1a18; line-height: 1.65; margin-bottom: 14px; }
+    .brief ul { padding-left: 22px; margin-bottom: 18px; }
+    .brief ul li { margin-bottom: 8px; line-height: 1.6; }
+    .brief strong { color: var(--navy); }
+    .brief .callout { background: var(--card); border-left: 3px solid var(--blue); border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 18px 0; font-size: 0.95rem; line-height: 1.6; }
+    .brief .actions { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; margin-top: 32px; }
+    .brief .actions h2 { margin-top: 0; }
+    .brief .actions ol { padding-left: 22px; margin: 0; }
+    .brief .actions ol li { margin-bottom: 12px; line-height: 1.55; }
+    .brief__cta { background: var(--navy); color: #fff; border-radius: 14px; padding: 32px 30px; margin-top: 40px; text-align: center; }
+    .brief__cta h2 { color: #fff; margin: 0 0 10px; font-size: 1.3rem; }
+    .brief__cta p { color: rgba(255,255,255,0.78); max-width: 520px; margin: 0 auto 20px; }
+    .brief__cta a { display: inline-block; background: #fff; color: var(--navy); padding: 14px 28px; border-radius: 10px; font-weight: 700; text-decoration: none; font-size: 1rem; }
+    .brief__cta a:hover { background: var(--bg); }
+    .brief__footer { margin-top: 36px; text-align: center; font-size: 0.85rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+  <article class="brief">
+    <div class="brief__eyebrow">Destination brief</div>
+    <h1 class="brief__h1">Working remotely from France</h1>
+    <p class="brief__lede">France attracts a less-touristy remote-work crowd — Paris for business travelers, Provence and the south for longer stays. Here's what your IT actually sees from a French IP and what to handle.</p>
+
+    <div class="brief__quickfacts">
+      <div class="qf__row"><div class="qf__label">Timezone</div><div class="qf__value">CET (UTC+1) / CEST (UTC+2, Mar–Oct)</div></div>
+      <div class="qf__row"><div class="qf__label">US business-hour overlap</div><div class="qf__value">Workable — 6-9h ahead of US</div></div>
+      <div class="qf__row"><div class="qf__label">Common ISPs</div><div class="qf__value">Orange, SFR, Bouygues Telecom, Free</div></div>
+      <div class="qf__row"><div class="qf__label">Banking risk</div><div class="qf__value">Low — EU treaty, low-fraud</div></div>
+      <div class="qf__row"><div class="qf__label">Network restrictions</div><div class="qf__value">None on consumer ISPs</div></div>
+      <div class="qf__row"><div class="qf__label">HomeLink-friendly</div><div class="qf__value">Yes — strong fiber, no DPI</div></div>
+    </div>
+
+    <h2>What your IT actually sees from France</h2>
+    <ul>
+      <li><strong>IP geolocation.</strong> Orange, Free, SFR — all French residential ISPs resolve to "France" cleanly. M365 + Google Workspace flag country on first login.</li>
+      <li><strong>MFA push location.</strong> Push approved from a French SIM (Orange, Free Mobile, SFR, Bouygues) adds France to the auth event.</li>
+      <li><strong>Calendar timezone.</strong> CET/CEST is standard French metadata. Your meetings, Slack messages, Jira tickets all carry it.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>France-specific gotcha:</strong> French fiber ("Fibre") is among the cheapest and fastest in the world — €30/mo for 1 Gbps symmetric is normal. Don't overpay for hotel wifi when an Airbnb with Fibre is right there.
+    </div>
+
+    <h2>Working hours overlap</h2>
+    <p>France = CET (winter) / CEST (summer). So:</p>
+    <ul>
+      <li><strong>East Coast people:</strong> 9am ET = 3pm Paris. Workable through Parisian dinner.</li>
+      <li><strong>Central Time people:</strong> 9am CT = 4pm Paris. Late-afternoon start.</li>
+      <li><strong>West Coast people:</strong> 9am PT = 6pm Paris. Working through dinner.</li>
+    </ul>
+
+    <h2>Banking & streaming gotchas</h2>
+    <p><strong>Banking:</strong> France is low-friction for US bank fraud detection. Travel notice anyway. Most US debit cards work at French ATMs (BNP Paribas, Société Générale, Crédit Agricole all common). Capital One and Schwab fee-free.</p>
+    <p><strong>Streaming:</strong> Netflix swaps to FR library. Hulu blocks. ESPN+ blocked. HBO Max blocked. Apple TV+ works. With IP at home, US libraries persist.</p>
+    <p><strong>French equivalent:</strong> France Télévisions (free public TV), Canal+ (paid cable), MyTF1, M6 — all work on French IPs if you want to stream French content.</p>
+
+    <h2>The "France-specific" things most people miss</h2>
+    <ul>
+      <li><strong>Internet is exceptional and cheap.</strong> €30/mo for symmetric fiber is normal in cities. Even rural areas have decent ADSL.</li>
+      <li><strong>French banks are GDPR-strict.</strong> Some US SaaS payment integrations get extra friction with French billing addresses.</li>
+      <li><strong>EU GDPR</strong> creates the same audit-log artifacts as Italy — visible in some corporate logs.</li>
+      <li><strong>Tax residency at 183 days</strong> like most countries. Long stays trigger France's notoriously detailed tax system — talk to an accountant.</li>
+      <li><strong>August is a real thing.</strong> France pretty much shuts down. Bank customer service slow, mail slow, deliveries delayed.</li>
+    </ul>
+
+    <div class="actions">
+      <h2>Action plan before you fly</h2>
+      <ol>
+        <li><strong>Lock your device timezone</strong> to your home time zone before you fly.</li>
+        <li><strong>Travel-notice your bank(s).</strong></li>
+        <li><strong>Look for "Fibre" listings</strong> when booking accommodation — French fiber is among the world's best, not all properties have it yet.</li>
+        <li><strong>Handle the IP layer</strong> — French IPs are unmistakable.</li>
+        <li><strong>Plan around August</strong> if your trip overlaps. Most French institutions slow down significantly.</li>
+      </ol>
+    </div>
+
+    <div class="brief__cta">
+      <h2>Make sure your IP shows home before you go.</h2>
+      <p>HomeLink is a paired router kit that tunnels every device through your home internet — your laptop, phone, and tablet all show your home IP from anywhere. No apps to forget. Plug in and go.</p>
+      <a href="https://homelinkrouters.us">Start your 30-day free trial →</a>
+    </div>
+
+    <p class="brief__footer">Questions about your specific setup? Reply to your results email — Chris (the founder) reads every one and responds within 24h.</p>
+  </article>
+
+</body>
+</html>

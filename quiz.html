@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Readiness assessment — HomeLink</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/diagnostic.css">
+</head>
+<body>
+
+  <div class="hl-quiz">
+    <div class="hl-quiz__progress" id="progress" aria-hidden="true"></div>
+
+    <!-- Question steps inserted by JS at #question-host -->
+    <div id="question-host"></div>
+
+    <!-- Final step: "what you'll get" + NELP capture, shown after Q15 answered -->
+    <section class="hl-quiz__step" data-step="nelp">
+      <div class="qmeta">Last step</div>
+      <h2>Where should we send your results?</h2>
+      <p class="hl-gate-intro">You're done with the questions. Drop your details and we'll reveal your score in two seconds — and email you a copy you can revisit later.</p>
+
+      <!-- Blurred score preview, hydrated by JS in goToGate() -->
+      <div class="hl-gate-preview" id="gate-preview" aria-hidden="true">
+        <div class="hl-gate-preview__inner">
+          <div class="hl-gate-preview__label">Your readiness score</div>
+          <div class="hl-gate-preview__score" id="gate-preview-score">--</div>
+          <div class="hl-gate-preview__suffix">/ 100</div>
+          <div class="hl-gate-preview__band" id="gate-preview-band">Calculating…</div>
+        </div>
+        <p class="hl-gate-preview__note">Submit below to reveal your full report.</p>
+      </div>
+
+      <div class="hl-gate-promise">
+        <p class="hl-gate-promise__title">What you'll get the moment you submit:</p>
+        <ul>
+          <li>Your personalized risk score (0–100) on the visual readiness gauge</li>
+          <li>The 3 specific things most likely giving you away — based on your answers</li>
+          <li>A tailored action plan: what to fix, what to leave alone, what to do next</li>
+          <li>A 2-page risk brief specific to your destination (when you tell us where you're headed below)</li>
+          <li>A direct line to Chris — the founder reads every reply within 24h</li>
+          <li>An emailed copy of the full report so you can come back to it</li>
+        </ul>
+      </div>
+
+      <form id="nelp-form" novalidate>
+        <div class="hl-form-row">
+          <label for="f-name">Name or alias<span class="req">*</span></label>
+          <input type="text" id="f-name" name="name" required autocomplete="name" maxlength="120">
+        </div>
+        <div class="hl-form-row">
+          <label for="f-email">Email<span class="req">*</span></label>
+          <input type="email" id="f-email" name="email" required autocomplete="email" maxlength="200">
+        </div>
+        <div class="hl-form-row">
+          <label for="f-location">Where are you headed? <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
+          <input type="text" id="f-location" name="location" autocomplete="address-level2" maxlength="120" placeholder="e.g. Lisbon, Bangkok, Mexico City">
+          <p class="hint" style="margin-top:6px;">Add this and we'll include a 2-page brief specific to your destination.</p>
+        </div>
+        <div class="hl-form-row">
+          <label for="f-profession">Profession <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
+          <input type="text" id="f-profession" name="profession" autocomplete="organization-title" maxlength="120">
+        </div>
+        <input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;height:0;width:0;">
+        <div class="hl-quiz__nav">
+          <button type="button" class="hl-quiz__back" id="nelp-back">← Back</button>
+          <button type="submit" class="hl-btn hl-quiz__next" id="nelp-submit">See my results →</button>
+        </div>
+        <p class="hint" style="margin-top:12px;">By submitting you'll receive your results and occasional emails about working abroad. Unsubscribe anytime.</p>
+      </form>
+    </section>
+  </div>
+
+  <script src="/diagnostic.js" defer></script>
+</body>
+</html>

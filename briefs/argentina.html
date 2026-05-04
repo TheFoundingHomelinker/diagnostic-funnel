@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Working remotely from Argentina — HomeLink destination brief</title>
+  <meta name="description" content="A 2-page risk brief for remote workers heading to Argentina. What your IT actually sees, common gotchas, and what to handle before you go.">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/diagnostic.css">
+  <style>
+    .brief { max-width: 760px; margin: 0 auto; padding: 56px 24px 48px; }
+    .brief__eyebrow { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--blue); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+    .brief__h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 700; color: var(--navy); line-height: 1.18; letter-spacing: -0.02em; margin-bottom: 14px; }
+    .brief__lede { font-size: 1.05rem; color: var(--muted); line-height: 1.55; margin-bottom: 32px; max-width: 600px; }
+    .brief__quickfacts { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px 26px; margin-bottom: 36px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 28px; }
+    @media (max-width: 600px) { .brief__quickfacts { grid-template-columns: 1fr; } }
+    .qf__row { display: flex; flex-direction: column; }
+    .qf__label { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .qf__value { font-size: 0.96rem; color: #1a1a18; font-weight: 500; }
+    .brief h2 { font-size: 1.35rem; color: var(--navy); margin: 32px 0 14px; font-weight: 700; }
+    .brief p { font-size: 1rem; color: #1a1a18; line-height: 1.65; margin-bottom: 14px; }
+    .brief ul { padding-left: 22px; margin-bottom: 18px; }
+    .brief ul li { margin-bottom: 8px; line-height: 1.6; }
+    .brief strong { color: var(--navy); }
+    .brief .callout { background: var(--card); border-left: 3px solid var(--blue); border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 18px 0; font-size: 0.95rem; line-height: 1.6; }
+    .brief .actions { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; margin-top: 32px; }
+    .brief .actions h2 { margin-top: 0; }
+    .brief .actions ol { padding-left: 22px; margin: 0; }
+    .brief .actions ol li { margin-bottom: 12px; line-height: 1.55; }
+    .brief__cta { background: var(--navy); color: #fff; border-radius: 14px; padding: 32px 30px; margin-top: 40px; text-align: center; }
+    .brief__cta h2 { color: #fff; margin: 0 0 10px; font-size: 1.3rem; }
+    .brief__cta p { color: rgba(255,255,255,0.78); max-width: 520px; margin: 0 auto 20px; }
+    .brief__cta a { display: inline-block; background: #fff; color: var(--navy); padding: 14px 28px; border-radius: 10px; font-weight: 700; text-decoration: none; font-size: 1rem; }
+    .brief__cta a:hover { background: var(--bg); }
+    .brief__footer { margin-top: 36px; text-align: center; font-size: 0.85rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+  <article class="brief">
+    <div class="brief__eyebrow">Destination brief</div>
+    <h1 class="brief__h1">Working remotely from Argentina</h1>
+    <p class="brief__lede">Buenos Aires has become the under-the-radar nomad pick — incredible food, affordable since the peso slid, and a single-time-zone country that maps cleanly to US Eastern. Here's the IT-side reality.</p>
+
+    <div class="brief__quickfacts">
+      <div class="qf__row"><div class="qf__label">Timezone</div><div class="qf__value">ART (UTC−3) — no DST</div></div>
+      <div class="qf__row"><div class="qf__label">US business-hour overlap</div><div class="qf__value">Workable — 1-2 hr ahead of ET</div></div>
+      <div class="qf__row"><div class="qf__label">Common ISPs</div><div class="qf__value">Telecentro, Fibertel, Movistar AR, Personal</div></div>
+      <div class="qf__row"><div class="qf__label">Banking risk</div><div class="qf__value">Moderate — currency controls + fraud flags</div></div>
+      <div class="qf__row"><div class="qf__label">Network restrictions</div><div class="qf__value">None — fully open</div></div>
+      <div class="qf__row"><div class="qf__label">HomeLink-friendly</div><div class="qf__value">Yes — fiber in BA, no DPI</div></div>
+    </div>
+
+    <h2>What your IT actually sees from Argentina</h2>
+    <ul>
+      <li><strong>IP geolocation.</strong> Telecentro and Fibertel IPs resolve cleanly to "Argentina" in MaxMind / IP2Location. M365 + Google Workspace flag the country instantly.</li>
+      <li><strong>MFA push location.</strong> A push approved from Personal or Movistar AR adds an Argentina geolocation tag to the auth event.</li>
+      <li><strong>Calendar timezone.</strong> ART is UTC−3, no DST. East Coast US in summer = 1 hr ahead of ET; in winter = 2 hr. Calendar metadata will show ART regardless of your activity hours.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Argentina-specific gotcha:</strong> the peso's volatility means the official exchange rate and the "blue dollar" rate diverge significantly. Use Western Union for transfers (you'll get the blue rate); avoid using your US debit at ATMs (you'll get the worse official rate).
+    </div>
+
+    <h2>Working hours overlap</h2>
+    <p>Argentina is UTC−3, no DST. So:</p>
+    <ul>
+      <li><strong>East Coast people (summer):</strong> 9am ET (EDT, UTC−4) = 10am Buenos Aires. Easy.</li>
+      <li><strong>East Coast people (winter):</strong> 9am ET (EST, UTC−5) = 11am Buenos Aires. Still easy.</li>
+      <li><strong>West Coast people:</strong> 9am PT = 1pm BA. Manageable.</li>
+    </ul>
+
+    <h2>Banking & streaming gotchas</h2>
+    <p><strong>Banking:</strong> US bank ATMs in Argentina give you the official rate (~half of the real value of dollars). Use Western Union to send dollars to yourself for the blue-rate exchange. Notify your bank before going. Capital One and Schwab work; Discover sometimes blocked.</p>
+    <p><strong>Streaming:</strong> Netflix swaps to AR library. Hulu blocks. ESPN+ blocked. Apple TV+ works. With IP showing home, US libraries persist.</p>
+    <p><strong>Cards:</strong> Most BA restaurants and shops accept Visa/MC. Cash is still king for small purchases — and the cash advantage is huge when you have blue-rate dollars.</p>
+
+    <h2>The "Argentina-specific" things most people miss</h2>
+    <ul>
+      <li><strong>Buenos Aires vs the rest of the country.</strong> BA has fast fiber and dense expat infrastructure. Mendoza and Bariloche are scenic but more rural internet. Cordoba is decent.</li>
+      <li><strong>Inflation messes with subscription pricing.</strong> If you sign up for Argentine local services (mobile, gym, etc.), prices update aggressively.</li>
+      <li><strong>Power.</strong> Reliable in Buenos Aires, occasional summer brownouts in heat waves.</li>
+      <li><strong>Tax residency triggers at 6 months</strong> in a 12-month window. Short stays = clean. Long stays = real tax exposure under Argentine law.</li>
+      <li><strong>SIM cards</strong> require DNI (Argentine ID) for full prepaid plans. Tourist SIMs are available at airport but more limited.</li>
+    </ul>
+
+    <div class="actions">
+      <h2>Action plan before you fly</h2>
+      <ol>
+        <li><strong>Lock your device timezone</strong> to your home time zone before you go.</li>
+        <li><strong>Travel-notice your bank(s).</strong></li>
+        <li><strong>Bring USD cash</strong> for the blue rate (or set up Western Union for self-transfers). Don't rely on ATM withdrawals — you'll lose half your value.</li>
+        <li><strong>Handle the IP layer</strong> — Argentine IPs are unmistakable in geo databases.</li>
+        <li><strong>Plan internet backup</strong> — BA fiber is reliable but power flickers. UPS for the home router is cheap insurance.</li>
+      </ol>
+    </div>
+
+    <div class="brief__cta">
+      <h2>Make sure your IP shows home before you go.</h2>
+      <p>HomeLink is a paired router kit that tunnels every device through your home internet — your laptop, phone, and tablet all show your home IP from anywhere. No apps to forget. Plug in and go.</p>
+      <a href="https://homelinkrouters.us">Start your 30-day free trial →</a>
+    </div>
+
+    <p class="brief__footer">Questions about your specific setup? Reply to your results email — Chris (the founder) reads every one and responds within 24h.</p>
+  </article>
+
+</body>
+</html>

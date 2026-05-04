@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Working remotely from Portugal — HomeLink destination brief</title>
+  <meta name="description" content="A 2-page risk brief for remote workers heading to Portugal. What your IT actually sees, common gotchas, and what to handle before you go.">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/diagnostic.css">
+  <style>
+    .brief { max-width: 760px; margin: 0 auto; padding: 56px 24px 48px; }
+    .brief__eyebrow { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--blue); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+    .brief__h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 700; color: var(--navy); line-height: 1.18; letter-spacing: -0.02em; margin-bottom: 14px; }
+    .brief__lede { font-size: 1.05rem; color: var(--muted); line-height: 1.55; margin-bottom: 32px; max-width: 600px; }
+    .brief__quickfacts { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px 26px; margin-bottom: 36px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 28px; }
+    @media (max-width: 600px) { .brief__quickfacts { grid-template-columns: 1fr; } }
+    .qf__row { display: flex; flex-direction: column; }
+    .qf__label { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .qf__value { font-size: 0.96rem; color: #1a1a18; font-weight: 500; }
+    .brief h2 { font-size: 1.35rem; color: var(--navy); margin: 32px 0 14px; font-weight: 700; }
+    .brief p { font-size: 1rem; color: #1a1a18; line-height: 1.65; margin-bottom: 14px; }
+    .brief ul { padding-left: 22px; margin-bottom: 18px; }
+    .brief ul li { margin-bottom: 8px; line-height: 1.6; }
+    .brief strong { color: var(--navy); }
+    .brief .callout { background: var(--card); border-left: 3px solid var(--blue); border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 18px 0; font-size: 0.95rem; line-height: 1.6; }
+    .brief .actions { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; margin-top: 32px; }
+    .brief .actions h2 { margin-top: 0; }
+    .brief .actions ol { padding-left: 22px; margin: 0; }
+    .brief .actions ol li { margin-bottom: 12px; line-height: 1.55; }
+    .brief__cta { background: var(--navy); color: #fff; border-radius: 14px; padding: 32px 30px; margin-top: 40px; text-align: center; }
+    .brief__cta h2 { color: #fff; margin: 0 0 10px; font-size: 1.3rem; }
+    .brief__cta p { color: rgba(255,255,255,0.78); max-width: 520px; margin: 0 auto 20px; }
+    .brief__cta a { display: inline-block; background: #fff; color: var(--navy); padding: 14px 28px; border-radius: 10px; font-weight: 700; text-decoration: none; font-size: 1rem; }
+    .brief__cta a:hover { background: var(--bg); }
+    .brief__footer { margin-top: 36px; text-align: center; font-size: 0.85rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+  <article class="brief">
+    <div class="brief__eyebrow">Destination brief</div>
+    <h1 class="brief__h1">Working remotely from Portugal</h1>
+    <p class="brief__lede">Portugal is one of the most permissive destinations for US-based remote workers — but "permissive" is not "invisible." Here's what your IT can actually see, what trips people up, and what to handle before you go.</p>
+
+    <div class="brief__quickfacts">
+      <div class="qf__row"><div class="qf__label">Timezone</div><div class="qf__value">WET (UTC+0) / WEST (UTC+1, Mar–Oct)</div></div>
+      <div class="qf__row"><div class="qf__label">US business-hour overlap</div><div class="qf__value">8am ET = 1pm Lisbon · workable</div></div>
+      <div class="qf__row"><div class="qf__label">Common ISPs</div><div class="qf__value">MEO, NOS, Vodafone PT</div></div>
+      <div class="qf__row"><div class="qf__label">Banking risk</div><div class="qf__value">Moderate — see below</div></div>
+      <div class="qf__row"><div class="qf__label">Network restrictions</div><div class="qf__value">None — open internet</div></div>
+      <div class="qf__row"><div class="qf__label">HomeLink-friendly</div><div class="qf__value">Yes — no DPI on consumer ISPs</div></div>
+    </div>
+
+    <h2>What your IT actually sees from Portugal</h2>
+    <p>Three signals matter, in order of how reliably they get flagged:</p>
+    <ul>
+      <li><strong>IP geolocation.</strong> Every login from a hotel, Airbnb, or co-working space hits MaxMind / IP2Location databases that resolve to "Portugal" within a few minutes of any new range coming online. Microsoft 365 and Google Workspace flag this on the very first login, regardless of whether your company has impossible-travel detection enabled. Okta is even more aggressive — by default it logs city + ASN on every authentication.</li>
+      <li><strong>Authentication push location.</strong> When your phone gets the MFA prompt and you tap approve, the push includes the device's geolocation. If your phone is on a Portuguese mobile network or local WiFi, the push approval ALSO comes from Portugal. Two foreign signals are harder to explain than one.</li>
+      <li><strong>Calendar and Slack timezone metadata.</strong> If your device timezone auto-changes to Lisbon, every meeting you create, every Slack message you send, every Jira ticket you touch will embed "WEST" in the underlying metadata. Most managers never look at this — until they do.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>The single highest-leverage fix:</strong> manually set your device timezone to your home timezone before you fly. Don't trust automatic. Takes 30 seconds and removes the most-overlooked tell.
+    </div>
+
+    <h2>Working hours overlap</h2>
+    <p>Portugal is the closest European time zone to the US. Lisbon is 5 hours ahead of New York, 8 ahead of Pacific. That means:</p>
+    <ul>
+      <li><strong>East Coast people:</strong> very workable. 8am ET = 1pm Lisbon. You wake up to a clear morning, work afternoon-into-evening, done by ~7pm local.</li>
+      <li><strong>West Coast people:</strong> tougher. 8am PT = 4pm Lisbon. You're working until midnight Lisbon time. If you're already night-owl, fine. If not, plan accordingly.</li>
+    </ul>
+
+    <h2>Banking & streaming gotchas</h2>
+    <p><strong>Banking:</strong> Most US banks (Chase, BoA, Wells, Capital One) tolerate Portugal logins without freezing the card — but the fraud team flags any out-of-pattern transaction. Notify them before you go ("travel notice" in the app). Some neobanks (SoFi, Marcus) are stricter. Paypal occasionally locks accounts on first foreign login; use it sparingly the first week.</p>
+    <p><strong>Streaming:</strong> Netflix swaps your library to PT content. Hulu blocks entirely. Peacock + Paramount+ blocked. ESPN+ blocked. If your IP shows home, none of this happens.</p>
+    <p><strong>Apple ID / iMessage:</strong> Both are tied to your account region, not your IP, so iMessages keep working. App Store will switch to PT app store if your billing address is updated; don't update it.</p>
+
+    <h2>The "Portugal-specific" things most people miss</h2>
+    <ul>
+      <li><strong>EU GDPR</strong> means some US SaaS tools (especially HR/payroll software) treat Portuguese IPs as "EU subject" and trigger consent banners or different data-handling flows. Doesn't break anything but creates artifacts in audit logs.</li>
+      <li><strong>Portuguese consumer ISPs are very stable</strong> compared to most short-term-rental networks worldwide. If you can connect to a fiber line at your apartment (most have it), latency to US East is ~80-100ms — perfectly usable for video calls.</li>
+      <li><strong>The D7 / D8 visa story</strong> doesn't change what your employer sees. Visa status is a Portuguese government concern; your employer's IT systems don't know or care.</li>
+    </ul>
+
+    <div class="actions">
+      <h2>Action plan before you fly</h2>
+      <ol>
+        <li><strong>Lock your device timezone to home</strong> in System Settings → Date & Time. Don't trust automatic.</li>
+        <li><strong>Notify your bank(s)</strong> with a travel notice covering your dates + Portugal.</li>
+        <li><strong>Test your work IP</strong> from a mobile hotspot before you go — log into Slack/Jira/your IdP, then check `whatismyip.com` and pull your account's recent-logins page (Okta, Google Workspace, M365 all show this). Know the baseline so you can spot when something's off.</li>
+        <li><strong>Plan how you'll route work traffic.</strong> The IP layer is the only thing that flips you from "obviously abroad" to "indistinguishable from home." Without that handled, the other steps are sandcastles.</li>
+        <li><strong>Have a cover story ready</strong> for any timezone-related slip — best one is "checking in early/late" rather than denying.</li>
+      </ol>
+    </div>
+
+    <div class="brief__cta">
+      <h2>Make sure your IP shows home before you go.</h2>
+      <p>HomeLink is a paired router kit that tunnels every device through your home internet — your laptop, phone, and tablet all show your home IP from anywhere. No apps to forget. Plug in and go.</p>
+      <a href="https://homelinkrouters.us">Start your 30-day free trial →</a>
+    </div>
+
+    <p class="brief__footer">Questions about your specific setup? Reply to your results email — Chris (the founder) reads every one and responds within 24h.</p>
+  </article>
+
+</body>
+</html>

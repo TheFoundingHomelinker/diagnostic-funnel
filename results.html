@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your readiness results — HomeLink</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/diagnostic.css">
+</head>
+<body>
+
+  <div class="hl-results">
+    <!-- Section 1: Big reveal -->
+    <section class="hl-results__big">
+      <div class="hl-ring-wrap">
+        <svg class="hl-ring" viewBox="0 0 240 240" aria-label="Readiness score ring">
+          <!-- Background track -->
+          <circle cx="120" cy="120" r="100" fill="none" stroke="#e5e5e0" stroke-width="18"/>
+          <!-- Progress ring (rotated -90° so the start is at 12 o'clock) -->
+          <circle id="score-ring" cx="120" cy="120" r="100" fill="none"
+                  stroke="#0f2557" stroke-width="18" stroke-linecap="round"
+                  transform="rotate(-90 120 120)"
+                  pathLength="100"
+                  stroke-dasharray="100"
+                  stroke-dashoffset="100"
+                  style="transition: stroke-dashoffset 1.5s cubic-bezier(0.22,1,0.36,1), stroke 0.4s;"/>
+        </svg>
+        <div class="hl-ring__inner">
+          <div class="hl-ring__num" id="score-value">0</div>
+          <div class="hl-ring__denom">/ 100</div>
+        </div>
+      </div>
+      <p class="hl-results__label" id="band-label">Calculating your readiness...</p>
+    </section>
+
+    <!-- Section 2: Three insight cards -->
+    <section class="hl-insights" id="insights"></section>
+
+    <!-- Section 3: Risk breakdown table -->
+    <section class="hl-risk-table" id="risk-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Detection method</th>
+            <th>Your risk</th>
+            <th>What to do</th>
+          </tr>
+        </thead>
+        <tbody id="risk-rows"></tbody>
+      </table>
+    </section>
+
+    <!-- Section 4: Next steps -->
+    <section class="hl-next" id="next-steps"></section>
+
+    <!-- Section 5: Contact -->
+    <section class="hl-contact">
+      <p>Questions about your specific setup?</p>
+      <p>Reply to your results email and Chris will respond personally.</p>
+      <p style="margin-top:14px;"><a href="mailto:support@homelinkrouters.us">support@homelinkrouters.us</a></p>
+    </section>
+  </div>
+
+  <footer class="hl-footer">
+    <p>&copy; 2026 HomeLink · <a href="https://homelinkrouters.us">homelinkrouters.us</a></p>
+  </footer>
+
+  <script src="/results.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Working remotely from Spain — HomeLink destination brief</title>
+  <meta name="description" content="A 2-page risk brief for remote workers heading to Spain. What your IT actually sees, common gotchas, and what to handle before you go.">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/diagnostic.css">
+  <style>
+    .brief { max-width: 760px; margin: 0 auto; padding: 56px 24px 48px; }
+    .brief__eyebrow { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--blue); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+    .brief__h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 700; color: var(--navy); line-height: 1.18; letter-spacing: -0.02em; margin-bottom: 14px; }
+    .brief__lede { font-size: 1.05rem; color: var(--muted); line-height: 1.55; margin-bottom: 32px; max-width: 600px; }
+    .brief__quickfacts { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px 26px; margin-bottom: 36px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 28px; }
+    @media (max-width: 600px) { .brief__quickfacts { grid-template-columns: 1fr; } }
+    .qf__row { display: flex; flex-direction: column; }
+    .qf__label { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .qf__value { font-size: 0.96rem; color: #1a1a18; font-weight: 500; }
+    .brief h2 { font-size: 1.35rem; color: var(--navy); margin: 32px 0 14px; font-weight: 700; }
+    .brief p { font-size: 1rem; color: #1a1a18; line-height: 1.65; margin-bottom: 14px; }
+    .brief ul { padding-left: 22px; margin-bottom: 18px; }
+    .brief ul li { margin-bottom: 8px; line-height: 1.6; }
+    .brief strong { color: var(--navy); }
+    .brief .callout { background: var(--card); border-left: 3px solid var(--blue); border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 18px 0; font-size: 0.95rem; line-height: 1.6; }
+    .brief .actions { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; margin-top: 32px; }
+    .brief .actions h2 { margin-top: 0; }
+    .brief .actions ol { padding-left: 22px; margin: 0; }
+    .brief .actions ol li { margin-bottom: 12px; line-height: 1.55; }
+    .brief__cta { background: var(--navy); color: #fff; border-radius: 14px; padding: 32px 30px; margin-top: 40px; text-align: center; }
+    .brief__cta h2 { color: #fff; margin: 0 0 10px; font-size: 1.3rem; }
+    .brief__cta p { color: rgba(255,255,255,0.78); max-width: 520px; margin: 0 auto 20px; }
+    .brief__cta a { display: inline-block; background: #fff; color: var(--navy); padding: 14px 28px; border-radius: 10px; font-weight: 700; text-decoration: none; font-size: 1rem; }
+    .brief__cta a:hover { background: var(--bg); }
+    .brief__footer { margin-top: 36px; text-align: center; font-size: 0.85rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+  <article class="brief">
+    <div class="brief__eyebrow">Destination brief</div>
+    <h1 class="brief__h1">Working remotely from Spain</h1>
+    <p class="brief__lede">Spain is one of Europe's biggest remote-work destinations and the local infrastructure handles you fine. Your US employer's IT, on the other hand, sees a very specific set of signals. Here's what they are and what to do about each.</p>
+
+    <div class="brief__quickfacts">
+      <div class="qf__row"><div class="qf__label">Timezone</div><div class="qf__value">CET (UTC+1) / CEST (UTC+2, Mar–Oct)</div></div>
+      <div class="qf__row"><div class="qf__label">US business-hour overlap</div><div class="qf__value">9am ET = 3pm Madrid · workable</div></div>
+      <div class="qf__row"><div class="qf__label">Common ISPs</div><div class="qf__value">Movistar, Vodafone ES, Orange, Yoigo</div></div>
+      <div class="qf__row"><div class="qf__label">Banking risk</div><div class="qf__value">Low–moderate</div></div>
+      <div class="qf__row"><div class="qf__label">Network restrictions</div><div class="qf__value">None on consumer ISPs</div></div>
+      <div class="qf__row"><div class="qf__label">HomeLink-friendly</div><div class="qf__value">Yes — no DPI, stable fiber</div></div>
+    </div>
+
+    <h2>What your IT actually sees from Spain</h2>
+    <p>Three signals are the load-bearing ones. In order of how reliably they're flagged:</p>
+    <ul>
+      <li><strong>IP geolocation.</strong> Spanish residential IPs (especially Movistar fiber) resolve to "Spain" in MaxMind / IP2Location databases the moment they're allocated. Microsoft 365 and Google Workspace flag the city + country on the very first login. If your company runs Okta with default settings, every authentication logs your apparent city to a row in their system log — your IT team can pull that in 30 seconds.</li>
+      <li><strong>MFA push location.</strong> Approve a push from your phone on Spanish WiFi or a local SIM, and the approval embeds Spanish geolocation. Two foreign signals in the same login event are much harder to hand-wave than one.</li>
+      <li><strong>Calendar / Slack timezone metadata.</strong> CET stamps every meeting invite, Slack message, and Jira comment if your device timezone auto-switched. The metadata is in the raw event/message — visible to anyone who pulls the export.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>The single highest-leverage fix:</strong> manually set your device timezone to your home timezone before you fly. Don't trust automatic. 30 seconds in System Settings; removes the most-overlooked tell.
+    </div>
+
+    <h2>Working hours overlap</h2>
+    <ul>
+      <li><strong>East Coast people:</strong> very workable. 9am ET = 3pm Madrid. Light mornings, afternoons working, done by ~9pm local. The Spanish dinner hour is 9-10pm anyway.</li>
+      <li><strong>West Coast people:</strong> rough. 9am PT = 6pm Madrid. You're starting at dinner and working through the night. Doable for night-owls; brutal otherwise.</li>
+      <li><strong>Tip:</strong> Spanish lunch hour (2-4pm) is a quiet window — if you can shift your standups to align with US morning + skip Spanish lunch, you get a clean run.</li>
+    </ul>
+
+    <h2>Banking & streaming gotchas</h2>
+    <p><strong>Banking:</strong> Major US banks (Chase, BoA, Wells, Capital One) handle Spain logins fine. Set a travel notice in your app first. Capital One specifically is good about not flagging foreign IPs on already-noted travel. Wise / Revolut are friction-free if you have them.</p>
+    <p><strong>Streaming:</strong> Netflix swaps to ES library. Hulu blocks. Peacock and Paramount+ blocked. ESPN+ blocked. HBO Max (now "Max") still works in some accounts but inconsistently. If your IP shows home, all of these keep working as if you never left.</p>
+    <p><strong>WhatsApp / iMessage:</strong> Both keep working. WhatsApp is the dominant messaging app in Spain — useful for local logistics.</p>
+
+    <h2>The "Spain-specific" things most people miss</h2>
+    <ul>
+      <li><strong>The "digital nomad visa"</strong> (introduced 2023) is increasingly common — but visa status is a Spanish government concern and doesn't change what your US employer's IT sees. The two systems are independent.</li>
+      <li><strong>Co-working spaces in Barcelona and Madrid</strong> often have observed IP ranges your IT might recognize as "shared workspace" — minor signal but exists. Personal apartment WiFi or fiber is cleaner.</li>
+      <li><strong>Spanish co-working power outages</strong> are more common than you'd expect — Spain has periodic grid stress in summer. If your work-from-anywhere depends on a stable upload connection, plan for backup hotspot.</li>
+    </ul>
+
+    <div class="actions">
+      <h2>Action plan before you fly</h2>
+      <ol>
+        <li><strong>Lock your device timezone</strong> to home in System Settings → Date & Time. Don't trust automatic.</li>
+        <li><strong>Notify your banks</strong> via the travel-notice flow in your app, dates inclusive of arrival/departure.</li>
+        <li><strong>Pull your IdP login history NOW</strong> (Okta, Google Workspace, or M365 — whichever you use). Know what the "normal" entry looks like so you'd notice if a Spanish entry appears.</li>
+        <li><strong>Handle the IP layer</strong> — this is the only fix that flips the IP from "obviously Spain" to "looks like home" across every device + every app simultaneously.</li>
+        <li><strong>Have a cover story</strong> for any timezone-related discrepancy. The cleanest version is "I checked in early/late from a coffee shop" — works for a single ping; doesn't survive a pattern.</li>
+      </ol>
+    </div>
+
+    <div class="brief__cta">
+      <h2>Make sure your IP shows home before you go.</h2>
+      <p>HomeLink is a paired router kit that tunnels every device through your home internet — your laptop, phone, and tablet all show your home IP from anywhere. No apps to forget. Plug in and go.</p>
+      <a href="https://homelinkrouters.us">Start your 30-day free trial →</a>
+    </div>
+
+    <p class="brief__footer">Questions about your specific setup? Reply to your results email — Chris (the founder) reads every one and responds within 24h.</p>
+  </article>
+
+</body>
+</html>
