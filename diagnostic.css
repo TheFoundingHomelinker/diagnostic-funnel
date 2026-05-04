@@ -571,6 +571,170 @@ button { font-family: inherit; }
   }
 }
 
+/* ─── Bundle reminder card (results page) ─── */
+.hl-bundle-card {
+  max-width: 720px; margin: 0 auto 48px;
+  background: linear-gradient(135deg, var(--navy) 0%, #1a3470 100%);
+  color: #fff;
+  border-radius: 18px; padding: 32px 36px;
+  box-shadow: 0 8px 32px rgba(15,37,87,0.18);
+}
+.hl-bundle-card h2 {
+  color: #fff; font-size: clamp(1.4rem, 3vw, 1.7rem);
+  font-weight: 700; line-height: 1.25; margin-bottom: 14px;
+}
+.hl-bundle-card__context {
+  color: rgba(255,255,255,0.85); font-size: 0.96rem;
+  line-height: 1.55; margin-bottom: 16px;
+}
+.hl-bundle-card__context strong { color: #fff; font-weight: 700; }
+.hl-bundle-card__list {
+  list-style: none; padding: 0; margin: 0 0 24px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.hl-bundle-card__list li {
+  position: relative; padding-left: 26px;
+  color: rgba(255,255,255,0.9); font-size: 0.95rem;
+  line-height: 1.55;
+}
+.hl-bundle-card__list li::before {
+  content: "✓"; position: absolute; left: 0; top: 0;
+  color: #4dd2ff; font-weight: 700; font-size: 1rem;
+}
+.hl-bundle-card__list li strong { color: #fff; font-weight: 700; }
+.hl-bundle-card .hl-btn {
+  background: #fff; color: var(--navy);
+  display: inline-flex; align-items: center;
+}
+.hl-bundle-card .hl-btn:hover { background: var(--bg); color: var(--navy); }
+.hl-btn--big {
+  padding: 18px 36px;
+  font-size: 1.1rem;
+  min-height: 56px;
+}
+.hl-bundle-card__hint {
+  font-size: 0.85rem; color: rgba(255,255,255,0.65);
+  margin-top: 12px;
+}
+
+/* ─── Score projection block ─── */
+.hl-projection {
+  max-width: 720px; margin: 0 auto 56px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 28px 32px;
+}
+.hl-projection h2 {
+  font-size: 1.4rem; color: var(--navy); font-weight: 700;
+  margin-bottom: 8px; text-align: center;
+}
+.hl-projection > p {
+  color: var(--muted); font-size: 0.96rem; line-height: 1.55;
+  text-align: center; margin-bottom: 24px;
+}
+.hl-projection__steps {
+  display: flex; flex-direction: column; gap: 0;
+}
+.hl-projection__step {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px 22px;
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 8px;
+}
+.hl-projection__step--current {
+  background: var(--card); border-style: dashed;
+}
+.hl-projection__step--final {
+  background: #ecfdf5; border-color: #a7f3d0;
+}
+.hl-projection__step--high   .hl-projection__score { color: var(--red); }
+.hl-projection__step--moderate .hl-projection__score { color: var(--amber); }
+.hl-projection__step--low    .hl-projection__score { color: var(--green); }
+.hl-projection__score {
+  font-family: 'DM Mono', monospace; font-size: 1.5rem;
+  font-weight: 700; line-height: 1;
+}
+.hl-projection__label {
+  font-size: 0.82rem; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700;
+}
+.hl-projection__fix {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 22px;
+  margin-bottom: 4px;
+}
+.hl-projection__fix__delta {
+  font-family: 'DM Mono', monospace; font-size: 1rem;
+  font-weight: 700; color: var(--green);
+  background: #ecfdf5; border-radius: 8px;
+  padding: 4px 10px; flex-shrink: 0;
+}
+.hl-projection__fix__body { flex: 1; }
+.hl-projection__fix__label {
+  font-size: 0.96rem; color: #1a1a18; font-weight: 500;
+  line-height: 1.4;
+}
+.hl-projection__fix__meta {
+  font-size: 0.82rem; color: var(--muted); margin-top: 2px;
+}
+.hl-projection__total {
+  text-align: center; margin-top: 22px;
+  font-size: 0.95rem; color: var(--navy); font-weight: 600;
+}
+@media (max-width: 600px) {
+  .hl-projection__step {
+    flex-direction: column; align-items: flex-start; gap: 4px;
+  }
+  .hl-projection__fix { padding: 12px 16px; }
+}
+
+/* ─── Destination brief teaser (results page) ─── */
+.hl-dest-teaser {
+  max-width: 720px; margin: 0 auto 48px;
+  background: var(--card); border: 1px solid var(--border);
+  border-left: 4px solid var(--blue);
+  border-radius: 14px; padding: 26px 30px;
+}
+.hl-dest-teaser h2 {
+  font-size: 1.3rem; color: var(--navy); font-weight: 700;
+  margin-bottom: 12px;
+}
+.hl-dest-teaser p {
+  color: #1a1a18; font-size: 0.96rem; line-height: 1.6;
+  margin-bottom: 16px;
+}
+.hl-dest-teaser__cta {
+  display: inline-block; color: var(--blue); font-weight: 700;
+  font-size: 0.98rem; text-decoration: none;
+}
+.hl-dest-teaser__cta:hover { color: var(--hover); text-decoration: underline; }
+
+/* ─── Score-band testimonial (results page) ─── */
+.hl-testimonial-results {
+  max-width: 720px; margin: 0 auto 56px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 30px 34px;
+}
+.hl-testimonial-results h2 {
+  font-size: 1.25rem; color: var(--navy); font-weight: 700;
+  margin-bottom: 18px; text-align: center;
+}
+.hl-testimonial-results figure { margin: 0; }
+.hl-testimonial-results blockquote {
+  font-style: italic; font-size: 1rem; line-height: 1.65;
+  color: #1a1a18; margin: 0 0 18px;
+  padding-left: 16px; border-left: 3px solid var(--blue);
+}
+.hl-testimonial-results figcaption {
+  display: flex; flex-direction: column; gap: 3px;
+  padding-top: 16px; border-top: 1px solid var(--border);
+}
+.hl-testimonial-results figcaption strong {
+  color: var(--navy); font-size: 0.95rem;
+}
+.hl-testimonial-results figcaption span {
+  color: var(--muted); font-size: 0.84rem;
+}
+
 /* Next steps */
 .hl-next {
   max-width: 720px; margin: 0 auto 56px;

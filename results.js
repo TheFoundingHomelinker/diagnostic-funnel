@@ -1,5 +1,6 @@
 /* Results page renderer — fetches stored assessment by token, populates
-   speedometer + insight cards + risk table + next-steps from the brief. */
+   ring, bundle reminder, insights, score projection, risk table,
+   destination teaser, band-matched testimonial, and next-steps. */
 
 (function () {
   'use strict';
@@ -25,15 +26,23 @@
 
   // ── Render ───────────────────────────────────────────────────────
   function render(data) {
-    var score   = data.score;
-    var band    = data.band;       // "high" | "moderate" | "low"
-    var answers = data.answers || {};
+    var score      = data.score;
+    var band       = data.band;       // "high" | "moderate" | "low"
+    var answers    = data.answers || {};
+    var name       = data.name || '';
+    var location   = data.location || '';
+    var profession = data.profession || '';
+    var briefSlug  = data.brief_slug || '';
+    var briefName  = data.brief_display || '';
 
-    // Section 1: ring + score number + band label
+    // 1. Ring + score number + band label
     document.getElementById('band-label').textContent = bandLabel(band);
     animateScore(score, band);
 
-    // Section 2: insight cards
+    // 2. Bundle reminder card (with personal context line)
+    renderBundleCard(name, location, profession, briefSlug, briefName);
+
+    // 3. Insights (existing)
     var insightHost = document.getElementById('insights');
     INSIGHTS[band].forEach(function (it) {
       var card = document.createElement('div');
@@ -45,11 +54,14 @@
       insightHost.appendChild(card);
     });
 
-    // Section 3: risk table — only render rows whose visibility rule matches
+    // 4. Score projection
+    renderProjection(answers, score);
+
+    // 5. Risk breakdown table (existing)
     var rowsHost = document.getElementById('risk-rows');
     RISK_ROWS.forEach(function (row) {
       if (!row.visible(answers)) return;
-      var risk = row.risk(answers);   // "high" | "medium" | "low"
+      var risk = row.risk(answers);
       var copy = row.copy[risk];
       var tr = document.createElement('tr');
       tr.innerHTML =
@@ -59,7 +71,13 @@
       rowsHost.appendChild(tr);
     });
 
-    // Section 4: next steps
+    // 6. Destination brief teaser (conditional)
+    renderDestTeaser(briefSlug, briefName);
+
+    // 7. Score-band testimonial
+    renderTestimonial(band);
+
+    // 8. Next steps (existing)
     var nextHost = document.getElementById('next-steps');
     var n = NEXT_STEPS[band];
     var stepsHtml = '<ol>' + n.steps.map(function (s) { return '<li>' + escapeHtml(s) + '</li>'; }).join('') + '</ol>';
@@ -71,6 +89,233 @@
       stepsHtml +
       '<a href="' + n.ctaHref + '" class="hl-btn">' + escapeHtml(n.ctaText) + '</a>' +
       fudHtml;
+  }
+
+  // ── Bundle reminder card (NEW) ──────────────────────────────────
+  function renderBundleCard(name, location, profession, briefSlug, briefName) {
+    var host = document.getElementById('bundle-card');
+    if (!host) return;
+    var firstName = (function () {
+      var n = (name || '').trim();
+      if (!n) return 'there';
+      var i = n.indexOf(' ');
+      return i > 0 ? n.slice(0, i) : n;
+    })();
+
+    // Personal context line — uses location + profession when present.
+    var contextLine = '';
+    if (location && profession) {
+      contextLine = '<p class="hl-bundle-card__context">For a <strong>' + escapeHtml(profession) + '</strong> headed to <strong>' + escapeHtml(location) + '</strong>, here\'s exactly what applies.</p>';
+    } else if (location) {
+      contextLine = '<p class="hl-bundle-card__context">For someone headed to <strong>' + escapeHtml(location) + '</strong>, here\'s exactly what applies.</p>';
+    } else if (profession) {
+      contextLine = '<p class="hl-bundle-card__context">For a <strong>' + escapeHtml(profession) + '</strong>, here\'s exactly what applies.</p>';
+    }
+
+    var briefRow = '';
+    if (briefSlug) {
+      briefRow = '<li><strong>Your ' + escapeHtml(briefName || briefSlug) + ' destination brief</strong> — country-specific gotchas most people miss</li>';
+    }
+
+    host.innerHTML =
+      '<h2>Hey ' + escapeHtml(firstName) + ', here\'s what\'s already in your inbox.</h2>' +
+      contextLine +
+      '<ul class="hl-bundle-card__list">' +
+        '<li><strong>Your work-from-abroad blueprint</strong> — top exposures + exact fixes, ranked by impact</li>' +
+        '<li><strong>The Travel Day playbook</strong> — hour-by-hour from T-7 through Day 3 abroad</li>' +
+        '<li><strong>Return-Trip Cleanup checklist</strong> — six items to handle around your return</li>' +
+        '<li><strong>"If IT pings you" emergency playbook</strong> — what to do in the next 24 hours</li>' +
+        briefRow +
+      '</ul>' +
+      '<a href="/risk-fix?t=' + encodeURIComponent(token) + '" class="hl-btn hl-btn--big">Open your blueprint →</a>' +
+      '<p class="hl-bundle-card__hint">Or check your inbox — same content delivered there.</p>';
+  }
+
+  // ── Score projection (NEW) ──────────────────────────────────────
+  // Mirror of server-side scoring (internal/handlers/diagnostic.go).
+  // Used to compute hypothetical scores after user-applied fixes.
+  var CORRECT_ANSWERS = {
+    1: 'yes', 2: 'no', 3: 'no', 4: 'yes', 5: 'no',
+    6: 'yes', 7: 'no', 8: 'no', 9: 'no', 10: 'yes',
+  };
+
+  function scoreWithAnswers(a) {
+    var s = 0;
+    for (var qid in CORRECT_ANSWERS) {
+      var got = a[qid];
+      if (got === CORRECT_ANSWERS[qid]) s += 8;
+      else if (got === 'sometimes') s += 4;
+    }
+    if (a[1] === 'yes')  s += 10;
+    if (a[8] === 'no')   s += 10;
+    if (a[5] === 'no')   s += 5;
+    if (a[10] === 'yes') s += 15;
+    var q11 = a[11] || '';
+    if (q11.indexOf('I work abroad with my employer') === 0) s += 20;
+    else if (q11.indexOf('caught') > -1) s -= 10;
+    if (s < 0) s = 0;
+    if (s > 100) s = 100;
+    return s;
+  }
+
+  function bandFor(score) {
+    if (score <= 40) return 'high';
+    if (score <= 70) return 'moderate';
+    return 'low';
+  }
+  function bandShort(b) {
+    return b === 'high' ? 'HIGH' : b === 'moderate' ? 'MODERATE' : 'LOW';
+  }
+
+  // Only show fixes the user can actually take action on. Q2 (M365/GWS),
+  // Q3 (verification history), Q5 (corp VPN required), Q8 (MDM installed),
+  // Q9 (past flags) are facts, not actions — surfaced in the risk table
+  // for awareness but excluded from the projection.
+  var ACTIONABLE_FIXES = [
+    { qid: 10, correct: 'yes', label: 'Route every device through your home IP', time: '~15 min', cost: '30-day free trial' },
+    { qid: 1,  correct: 'yes', label: 'Switch to a personal device for travel work', time: 'ongoing', cost: 'Free' },
+    { qid: 6,  correct: 'yes', label: 'Lock your device timezone to home', time: '30 seconds', cost: 'Free' },
+    { qid: 7,  correct: 'no',  label: 'Set timezone to home in Slack, Jira, Notion', time: '5 min', cost: 'Free' },
+    { qid: 4,  correct: 'yes', label: 'Pull a baseline IdP audit log', time: '5 min', cost: 'Free' },
+  ];
+
+  function renderProjection(answers, currentScore) {
+    var host = document.getElementById('projection');
+    if (!host) return;
+
+    // Identify actionable fixes the user hasn't already done, ranked by leverage.
+    var simAnswers = Object.assign({}, answers);
+    var fixes = [];
+    ACTIONABLE_FIXES.forEach(function (fix) {
+      var got = answers[fix.qid];
+      if (got === fix.correct) return; // already handled
+      var copy = Object.assign({}, simAnswers);
+      copy[fix.qid] = fix.correct;
+      var newScore = scoreWithAnswers(copy);
+      var delta = newScore - currentScore;
+      if (delta > 0) fixes.push(Object.assign({ delta: delta }, fix));
+    });
+    fixes.sort(function (a, b) { return b.delta - a.delta; });
+    fixes = fixes.slice(0, 3);
+
+    if (fixes.length === 0) {
+      host.innerHTML =
+        '<h2>You\'re already where most people are trying to get to.</h2>' +
+        '<p>No actionable fixes were surfaced — your assessment shows you\'re handling the high-leverage items already. Keep doing what you\'re doing.</p>';
+      return;
+    }
+
+    // Walk the projection step by step.
+    var steps = [{ score: currentScore, band: bandFor(currentScore), label: 'Today' }];
+    var walking = Object.assign({}, answers);
+    var totalMinutes = 0;
+    fixes.forEach(function (fix, i) {
+      walking[fix.qid] = fix.correct;
+      var s = scoreWithAnswers(walking);
+      steps.push({
+        score: s, band: bandFor(s),
+        label: 'After fix #' + (i + 1),
+        fix: fix,
+      });
+      var m = parseTimeToMinutes(fix.time);
+      if (m > 0) totalMinutes += m;
+    });
+
+    var stepsHtml = steps.map(function (st, i) {
+      var fixHtml = '';
+      if (st.fix) {
+        fixHtml =
+          '<div class="hl-projection__fix">' +
+            '<div class="hl-projection__fix__delta">+' + st.fix.delta + '</div>' +
+            '<div class="hl-projection__fix__body">' +
+              '<div class="hl-projection__fix__label">' + escapeHtml(st.fix.label) + '</div>' +
+              '<div class="hl-projection__fix__meta">' + escapeHtml(st.fix.time) + ' · ' + escapeHtml(st.fix.cost) + '</div>' +
+            '</div>' +
+          '</div>';
+      }
+      var stepClass = 'hl-projection__step hl-projection__step--' + st.band;
+      if (i === 0) stepClass += ' hl-projection__step--current';
+      if (i === steps.length - 1 && i > 0) stepClass += ' hl-projection__step--final';
+      return fixHtml +
+        '<div class="' + stepClass + '">' +
+          '<div class="hl-projection__score">' + st.score + ' / 100</div>' +
+          '<div class="hl-projection__label">' + escapeHtml(st.label) + ' · ' + bandShort(st.band) + '</div>' +
+        '</div>';
+    }).join('');
+
+    var total = '';
+    if (totalMinutes > 0) {
+      total = '<p class="hl-projection__total">Total time: ~' + totalMinutes + ' minutes. All before your next trip.</p>';
+    }
+
+    host.innerHTML =
+      '<h2>Where you could be by next week.</h2>' +
+      '<p>Each fix below is yours to make. Most are free.</p>' +
+      '<div class="hl-projection__steps">' + stepsHtml + '</div>' +
+      total;
+  }
+
+  // Rough parser: "~15 min", "30 seconds", "5 min", "ongoing"
+  function parseTimeToMinutes(t) {
+    if (!t) return 0;
+    if (/second/.test(t)) return 1;
+    var m = t.match(/(\d+)\s*min/);
+    if (m) return parseInt(m[1], 10);
+    return 0;
+  }
+
+  // ── Destination brief teaser (NEW) ──────────────────────────────
+  function renderDestTeaser(slug, displayName) {
+    var host = document.getElementById('dest-teaser');
+    if (!host) return;
+    if (!slug) { host.style.display = 'none'; return; }
+    var country = displayName || slug;
+    host.innerHTML =
+      '<h2>Your destination: ' + escapeHtml(country) + '</h2>' +
+      '<p>Your full brief covers exactly what your IT can see from ' + escapeHtml(country) + ', the country-specific gotchas most people miss, and the things to handle before you go — banking, streaming, timezone overlap, all of it.</p>' +
+      '<a href="/briefs/' + encodeURIComponent(slug) + '" class="hl-dest-teaser__cta">Read the full ' + escapeHtml(country) + ' brief →</a>';
+  }
+
+  // ── Score-band testimonial (NEW) ────────────────────────────────
+  var TESTIMONIALS = {
+    high: {
+      quote: "I'm pursuing Portuguese citizenship — two years of physical residency required — but my US tech job is the only thing making it possible financially. I took the quiz expecting to feel worse, and instead I got a clear picture of what was actually leaking and what wasn't. My score was a 41, the blueprint flagged my MFA push location as the gap I'd missed entirely, and the Portugal destination brief was worth the email by itself. I knew exactly what to fix before I bought the plane ticket.",
+      name: 'Kayla S.',
+      role: 'Software engineer · Pursuing residency in Portugal',
+      when: 'Took the assessment Feb 2026',
+    },
+    moderate: {
+      quote: "I just wanted to stay in San Juan four extra days after a long weekend. Not burn PTO, not drag a giant project home. Took the quiz that morning thinking it'd be paranoid overkill — and the assessment surfaced exactly two things I needed to lock down before I opened my laptop Tuesday: my device timezone and my MFA push location. Done in 10 minutes. No PTO, no panic, no IT ping. The blueprint paid for itself in skipped vacation days.",
+      name: 'Richard P.',
+      role: 'Account exec · Remote-extended a Puerto Rico weekend',
+      when: 'Took the assessment Mar 2026',
+    },
+    low: {
+      quote: "I just wanted to stay in San Juan four extra days after a long weekend. Not burn PTO, not drag a giant project home. Took the quiz that morning thinking it'd be paranoid overkill — and the assessment surfaced exactly two things I needed to lock down before I opened my laptop Tuesday: my device timezone and my MFA push location. Done in 10 minutes. No PTO, no panic, no IT ping. The blueprint paid for itself in skipped vacation days.",
+      name: 'Richard P.',
+      role: 'Account exec · Remote-extended a Puerto Rico weekend',
+      when: 'Took the assessment Mar 2026',
+    },
+  };
+  function renderTestimonial(band) {
+    var host = document.getElementById('testimonial-band');
+    if (!host) return;
+    var t = TESTIMONIALS[band] || TESTIMONIALS.moderate;
+    var heading = band === 'high'
+      ? 'Someone else who started where you are.'
+      : band === 'moderate'
+        ? 'Someone close to your starting point.'
+        : 'Someone who took the quiz before a quick trip.';
+    host.innerHTML =
+      '<h2>' + escapeHtml(heading) + '</h2>' +
+      '<figure>' +
+        '<blockquote>"' + escapeHtml(t.quote) + '"</blockquote>' +
+        '<figcaption>' +
+          '<strong>' + escapeHtml(t.name) + '</strong>' +
+          '<span>' + escapeHtml(t.role) + '</span>' +
+          '<span>' + escapeHtml(t.when) + '</span>' +
+        '</figcaption>' +
+      '</figure>';
   }
 
   function bandLabel(band) {
@@ -92,14 +337,12 @@
       wrap.classList.add('hl-ring--' + modifier);
     }
     var ring = document.getElementById('score-ring');
-    // Tiny RAF gap so the transition kicks in cleanly after the class swap
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
         if (ring) ring.setAttribute('stroke-dashoffset', String(100 - clamped));
       });
     });
 
-    // Number: count up from 0 → score over the same window the ring fills.
     var numEl = document.getElementById('score-value');
     if (!numEl) return;
     var duration = 1500;
@@ -107,7 +350,7 @@
     function step(ts) {
       if (!startTs) startTs = ts;
       var t = Math.min(1, (ts - startTs) / duration);
-      var eased = 1 - Math.pow(1 - t, 3); // ease-out cubic
+      var eased = 1 - Math.pow(1 - t, 3);
       numEl.textContent = String(Math.round(clamped * eased));
       if (t < 1) requestAnimationFrame(step);
     }
@@ -143,7 +386,6 @@
   };
 
   // ── Risk table rows: visibility + risk + copy by risk ───────────
-  // Helpers for reading answer values
   function ans(answers, qid) { return answers[qid] || answers[String(qid)]; }
   function isYes(v) { return v === 'yes'; }
   function isNo(v)  { return v === 'no'; }
@@ -259,7 +501,7 @@
   };
 
   function escapeHtml(s) {
-    return String(s)
+    return String(s == null ? '' : s)
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
   }
