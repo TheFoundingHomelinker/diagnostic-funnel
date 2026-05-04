@@ -241,6 +241,44 @@
     return html;
   }
 
+  // Three-phase overview: before, during, after. Sits between the score
+  // and the at-a-glance table to elevate the page from "list of fixes" to
+  // "phased plan" — matches the work-from-abroad blueprint framing.
+  function renderPhases() {
+    return '<section class="rf-phases">' +
+      '<h2>Your three phases</h2>' +
+      '<p>This blueprint covers the full arc — what to handle before you go, what to maintain while you\'re there, and what to clean up when you\'re back. Each phase points to the specific guidance you need at that moment.</p>' +
+      '<div class="rf-phases__grid">' +
+        '<div class="rf-phase">' +
+          '<div class="rf-phase__num">01</div>' +
+          '<h3>Before you go</h3>' +
+          '<p>Close your top exposures (listed below), lock device timezone to home, pull a baseline IdP audit log. Most leaks are sealed in this phase.</p>' +
+          '<div class="rf-phase__links">' +
+            '<a href="#rf-exposures">Your top exposures ↓</a>' +
+            '<a href="/guides/travel-day">The Travel Day playbook →</a>' +
+          '</div>' +
+        '</div>' +
+        '<div class="rf-phase">' +
+          '<div class="rf-phase__num">02</div>' +
+          '<h3>While you\'re there</h3>' +
+          '<p>Steady-state. Daily audit-log check through day three, then weekly. If anything looks wrong, stop and fix it before continuing — string of bad logins is worse than one.</p>' +
+          '<div class="rf-phase__links">' +
+            '<a href="/guides/travel-day">The Travel Day playbook →</a>' +
+            '<a href="/guides/if-it-pings-you">"If IT pings you" →</a>' +
+          '</div>' +
+        '</div>' +
+        '<div class="rf-phase">' +
+          '<div class="rf-phase__num">03</div>' +
+          '<h3>Coming home</h3>' +
+          '<p>Bleed back gradually — don\'t flip your IP overnight. Save trailing-30-day audit logs before they roll off. Resume normal activity quietly. Plan the next trip the day you\'re home.</p>' +
+          '<div class="rf-phase__links">' +
+            '<a href="/guides/return-trip-cleanup">Return-Trip Cleanup checklist →</a>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</section>';
+  }
+
   function renderActionPlan(exposures) {
     if (exposures.length === 0) return '';
     // Take top 3 leverage items, frame as a sequenced plan.
@@ -282,12 +320,13 @@
         '<div class="rf-score__num" style="color:' + bs.color + ';">' + score + ' / 100</div>' +
         '<div class="rf-score__band">' + bs.label + '</div>' +
       '</section>' +
+      renderPhases() +
       '<section class="rf-section">' +
         '<h2>At a glance</h2>' +
         '<p>The full picture across all 10 risk areas, with the leverage weight that determines fix priority. <strong>Status</strong> is your specific result; <strong>leverage</strong> is the relative impact of fixing this item versus the others.</p>' +
         renderTable(answers) +
       '</section>' +
-      '<section class="rf-section">' +
+      '<section class="rf-section" id="rf-exposures">' +
         '<h2>Your top exposures, ranked</h2>' +
         '<p>Each item below is a gap your assessment surfaced. They\'re ordered by leverage — the first item has the largest effect on your overall risk, the last item has the smallest. Work through them in order; don\'t skip ahead.</p>' +
         renderExposures(exposures) +
