@@ -243,9 +243,13 @@
         if (resp.status >= 200 && resp.status < 300 && resp.body && resp.body.token) {
           // Persist nothing — wipe sessionStorage preview state
           try { sessionStorage.removeItem('hl_diag_preview'); } catch (e) {}
+          // Update outer-scope token so renderBundleCard's "Open your
+          // blueprint →" link gets the right URL. Without this, the
+          // bundle button renders /risk-fix?t= with an empty token.
+          token = resp.body.token;
           // Update URL silently to the token form
           try {
-            history.replaceState(null, '', '/results?t=' + encodeURIComponent(resp.body.token));
+            history.replaceState(null, '', '/results?t=' + encodeURIComponent(token));
           } catch (e) {}
           // Transition to full mode in place
           transitionToFullMode(name, location, resp.body);
