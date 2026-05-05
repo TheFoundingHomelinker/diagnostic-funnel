@@ -263,21 +263,43 @@
   }
 
   function transitionToFullMode(name, location, submitResp) {
+    // Show success state inside the gate FIRST, while we're still in
+    // preview mode — that way the success block is visible at the
+    // user's current scroll position. Then we switch mode (which
+    // un-hides the bundle/dest/testimonial sections), then scroll
+    // to the success message after the keyboard dismisses.
+    var form = document.getElementById('inline-gate-form');
+    var success = document.getElementById('ig-success');
+    if (form) form.style.display = 'none';
+    if (success) success.style.display = 'block';
+
+    // Mobile Safari: dismiss the keyboard before any scrolling so the
+    // viewport size has settled. Without this, scrollIntoView computes
+    // against the keyboard-shrunk viewport, the keyboard dismisses
+    // mid-animation, and the user lands well past the success message.
+    if (document.activeElement && document.activeElement.blur) {
+      document.activeElement.blur();
+    }
+
     document.body.classList.remove('hl-mode-preview');
     document.body.classList.add('hl-mode-full');
-    // Show success state inside the gate
-    document.getElementById('inline-gate-form').style.display = 'none';
-    document.getElementById('ig-success').style.display = 'block';
+
     // Render the previously-hidden sections
     var slug = submitResp.brief_slug || '';
     var display = submitResp.brief_display || '';
     renderBundleCard(name, location, '', slug, display);
     renderDestTeaser(slug, display);
-    // Use band that's already on the page
     var band = bandFor(submitResp.score);
     renderTestimonial(band);
-    // Smooth scroll to the success message
-    document.getElementById('inline-gate').scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    // Defer scroll until after the keyboard fully dismisses and the
+    // newly-unhidden sections have laid out. block: 'start' parks the
+    // success message at the top of the viewport so it can't be
+    // overshot.
+    setTimeout(function () {
+      var gate = document.getElementById('inline-gate');
+      if (gate) gate.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 350);
   }
 
   // ── Render ───────────────────────────────────────────────────────
