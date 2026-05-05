@@ -256,7 +256,7 @@
         if (!q.optional) { alert('Please answer to continue.'); return; }
       }
       state.answers[q.id] = ans;
-      if (isLast) goToGate();
+      if (isLast) goToPreviewResults();
       else advanceTo(stepNum + 1);
     });
     navRow.appendChild(next);
@@ -283,7 +283,7 @@
       var ans = btn.dataset.value;
       state.answers[q.id] = ans;
       var isLast = step === QUESTIONS.length;
-      if (isLast) goToGate();
+      if (isLast) goToPreviewResults();
       else advanceTo(step + 1);
     }, 280);
   }
@@ -312,6 +312,28 @@
     renderStep(stepNum);
     updateProgress();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Score-first flow: at end of Q15 we save answers to sessionStorage
+  // and navigate to /results, which renders preview content (score +
+  // identified issues) and shows an inline email gate beneath it. The
+  // OLD gate (NELP form below) remains as a fallback when sessionStorage
+  // is unavailable (private browsing edge cases).
+  function goToPreviewResults() {
+    try {
+      sessionStorage.setItem('hl_diag_preview', JSON.stringify({
+        answers: state.answers,
+        sid: SID,
+        v: 1,
+      }));
+    } catch (e) {
+      // sessionStorage failed — fall back to the original gate flow
+      goToGate();
+      return;
+    }
+    // Successful navigation isn't abandonment — suppress the beacon
+    abandonFired = true;
+    window.location.href = '/results';
   }
 
   function goToGate() {

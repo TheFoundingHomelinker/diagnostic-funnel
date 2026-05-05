@@ -644,6 +644,96 @@ button { font-family: inherit; }
   .hl-bundle-item summary::after { right: 22px; }
 }
 
+/* ─── Preview / Full mode visibility (results page) ───
+   In preview mode (no token, score-first flow), hide the bundle
+   reminder, destination teaser, and testimonial. They're un-hidden
+   on inline-gate submit when the page transitions to full mode. */
+.hl-mode-preview .hl-bundle-card,
+.hl-mode-preview .hl-dest-teaser,
+.hl-mode-preview .hl-testimonial-results { display: none !important; }
+.hl-mode-full #inline-gate { display: none !important; }
+
+/* ─── Inline email gate (preview mode, between risk table and bundle) ─── */
+.hl-inline-gate {
+  max-width: 720px; margin: 0 auto 56px;
+  background: linear-gradient(135deg, var(--navy) 0%, #1a3470 100%);
+  color: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(15,37,87,0.18);
+  overflow: hidden;
+}
+.hl-inline-gate__inner { padding: 32px 36px; }
+.hl-inline-gate h2 {
+  color: #fff; font-size: clamp(1.4rem, 3vw, 1.7rem);
+  font-weight: 700; line-height: 1.25; margin-bottom: 12px;
+  text-align: left;
+}
+.hl-inline-gate p {
+  color: rgba(255,255,255,0.85); font-size: 0.96rem;
+  line-height: 1.6; margin-bottom: 22px;
+}
+.hl-inline-gate__row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  margin-bottom: 12px;
+}
+@media (max-width: 540px) {
+  .hl-inline-gate__inner { padding: 26px 22px; }
+  .hl-inline-gate__row { grid-template-columns: 1fr; }
+}
+.hl-inline-gate input[type="text"],
+.hl-inline-gate input[type="email"] {
+  width: 100%; padding: 14px 16px;
+  background: rgba(255,255,255,0.96); color: #1a1a18;
+  border: 1.5px solid transparent; border-radius: 10px;
+  font-size: 1rem; font-family: inherit;
+  box-sizing: border-box;
+  transition: border-color 0.15s, background 0.15s;
+}
+.hl-inline-gate input:focus {
+  outline: none; border-color: #4dd2ff; background: #fff;
+}
+.hl-inline-gate input::placeholder { color: #6b6b66; }
+#ig-location { margin-bottom: 18px; }
+.hl-inline-gate .hl-btn {
+  width: 100%; background: #fff; color: var(--navy);
+  font-weight: 700;
+}
+.hl-inline-gate .hl-btn:hover { background: var(--bg); color: var(--navy); }
+.hl-inline-gate .hl-btn:disabled { opacity: 0.65; cursor: not-allowed; }
+.hl-inline-gate__fud {
+  text-align: center;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.7);
+  margin-top: 14px;
+  margin-bottom: 0;
+}
+.hl-inline-gate__success {
+  padding: 8px 0;
+  text-align: center;
+}
+.hl-inline-gate__success__icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 56px; height: 56px;
+  background: #10b981; color: #fff;
+  border-radius: 999px; font-size: 1.6rem; font-weight: 700;
+  margin-bottom: 14px;
+}
+.hl-inline-gate__success h3 {
+  color: #fff; font-size: 1.3rem; font-weight: 700;
+  margin-bottom: 8px;
+}
+.hl-inline-gate__success p {
+  color: rgba(255,255,255,0.85); margin: 0;
+  max-width: 480px; margin-left: auto; margin-right: auto;
+}
+.hl-spinner {
+  display: inline-block; width: 14px; height: 14px;
+  border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff;
+  border-radius: 50%; animation: hl-spin 0.7s linear infinite;
+  margin-right: 8px; vertical-align: middle;
+}
+@keyframes hl-spin { to { transform: rotate(360deg); } }
+
 /* ─── Snapshot framing header (results page top) ─── */
 .hl-snapshot-header {
   max-width: 760px; margin: 0 auto 32px; padding: 40px 24px 0;

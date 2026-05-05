@@ -1,31 +1,257 @@
-/* Results page renderer — fetches stored assessment by token, populates
-   ring, bundle reminder, insights, score projection, risk table,
-   destination teaser, band-matched testimonial, and next-steps. */
+/* Results page renderer — runs in two modes:
+
+   FULL mode:    URL has ?t=<token>. Fetches stored assessment, renders
+                 every section including bundle reminder, destination
+                 teaser, and testimonial.
+
+   PREVIEW mode: No token. Reads quiz answers from sessionStorage (set
+                 by diagnostic.js at end of Q15). Computes score
+                 client-side and renders score + insights + projection
+                 + risk table. Hides the bundle reminder, destination
+                 teaser, and testimonial. Shows an inline email gate
+                 between the risk table and those hidden sections.
+                 On gate submit, transitions to full mode in-place.
+
+   This delivers the score-first / gate-second flow: real users see
+   their number and identified issues before being asked for an email. */
 
 (function () {
   'use strict';
 
   var API_BASE = '/api';
 
-  // Read token from URL
   var params = new URLSearchParams(window.location.search);
   var token = params.get('t') || '';
+
+  // Per-tab session id — match how diagnostic.js sets it up so funnel
+  // events fired here can be tied back to the same quiz session.
+  var SID = (function () {
+    try {
+      var k = 'hl_diag_sid';
+      var id = sessionStorage.getItem(k);
+      if (!id) {
+        id = (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
+            : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = (Math.random() * 16) | 0;
+                return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
+              });
+        sessionStorage.setItem(k, id);
+      }
+      return id;
+    } catch (e) { return ''; }
+  })();
+
+  function fireEvent(eventType, step, meta) {
+    if (!SID) return;
+    try {
+      fetch(API_BASE + '/diagnostic/event', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          session_id: SID,
+          event_type: eventType,
+          step: step || 0,
+          meta: meta || null,
+        }),
+        keepalive: true,
+      }).catch(function () {});
+    } catch (e) {}
+  }
+
+  // ── Boot: pick mode based on token / sessionStorage ─────────────
+  var previewState = null;
   if (!token) {
+    try {
+      var raw = sessionStorage.getItem('hl_diag_preview');
+      if (raw) previewState = JSON.parse(raw);
+    } catch (e) {}
+  }
+
+  if (token) {
+    // Full mode
+    document.body.classList.add('hl-mode-full');
+    fetch(API_BASE + '/diagnostic/results?token=' + encodeURIComponent(token))
+      .then(function (r) {
+        if (!r.ok) throw new Error('not found');
+        return r.json();
+      })
+      .then(function (data) { render(data, 'full'); })
+      .catch(function () { window.location.href = '/'; });
+  } else if (previewState && previewState.answers) {
+    // Preview mode — synthesize a data object that matches the API shape
+    document.body.classList.add('hl-mode-preview');
+    var pscore = scoreWithAnswers(previewState.answers);
+    var pband = bandFor(pscore);
+    var pdata = {
+      score:         pscore,
+      band:          pband,
+      answers:       previewState.answers,
+      name:          '',
+      location:      '',
+      profession:    '',
+      brief_slug:    '',
+      brief_display: '',
+    };
+    render(pdata, 'preview');
+    setupInlineGate(pdata);
+    fireEvent('preview_view', 0);
+  } else {
     window.location.href = '/';
     return;
   }
 
-  // Fetch the stored assessment
-  fetch(API_BASE + '/diagnostic/results?token=' + encodeURIComponent(token))
-    .then(function (r) {
-      if (!r.ok) throw new Error('not found');
-      return r.json();
+  // ── Mirror of server-side scoring for preview-mode score reveal ───
+  var CORRECT_ANSWERS = {
+    1: 'yes', 2: 'no', 3: 'no', 4: 'yes', 5: 'no',
+    6: 'yes', 7: 'no', 8: 'no', 9: 'no', 10: 'yes',
+  };
+  function scoreWithAnswers(a) {
+    var s = 0;
+    for (var qid in CORRECT_ANSWERS) {
+      var got = a[qid];
+      if (got === CORRECT_ANSWERS[qid]) s += 8;
+      else if (got === 'sometimes') s += 4;
+    }
+    if (a[1]  === 'yes') s += 10;
+    if (a[8]  === 'no')  s += 10;
+    if (a[5]  === 'no')  s += 5;
+    if (a[10] === 'yes') s += 15;
+    var q11 = a[11] || '';
+    if (q11.indexOf('I work abroad with my employer') === 0) s += 20;
+    else if (q11.indexOf('caught') > -1) s -= 10;
+    if (s < 0) s = 0;
+    if (s > 100) s = 100;
+    return s;
+  }
+  function bandFor(score) {
+    if (score <= 40) return 'high';
+    if (score <= 70) return 'moderate';
+    return 'low';
+  }
+
+  // ── Inline email gate (preview mode) ─────────────────────────────
+  function setupInlineGate(pdata) {
+    var host = document.getElementById('inline-gate');
+    if (!host) return;
+    host.innerHTML =
+      '<div class="hl-inline-gate__inner">' +
+        '<div class="hl-inline-gate__form-block">' +
+          '<h2>Want this delivered as a printable blueprint?</h2>' +
+          '<p>Plus the Travel Day playbook, the Return-Trip Cleanup checklist, the "If IT pings you" emergency playbook, and a destination brief for your country — all emailed the moment you submit. Free. No card.</p>' +
+          '<form id="inline-gate-form" novalidate>' +
+            '<div class="hl-inline-gate__row">' +
+              '<input type="text" id="ig-name" placeholder="Name or alias" required autocomplete="given-name">' +
+              '<input type="email" id="ig-email" placeholder="Email address" required autocomplete="email">' +
+            '</div>' +
+            '<input type="text" id="ig-location" placeholder="Where are you headed? (optional)" autocomplete="off">' +
+            '<input type="text" id="ig-website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;">' +
+            '<button type="submit" class="hl-btn hl-btn--big" id="ig-submit">Send me the bundle →</button>' +
+            '<p class="hl-inline-gate__fud">✓ Free  ·  ✓ Instant results  ·  ✓ No card required</p>' +
+          '</form>' +
+        '</div>' +
+        '<div class="hl-inline-gate__success" id="ig-success" style="display:none;">' +
+          '<div class="hl-inline-gate__success__icon">✓</div>' +
+          '<h3>Sent — check your inbox.</h3>' +
+          '<p>Your full work-from-abroad blueprint and the rest of the bundle are on their way. Scroll down for the in-page version.</p>' +
+        '</div>' +
+      '</div>';
+
+    // Fire gate-view event when the gate scrolls into view
+    var seen = false;
+    var io = ('IntersectionObserver' in window) ? new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting && !seen) {
+          seen = true;
+          fireEvent('preview_gate_view', 0);
+        }
+      });
+    }, { threshold: 0.4 }) : null;
+    if (io) io.observe(host);
+    else fireEvent('preview_gate_view', 0);
+
+    document.getElementById('inline-gate-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      handleInlineGateSubmit(pdata);
+    });
+  }
+
+  function handleInlineGateSubmit(pdata) {
+    var name     = document.getElementById('ig-name').value.trim();
+    var email    = document.getElementById('ig-email').value.trim();
+    var location = document.getElementById('ig-location').value.trim();
+    var honeypot = document.getElementById('ig-website').value;
+    if (honeypot) return;
+    if (!name || !email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alert('Please enter a valid name and email.');
+      return;
+    }
+    var btn = document.getElementById('ig-submit');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="hl-spinner"></span> Sending...';
+    fireEvent('preview_submit', 0);
+
+    fetch(API_BASE + '/diagnostic/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name:       name,
+        email:      email,
+        location:   location,
+        profession: '',
+        answers:    pdata.answers,
+        source:     'diagnostic-quiz',
+        consent:    true,
+        website:    '',
+      }),
     })
-    .then(render)
-    .catch(function () { window.location.href = '/'; });
+      .then(function (r) {
+        return r.json().catch(function () { return null; }).then(function (b) {
+          return { status: r.status, body: b };
+        });
+      })
+      .then(function (resp) {
+        if (resp.status >= 200 && resp.status < 300 && resp.body && resp.body.token) {
+          // Persist nothing — wipe sessionStorage preview state
+          try { sessionStorage.removeItem('hl_diag_preview'); } catch (e) {}
+          // Update URL silently to the token form
+          try {
+            history.replaceState(null, '', '/results?t=' + encodeURIComponent(resp.body.token));
+          } catch (e) {}
+          // Transition to full mode in place
+          transitionToFullMode(name, location, resp.body);
+        } else {
+          btn.disabled = false;
+          btn.textContent = 'Send me the bundle →';
+          alert((resp.body && resp.body.error) || 'Something went wrong submitting. Try again?');
+        }
+      })
+      .catch(function () {
+        btn.disabled = false;
+        btn.textContent = 'Send me the bundle →';
+        alert('Network error — try again?');
+      });
+  }
+
+  function transitionToFullMode(name, location, submitResp) {
+    document.body.classList.remove('hl-mode-preview');
+    document.body.classList.add('hl-mode-full');
+    // Show success state inside the gate
+    document.getElementById('inline-gate-form').style.display = 'none';
+    document.getElementById('ig-success').style.display = 'block';
+    // Render the previously-hidden sections
+    var slug = submitResp.brief_slug || '';
+    var display = submitResp.brief_display || '';
+    renderBundleCard(name, location, '', slug, display);
+    renderDestTeaser(slug, display);
+    // Use band that's already on the page
+    var band = bandFor(submitResp.score);
+    renderTestimonial(band);
+    // Smooth scroll to the success message
+    document.getElementById('inline-gate').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
 
   // ── Render ───────────────────────────────────────────────────────
-  function render(data) {
+  function render(data, mode) {
     var score      = data.score;
     var band       = data.band;       // "high" | "moderate" | "low"
     var answers    = data.answers || {};
@@ -34,15 +260,19 @@
     var profession = data.profession || '';
     var briefSlug  = data.brief_slug || '';
     var briefName  = data.brief_display || '';
+    var isPreview  = (mode === 'preview');
 
     // 1. Ring + score number + band label
     document.getElementById('band-label').textContent = bandLabel(band);
     animateScore(score, band);
 
-    // 2. Bundle reminder card (with personal context line)
-    renderBundleCard(name, location, profession, briefSlug, briefName);
+    // 2. Bundle reminder card — full mode only. In preview mode, the
+    //    section is hidden by CSS and rendered on gate-submit transition.
+    if (!isPreview) {
+      renderBundleCard(name, location, profession, briefSlug, briefName);
+    }
 
-    // 3. Insights (existing)
+    // 3. Insights — both modes
     var insightHost = document.getElementById('insights');
     INSIGHTS[band].forEach(function (it) {
       var card = document.createElement('div');
@@ -54,10 +284,10 @@
       insightHost.appendChild(card);
     });
 
-    // 4. Score projection
+    // 4. Score projection — both modes
     renderProjection(answers, score);
 
-    // 5. Risk breakdown table (existing)
+    // 5. Risk breakdown table — both modes
     var rowsHost = document.getElementById('risk-rows');
     RISK_ROWS.forEach(function (row) {
       if (!row.visible(answers)) return;
@@ -71,11 +301,15 @@
       rowsHost.appendChild(tr);
     });
 
-    // 6. Destination brief teaser (conditional)
-    renderDestTeaser(briefSlug, briefName);
+    // 6. Destination brief teaser — full mode only.
+    if (!isPreview) {
+      renderDestTeaser(briefSlug, briefName);
+    }
 
-    // 7. Score-band testimonial
-    renderTestimonial(band);
+    // 7. Score-band testimonial — full mode only.
+    if (!isPreview) {
+      renderTestimonial(band);
+    }
 
     // 8. Next steps (existing)
     var nextHost = document.getElementById('next-steps');
