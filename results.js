@@ -182,7 +182,7 @@
         '<div class="hl-inline-gate__success" id="ig-success" style="display:none;">' +
           '<div class="hl-inline-gate__success__icon">✓</div>' +
           '<h3>Sent — check your inbox.</h3>' +
-          '<p>Your full work-from-abroad blueprint and the rest of the bundle are on their way. Scroll down for the in-page version.</p>' +
+          '<p>Your blueprint and the rest of the bundle are on their way. Below: open your blueprint right now, plus the now-unlocked fix steps in the table above.</p>' +
         '</div>' +
       '</div>';
 
