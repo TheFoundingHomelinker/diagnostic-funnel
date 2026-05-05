@@ -653,7 +653,7 @@
       },
     },
     {
-      method: 'Corporate VPN source IP',
+      method: 'Corporate VPN sees your real IP',
       visible: function (a) { return isYes(ans(a, 5)); },
       risk:    function ()  { return 'high'; },
       copy: {
