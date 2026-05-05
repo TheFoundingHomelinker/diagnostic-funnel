@@ -653,6 +653,25 @@ button { font-family: inherit; }
 .hl-mode-preview .hl-testimonial-results { display: none !important; }
 .hl-mode-full #inline-gate { display: none !important; }
 
+/* Gated "What to do" cells in preview mode — blur the prescription
+   text and show a small "unlock" indicator. Body flips to .hl-mode-full
+   on gate submit and the blur clears automatically. */
+.hl-mode-preview .hl-risk-locked {
+  filter: blur(5px);
+  user-select: none;
+  pointer-events: none;
+  display: inline-block;
+}
+.hl-mode-preview .hl-risk-todo-cell::after {
+  content: "🔒  Submit email to unlock";
+  display: block;
+  margin-top: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--blue);
+  letter-spacing: 0.04em;
+}
+
 /* ─── Inline email gate (preview mode, between risk table and bundle) ─── */
 .hl-inline-gate {
   max-width: 720px; margin: 0 auto 56px;

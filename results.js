@@ -291,7 +291,10 @@
     // 4. Score projection — both modes
     renderProjection(answers, score);
 
-    // 5. Risk breakdown table — both modes
+    // 5. Risk breakdown table — both modes. In preview mode, the
+    //    "What to do" cell is wrapped in .hl-risk-locked so CSS can blur
+    //    it (the prescription is gated until email submit). On gate
+    //    submit, body switches to .hl-mode-full and the blur clears.
     var rowsHost = document.getElementById('risk-rows');
     RISK_ROWS.forEach(function (row) {
       if (!row.visible(answers)) return;
@@ -301,7 +304,7 @@
       tr.innerHTML =
         '<td data-label="Detection method">' + escapeHtml(row.method) + '</td>' +
         '<td data-label="Your risk"><span class="risk-pill ' + risk + '">' + riskLabel(risk) + '</span></td>' +
-        '<td data-label="What to do">' + escapeHtml(copy) + '</td>';
+        '<td data-label="What to do" class="hl-risk-todo-cell"><span class="hl-risk-locked">' + escapeHtml(copy) + '</span></td>';
       rowsHost.appendChild(tr);
     });
 
