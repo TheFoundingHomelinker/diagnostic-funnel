@@ -98,6 +98,7 @@
       };
       render(pdata, 'preview');
       setupInlineGate(pdata);
+      setupTodoCellScroll();
       fireEvent('preview_view', 0);
     } else {
       window.location.href = '/';
@@ -131,6 +132,26 @@
     if (score <= 40) return 'high';
     if (score <= 70) return 'moderate';
     return 'low';
+  }
+
+  // ── Click-to-scroll on gated "What to do" cells (preview mode) ──
+  // Cell is rendered with class .hl-risk-todo-cell and a blurred span.
+  // CSS makes it clearly clickable; this handler scrolls the user to
+  // the inline gate and focuses the email field. Scoped to preview
+  // mode so full-mode revisits don't accidentally re-fire it.
+  function setupTodoCellScroll() {
+    document.addEventListener('click', function (e) {
+      if (!document.body.classList.contains('hl-mode-preview')) return;
+      if (!e.target.closest) return;
+      var cell = e.target.closest('.hl-risk-todo-cell');
+      if (!cell) return;
+      var gate = document.getElementById('inline-gate');
+      if (gate) gate.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setTimeout(function () {
+        var email = document.getElementById('ig-email');
+        if (email) email.focus();
+      }, 500);
+    });
   }
 
   // ── Inline email gate (preview mode) ─────────────────────────────
