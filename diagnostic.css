@@ -651,7 +651,10 @@ button { font-family: inherit; }
 .hl-mode-preview .hl-bundle-card,
 .hl-mode-preview .hl-dest-teaser,
 .hl-mode-preview .hl-testimonial-results { display: none !important; }
-.hl-mode-full #inline-gate { display: none !important; }
+/* Note: the inline gate is NOT hidden via .hl-mode-full because we
+   still want it visible (with the success state) immediately after a
+   preview→full transition. For token-bound revisits, results.js
+   explicitly sets display:none on #inline-gate at boot. */
 
 /* Gated "What to do" cells in preview mode — blur the prescription
    text and show a small clickable "unlock" indicator that scrolls

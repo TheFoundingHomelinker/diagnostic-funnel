@@ -75,6 +75,11 @@
   Promise.resolve().then(function () {
     if (token) {
       document.body.classList.add('hl-mode-full');
+      // Token-bound revisit — the gate is empty and shouldn't take space.
+      // (After a preview→full transition, the gate stays visible with
+      // its success state; that path doesn't run this branch.)
+      var ig = document.getElementById('inline-gate');
+      if (ig) ig.style.display = 'none';
       fetch(API_BASE + '/diagnostic/results?token=' + encodeURIComponent(token))
         .then(function (r) {
           if (!r.ok) throw new Error('not found');
