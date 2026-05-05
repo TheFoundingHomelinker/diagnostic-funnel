@@ -1055,6 +1055,17 @@ button { font-family: inherit; }
 }
 .rf-exposure__body p:last-child { margin-bottom: 0; }
 .rf-exposure__body strong { color: var(--navy); }
+.rf-exposure__meta {
+  display: flex; flex-wrap: wrap; gap: 8px 18px;
+  margin-top: 12px; padding-top: 12px;
+  border-top: 1px solid var(--border);
+  font-size: 0.88rem; color: var(--muted);
+}
+.rf-exposure__meta__item strong { color: var(--navy); font-weight: 700; }
+.rf-actionplan__meta {
+  font-style: normal; color: #78350f; font-size: 0.88rem;
+  font-family: 'DM Mono', monospace;
+}
 
 .rf-callout {
   background: var(--bg); border-left: 3px solid var(--blue);

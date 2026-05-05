@@ -20,6 +20,8 @@
       weight: 23,
       correct: 'yes',
       title: 'Network egress (your IP layer)',
+      time: '~15 minutes',
+      cost: '30-day free trial of HomeLink',
       risk: 'Your IP geolocation is the most reliable signal IT has. Every login record includes the IP. MaxMind / IP2Location resolves any new range to a country within minutes — and Microsoft 365, Google Workspace, and Okta all flag foreign-IP logins on the very first authentication.',
       whenWrong: {
         'no':        'You\'re not currently routing your traffic through your home IP. This is the single highest-leverage gap on this list — every other fix is downstream of this one.',
@@ -31,6 +33,8 @@
       weight: 18,
       correct: 'yes',
       title: 'Company-issued device',
+      time: 'Ongoing decision',
+      cost: 'Free (use personal device for non-essential work)',
       risk: 'Company laptops typically run with MDM, location services enabled by default, and IT has remote inventory access. They can see what they\'re looking for whenever they want.',
       whenWrong: {
         'no':        'You\'re using a company-issued device when working abroad. This means location services are likely on by default, IT can see device geolocation in their MDM console, and any apps installed by IT can phone home with location and timezone.',
@@ -42,6 +46,8 @@
       weight: 18,
       correct: 'no',
       title: 'MDM / device management software',
+      time: '~5 minutes (mitigations only — you can\'t remove MDM)',
+      cost: 'Free',
       risk: 'Software like Jamf, Intune, Workspace ONE, Kandji, and Mosyle reports device location, install state, and timezone back to IT continuously. It\'s the most direct surveillance vector — and it operates at a layer below the IP fix.',
       whenWrong: {
         'yes':       'You confirmed there\'s management software installed on your work device. That software phones home with location and timezone every check-in — usually every few hours. The IP layer alone won\'t hide this.',
@@ -53,6 +59,8 @@
       weight: 13,
       correct: 'no',
       title: 'Corporate VPN',
+      time: '~5 minutes (sequencing change)',
+      cost: 'Free',
       risk: 'Corporate VPNs reveal your real client IP to the VPN gateway during the handshake. Routing your downstream traffic through home doesn\'t help if the corporate VPN tunnel sees the destination IP.',
       whenWrong: {
         'yes':       'Your company requires you to connect to a corporate VPN. The VPN gateway logs the IP your client connects from — even when HomeLink is in front of it, the corporate VPN sees the home IP. The good news: that\'s consistent with what your IdP sees.',
@@ -64,6 +72,8 @@
       weight: 8,
       correct: 'no',
       title: 'Microsoft 365 / Google Workspace',
+      time: '~2 minutes (verify-then-login routine)',
+      cost: 'Free',
       risk: 'Both M365 and Google Workspace flag foreign-IP logins immediately, by default, with no admin configuration required. Conditional Access in M365 and Suspicious Activity in GWS run continuously.',
       whenWrong: {
         'yes':       'Your company uses M365 or GWS. Every login from a foreign IP appears in the admin console within minutes. Don\'t open Outlook, Teams, Gmail, or Drive until your IP layer is verified routed through home.',
@@ -75,6 +85,8 @@
       weight: 8,
       correct: 'yes',
       title: 'Device timezone',
+      time: '30 seconds',
+      cost: 'Free',
       risk: 'Timezone is embedded in every calendar invite, Slack message, Jira ticket, and commit timestamp — invisible to most people, including most IT, until someone audits. When that day comes, it\'s decisive.',
       whenWrong: {
         'no':        'You\'ve never manually changed your device timezone for travel. Auto-timezone is the most common silent leak — your phone or laptop flips to local time at the destination, and every meeting you create from that point embeds the destination zone in metadata that lives forever.',
@@ -86,6 +98,8 @@
       weight: 8,
       correct: 'no',
       title: 'Collaboration tool metadata',
+      time: '~5 minutes (audit each tool once)',
+      cost: 'Free',
       risk: 'Slack, Jira, Notion, Linear, and similar tools embed timezone in user profiles and message metadata. Some show profile timezone publicly to coworkers — a coworker glance at your profile is the cheapest possible audit.',
       whenWrong: {
         'yes':       'You use Slack/Jira/Notion-style tools. Profile timezone is the obvious leak — set it to home in each tool\'s preferences. Less obvious: every message timestamp is stored in UTC but renders to viewer\'s local timezone, so a coworker investigating you might also see metadata that looks off.',
@@ -97,6 +111,8 @@
       weight: 8,
       correct: 'yes',
       title: 'Awareness of your work IP',
+      time: '~5 minutes',
+      cost: 'Free',
       risk: 'Not knowing what IP your work accounts see means you can\'t verify whether your IP layer is actually working. The fix step for every other risk depends on this baseline.',
       whenWrong: {
         'no':        'You don\'t know what IP your work accounts see. Without this baseline, you can\'t verify whether HomeLink, a VPN, or any other routing approach is actually doing its job.',
@@ -108,6 +124,8 @@
       weight: 6,
       correct: 'no',
       title: 'Past verification prompts (risk indicator)',
+      time: 'Awareness only',
+      cost: '—',
       risk: 'A pattern of verification prompts on past logins suggests your IdP\'s adaptive-auth engine is already alert to your account.',
       whenWrong: {
         'yes':       'You\'ve had verification prompts on past logins. This is informational rather than a leak — it means your IdP\'s adaptive auth is already paying attention to your sign-in pattern. Be cleaner on every other axis to avoid escalation.',
@@ -119,6 +137,8 @@
       weight: 6,
       correct: 'no',
       title: 'Past flags from IT or HR (risk indicator)',
+      time: 'Awareness only',
+      cost: '—',
       risk: 'If IT or HR has questioned your location before, you\'re on someone\'s mental list. The threshold for a second inquiry is much lower than the first.',
       whenWrong: {
         'yes':       'You\'ve been questioned before. Even if it was resolved, your name is now associated with "remote-from-where" thinking in someone\'s head. Be more cautious than baseline.',
@@ -228,6 +248,14 @@
     exposures.forEach(function (e, i) {
       var spec = e.spec;
       var situation = (spec.whenWrong && spec.whenWrong[e.got]) || '';
+      var metaHtml = '';
+      if (spec.time || spec.cost) {
+        metaHtml =
+          '<div class="rf-exposure__meta">' +
+            (spec.time ? '<span class="rf-exposure__meta__item"><strong>Time:</strong> ' + escapeHtml(spec.time) + '</span>' : '') +
+            (spec.cost ? '<span class="rf-exposure__meta__item"><strong>Cost:</strong> ' + escapeHtml(spec.cost) + '</span>' : '') +
+          '</div>';
+      }
       html += '<div class="rf-exposure">' +
         '<div class="rf-exposure__rank">#' + (i + 1) + '</div>' +
         '<div class="rf-exposure__body">' +
@@ -235,6 +263,7 @@
           '<p class="rf-exposure__situation"><strong>Your situation:</strong> ' + escapeHtml(situation) + '</p>' +
           '<p class="rf-exposure__risk"><strong>What IT sees:</strong> ' + escapeHtml(spec.risk) + '</p>' +
           '<p class="rf-exposure__fix"><strong>Fix:</strong> ' + escapeHtml(spec.fix) + '</p>' +
+          metaHtml +
         '</div>' +
         '</div>';
     });
@@ -285,7 +314,11 @@
     var top = exposures.slice(0, 3);
     var items = '';
     top.forEach(function (e, i) {
-      items += '<li><strong>Step ' + (i + 1) + ':</strong> ' + escapeHtml(e.spec.title) + ' — ' + escapeHtml(e.spec.fix) + '</li>';
+      var meta = '';
+      if (e.spec.time && e.spec.cost) {
+        meta = ' <em class="rf-actionplan__meta">(' + escapeHtml(e.spec.time) + ' · ' + escapeHtml(e.spec.cost) + ')</em>';
+      }
+      items += '<li><strong>Step ' + (i + 1) + ':</strong> ' + escapeHtml(e.spec.title) + ' — ' + escapeHtml(e.spec.fix) + meta + '</li>';
     });
     return '<div class="rf-actionplan">' +
       '<h2>Sequenced action plan</h2>' +
