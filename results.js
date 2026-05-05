@@ -309,10 +309,7 @@
       insightHost.appendChild(card);
     });
 
-    // 4. Score projection — both modes
-    renderProjection(answers, score);
-
-    // 5. Risk breakdown table — both modes. In preview mode, the
+    // 4. Risk breakdown table — both modes. In preview mode, the
     //    "What to do" cell is wrapped in .hl-risk-locked so CSS can blur
     //    it (the prescription is gated until email submit). On gate
     //    submit, body switches to .hl-mode-full and the blur clears.
@@ -328,6 +325,10 @@
         '<td data-label="What to do" class="hl-risk-todo-cell"><span class="hl-risk-locked">' + escapeHtml(copy) + '</span></td>';
       rowsHost.appendChild(tr);
     });
+
+    // 5. Score projection — both modes (sits below the diagnostic so
+    //    the user sees what's wrong first, then the path forward).
+    renderProjection(answers, score);
 
     // 6. Destination brief teaser — full mode only.
     if (!isPreview) {
