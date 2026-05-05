@@ -140,8 +140,8 @@
     host.innerHTML =
       '<div class="hl-inline-gate__inner">' +
         '<div class="hl-inline-gate__form-block">' +
-          '<h2>Want this delivered as a printable blueprint?</h2>' +
-          '<p>Plus the Travel Day playbook, the Return-Trip Cleanup checklist, the "If IT pings you" emergency playbook, and a destination brief for your country — all emailed the moment you submit. Free. No card.</p>' +
+          '<h2>Don\'t get on the plane without these.</h2>' +
+          '<p>Every gap above gets a fix step — exact instructions, time required, cost — in your personalized blueprint. Plus the Travel Day playbook, the Return-Trip Cleanup checklist, and the "If IT pings you" emergency playbook for if anything goes sideways. All emailed the moment you submit.</p>' +
           '<form id="inline-gate-form" novalidate>' +
             '<div class="hl-inline-gate__row">' +
               '<input type="text" id="ig-name" placeholder="Name or alias" required autocomplete="given-name">' +
@@ -149,8 +149,8 @@
             '</div>' +
             '<input type="text" id="ig-location" placeholder="Where are you headed? (optional)" autocomplete="off">' +
             '<input type="text" id="ig-website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;">' +
-            '<button type="submit" class="hl-btn hl-btn--big" id="ig-submit">Send me the bundle →</button>' +
-            '<p class="hl-inline-gate__fud">✓ Free  ·  ✓ Instant results  ·  ✓ No card required</p>' +
+            '<button type="submit" class="hl-btn hl-btn--big" id="ig-submit">Email me the fix plan →</button>' +
+            '<p class="hl-inline-gate__fud">✓ Free  ·  ✓ Instant  ·  ✓ No card</p>' +
           '</form>' +
         '</div>' +
         '<div class="hl-inline-gate__success" id="ig-success" style="display:none;">' +
