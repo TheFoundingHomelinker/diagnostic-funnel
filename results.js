@@ -67,38 +67,42 @@
     } catch (e) {}
   }
 
-  if (token) {
-    // Full mode
-    document.body.classList.add('hl-mode-full');
-    fetch(API_BASE + '/diagnostic/results?token=' + encodeURIComponent(token))
-      .then(function (r) {
-        if (!r.ok) throw new Error('not found');
-        return r.json();
-      })
-      .then(function (data) { render(data, 'full'); })
-      .catch(function () { window.location.href = '/'; });
-  } else if (previewState && previewState.answers) {
-    // Preview mode — synthesize a data object that matches the API shape
-    document.body.classList.add('hl-mode-preview');
-    var pscore = scoreWithAnswers(previewState.answers);
-    var pband = bandFor(pscore);
-    var pdata = {
-      score:         pscore,
-      band:          pband,
-      answers:       previewState.answers,
-      name:          '',
-      location:      '',
-      profession:    '',
-      brief_slug:    '',
-      brief_display: '',
-    };
-    render(pdata, 'preview');
-    setupInlineGate(pdata);
-    fireEvent('preview_view', 0);
-  } else {
-    window.location.href = '/';
-    return;
-  }
+  // Defer the boot to a microtask so the var declarations at the bottom
+  // of this IIFE (INSIGHTS, RISK_ROWS, NEXT_STEPS) are assigned before
+  // render() runs. The full-mode flow worked accidentally because
+  // fetch().then() is naturally async; preview mode would otherwise run
+  // synchronously and hit those vars while still undefined.
+  Promise.resolve().then(function () {
+    if (token) {
+      document.body.classList.add('hl-mode-full');
+      fetch(API_BASE + '/diagnostic/results?token=' + encodeURIComponent(token))
+        .then(function (r) {
+          if (!r.ok) throw new Error('not found');
+          return r.json();
+        })
+        .then(function (data) { render(data, 'full'); })
+        .catch(function () { window.location.href = '/'; });
+    } else if (previewState && previewState.answers) {
+      document.body.classList.add('hl-mode-preview');
+      var pscore = scoreWithAnswers(previewState.answers);
+      var pband = bandFor(pscore);
+      var pdata = {
+        score:         pscore,
+        band:          pband,
+        answers:       previewState.answers,
+        name:          '',
+        location:      '',
+        profession:    '',
+        brief_slug:    '',
+        brief_display: '',
+      };
+      render(pdata, 'preview');
+      setupInlineGate(pdata);
+      fireEvent('preview_view', 0);
+    } else {
+      window.location.href = '/';
+    }
+  });
 
   // ── Mirror of server-side scoring for preview-mode score reveal ───
   var CORRECT_ANSWERS = {
